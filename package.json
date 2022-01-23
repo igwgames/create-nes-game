@@ -1,0 +1,32 @@
+{
+  "name": "create-nes-game",
+  "version": "1.0.0",
+  "description": "Use this to create and build NES games using ca65/cc65",
+  "main": "index.js",
+  "bin": {
+    "create-nes-game": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cppchriscpp/create-nes-game.git"
+  },
+  "keywords": [
+    "cc65",
+    "ca65",
+    "nes",
+    "compiler",
+    "assembler"
+  ],
+  "author": "cppchriscpp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cppchriscpp/create-nes-game/issues"
+  },
+  "homepage": "https://github.com/cppchriscpp/create-nes-game#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
+}
