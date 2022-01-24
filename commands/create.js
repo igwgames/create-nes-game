@@ -1,7 +1,10 @@
 const questions = require('../creation-wizard/questions'),
+    appConfiguration = require('../config/app-configuration'),
     BaseGameConfiguration = require('../config/base-game-configuration'),
     BaseGameConfigurationFields = BaseGameConfiguration.BaseGameConfigurationFields,
-    inquirer = require('inquirer');
+    inquirer = require('inquirer'),
+    path = require('path'),
+    fs = require('fs');
 
 async function run() {
 
@@ -9,7 +12,12 @@ async function run() {
 
     // Get name manually, since it's a bit odd, and we need it to initialize the game.
     let currentGame = null;
-    let name = await inquirer.prompt([{type: 'input', name: 'v', message: questions[0].question, validate: BaseGameConfigurationFields.name.validates}]);
+    let name = await inquirer.prompt([{type: 'input', name: 'v', message: questions[0].question, validate: (val) => {
+        const valMsg = BaseGameConfigurationFields.name.validates(val); 
+        if (valMsg !== true) { return valMsg; }
+        if (fs.existsSync(path.join(appConfiguration.workingDirectory, val))) { return 'Directory already exists'; }
+        return true;
+    }}]);
     currentGame = new BaseGameConfiguration(name.v);
     
     // TODO: I probably should rewrite this to serve everything in one "session", but that's a bit of work.
@@ -32,6 +40,19 @@ async function run() {
     }
 
     console.info('game', currentGame.toString());
+
+    // FIXME: This generator collection should probably be built up somehwere else.
+    const generators = [
+        require('../generators/ca65/directory-structure'), 
+        require('../generators/shared/.create-nes-game.config.json.js'),
+        require('../generators/ca65/.gitignore'),
+        require('../generators/ca65/ca65-binaries')
+    ];
+
+    const gamePath = path.join(appConfiguration.workingDirectory, currentGame.name);
+    for (let i = 0; i < generators.length; i++) {
+        await generators[i](currentGame, gamePath);
+    }
 }
 
 module.exports = {run};

@@ -27,6 +27,8 @@
   },
   "homepage": "https://github.com/cppchriscpp/create-nes-game#readme",
   "dependencies": {
-    "inquirer": "^8.2.0"
+    "axios": "^0.25.0",
+    "inquirer": "^8.2.0",
+    "node-stream-zip": "^1.15.0"
   }
 }

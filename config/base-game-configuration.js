@@ -1,5 +1,7 @@
 const mappers = require("../data/mappers");
 
+const CONFIG_VERSION = 10000;
+
 const BaseGameConfigurationFields = {
     name: {
         type: 'string',
@@ -70,7 +72,19 @@ const BaseGameConfigurationFields = {
         type: 'boolean',
         default: false,
         possibleValues: [true, false]
+    },
+
+    console: {
+        type: 'string',
+        default: 'nes',
+        possibleValues: ['nes']
+    },
+    configVersion: {
+        type: 'number',
+        default: CONFIG_VERSION,
+        possibleValues: [CONFIG_VERSION]
     }
+
 };
 Object.keys(BaseGameConfigurationFields).map(key => BaseGameConfigurationFields[key].name = key);
 Object.freeze(BaseGameConfigurationFields);
@@ -105,6 +119,18 @@ class BaseGameConfiguration {
         });
     }
 
+    getVersionString() {
+        const major = Math.floor(this.configVersion / 10000),
+            minor = Math.floor(this.configVersion / 100) % 100,
+            patch = this.configVersion % 100;
+
+        return `${major}.${minor}.${patch}`;
+    }
+
+    get configVersionString() {
+        return this.getVersionString();
+    }
+
     getMapperDefinition() {
         return mappers[this.mapper];
     }
@@ -114,12 +140,16 @@ class BaseGameConfiguration {
     }
 
     toObject() {
-        return Object.keys(this._properties)
-            .filter(x => !x.startsWith('_'))
-            .reduce((obj, key) => { 
-                obj[key] = this._properties[key]; 
-                return obj; 
-            }, {});
+        return {
+            configVersion: this.configVersion,
+            configVersionString: this.configVersionString,
+            ...Object.keys(this._properties)
+                .filter(x => !x.startsWith('_'))
+                .reduce((obj, key) => { 
+                    obj[key] = this._properties[key]; 
+                    return obj; 
+                }, {})
+        };
     }
 
     toString() {

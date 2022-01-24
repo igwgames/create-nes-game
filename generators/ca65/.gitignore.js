@@ -1,0 +1,21 @@
+// Creates a gitignore file, for anyone using git to ignore the tooling/etc we install
+const fs = require('fs'),
+    path = require('path');
+
+function createConfig(game, directory) {
+    let gitignore = `
+tools/cc65
+tools/emulators
+temp
+nes.sh
+nes.bat
+./create-nes-game.exe
+./create-nes-game-win.exe
+./create-nes-game
+./create-nes-game-*
+
+    `
+    fs.writeFileSync(path.join(directory, '.gitignore'), gitignore);
+}
+
+module.exports = createConfig;

@@ -15,3 +15,6 @@ TODO
 * Build into pkg and test that
 * How can the user resize their rom?
 * Can the user switch mappers non-manually?
+* How can I install all of my tools in an already-created github repo?
+  * Should `build` and `emu` trigger this if not done maybe?
+* Create linux cc65 binaries (these have to be manually built, sigh.)
