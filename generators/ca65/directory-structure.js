@@ -26,5 +26,6 @@ function createConfig(game, directory) {
         }
     })
 }
+createConfig.stepName = 'directory structure'
 
 module.exports = createConfig;

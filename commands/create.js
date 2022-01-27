@@ -49,8 +49,15 @@ async function run() {
         require('../generators/ca65/ca65-binaries')
     ];
 
+    if (currentGame.includeC) {
+        // FIXME: Uh, yeah. things.
+    } else {
+        generators.push(require('../generators/ca65/main.asm'));
+    }
+
     const gamePath = path.join(appConfiguration.workingDirectory, currentGame.name);
     for (let i = 0; i < generators.length; i++) {
+        logger.debug('Starting step:', generators[i].stepName);
         await generators[i](currentGame, gamePath);
     }
 }

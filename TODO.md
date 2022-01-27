@@ -1,13 +1,9 @@
 TODO
 
 * Config system complete
-* question class
-* Question system
-* Input wrapper to ask questions to the user
 * Base configuration
 * config builder for game itself
 * Build process for app itself
-* Tool downloader (cc65, mesen, etc)
 * Recurse through parent directories to find true working dir
 * Create a small documentation site
 * Create version update check, self-upgrade mechanism
@@ -18,3 +14,4 @@ TODO
 * How can I install all of my tools in an already-created github repo?
   * Should `build` and `emu` trigger this if not done maybe?
 * Create linux cc65 binaries (these have to be manually built, sigh.)
+* Show a % complete or something like that, Explore using the bottom bar tool we have

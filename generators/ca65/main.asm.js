@@ -7,6 +7,6 @@ function createConfig(game, directory) {
     fs.writeFileSync(path.join(directory, '.create-nes-game.config.json'), game.toString());
 }
 
-createConfig.stepName = 'create-nes-game.config';
+createConfig.stepName = 'main.asm';
 
 module.exports = createConfig;

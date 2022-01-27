@@ -18,4 +18,6 @@ nes.bat
     fs.writeFileSync(path.join(directory, '.gitignore'), gitignore);
 }
 
+createConfig.stepName = '.gitignore';
+
 module.exports = createConfig;

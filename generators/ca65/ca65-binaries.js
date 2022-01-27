@@ -97,5 +97,6 @@ async function createConfig(game, directory) {
 
     // Okay, we done.
 }
+createConfig.stepName = 'cc65 binaries';
 
 module.exports = createConfig;
