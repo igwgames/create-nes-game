@@ -21,3 +21,5 @@ TODO
 * Think about a way to "eject" if you don't wanna use our tools. 
   * Don't compromise on folder structure though - maybe give a .sh that runs all commands we would
 * make a choice on simplifying the example for ca65
+* Add sram question and feature
+* MAke the sandbox folder official via cli param or ENV

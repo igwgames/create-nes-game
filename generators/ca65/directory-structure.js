@@ -14,7 +14,7 @@ function createConfig(game, directory) {
     }
 
     // Now let's make a few more...
-    const neededDirs = ['src', 'src/assembly', 'graphics', 'tools', 'tools/emulators', 'sound', 'temp'];
+    const neededDirs = ['cfg', 'src', 'src/assembly', 'graphics', 'tools', 'tools/emulators', 'sound', 'temp'];
     if (game.includeC) { neededDirs.push('src/c'); }
 
     neededDirs.forEach(thisDirectory => {

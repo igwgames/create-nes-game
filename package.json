@@ -7,7 +7,7 @@
     "create-nes-game": "./index.js"
   },
   "scripts": {
-    "clean-sandbox": "(rm -r ./sandbox || echo \"empty sandbox\") && mkdir sandbox && touch sandbox/empty",
+    "clean-scratchpad": "rm -r ./scratchpad/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

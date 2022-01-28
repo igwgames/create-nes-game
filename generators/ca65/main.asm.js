@@ -1,4 +1,4 @@
-// Creates create-nes-game.conf with all of the defined configuration in the game folder.
+// Creates main assembly file for ca65 assembly projects (no cc65)
 
 const fs = require('fs'),
     path = require('path'),
