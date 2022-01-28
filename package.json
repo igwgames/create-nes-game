@@ -7,6 +7,7 @@
     "create-nes-game": "./index.js"
   },
   "scripts": {
+    "clean-sandbox": "(rm -r ./sandbox || echo \"empty sandbox\") && mkdir sandbox && touch sandbox/empty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/cppchriscpp/create-nes-game#readme",
   "dependencies": {
     "axios": "^0.25.0",
+    "eta": "^1.12.3",
     "inquirer": "^8.2.0",
     "node-stream-zip": "^1.15.0"
   }

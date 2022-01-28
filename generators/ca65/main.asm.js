@@ -1,10 +1,13 @@
 // Creates create-nes-game.conf with all of the defined configuration in the game folder.
 
 const fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    eta = require('eta'),
+    mappers = require('../../data/mappers');
 
 function createConfig(game, directory) {
-    fs.writeFileSync(path.join(directory, '.create-nes-game.config.json'), game.toString());
+    const mapper = mappers[game.mapper];
+    fs.writeFileSync(path.join(directory, 'src', 'assembly', 'main.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'main.template.asm')).toString(), {game, mapper}));
 }
 
 createConfig.stepName = 'main.asm';

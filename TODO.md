@@ -15,3 +15,8 @@ TODO
   * Should `build` and `emu` trigger this if not done maybe?
 * Create linux cc65 binaries (these have to be manually built, sigh.)
 * Show a % complete or something like that, Explore using the bottom bar tool we have
+* Install optional tools? (nesst or nexxt, space checker? Or implement our own sc)
+* Cool post-build stats? eg size/free based on guessing at rom structure, symbol count? Etc
+  * Give a reason to use this thing
+* Think about a way to "eject" if you don't wanna use our tools. 
+  * Don't compromise on folder structure though - maybe give a .sh that runs all commands we would
