@@ -20,3 +20,4 @@ TODO
   * Give a reason to use this thing
 * Think about a way to "eject" if you don't wanna use our tools. 
   * Don't compromise on folder structure though - maybe give a .sh that runs all commands we would
+* make a choice on simplifying the example for ca65
