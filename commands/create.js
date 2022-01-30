@@ -48,7 +48,8 @@ async function run() {
         require('../generators/ca65/.gitignore'),
         require('../generators/ca65/ca65-binaries'),
         require('../generators/ca65/ca65.cfg'),
-        require('../generators/ca65/chr-files')
+        require('../generators/ca65/chr-files'),
+        require('../generators/ca65/nam-files')
     ];
 
     if (currentGame.includeC) {

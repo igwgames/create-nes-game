@@ -74,7 +74,7 @@ function spawnAndWait(logCmd, cmd, file, args = []) {
         });
 
         proc.on('close', resultCode => {
-            logger.debug(`[${logCmd}]`, 'finished with code ', resultCode);
+            logger.debug(`[${logCmd}]`, 'finished with code', resultCode);
 
             if (resultCode === 0) {
                 resolve();
