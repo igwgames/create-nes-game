@@ -19,6 +19,7 @@ const allQuestions = [
         // TODO: Implement this, requested feature.
         // See: http://pineight.com/nes/mapperwizard.html
         // See also: https://wiki.nesdev.org/w/index.php/Comparison_of_Nintendo_mappers
+        // It might be better to create a quick-n-dirty web version
         question: 'Have you already decided on a mapper?',
         type: 'choice',
         possibleValues: ['yes', 'no'],

@@ -1,4 +1,4 @@
-module.exports = function() {
+function run() {
 
     console.info(`
 create-nes-game
@@ -13,4 +13,8 @@ Available subcommands:
   run - Run the configured emulator with your game
 `
     );
+
+    return Promise.resolve();
 }
+
+module.exports = {run};

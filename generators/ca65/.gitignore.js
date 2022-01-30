@@ -13,7 +13,7 @@ nes.bat
 ./create-nes-game-win.exe
 ./create-nes-game
 ./create-nes-game-*
-
+*.nes
     `
     fs.writeFileSync(path.join(directory, '.gitignore'), gitignore);
 }

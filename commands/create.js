@@ -39,7 +39,7 @@ async function run() {
 
     }
 
-    console.info('game', currentGame.toString());
+    logger.debug('Created game record', currentGame.toString());
 
     // FIXME: This generator collection should probably be built up somehwere else.
     const generators = [
@@ -47,7 +47,8 @@ async function run() {
         require('../generators/shared/.create-nes-game.config.json.js'),
         require('../generators/ca65/.gitignore'),
         require('../generators/ca65/ca65-binaries'),
-        require('../generators/ca65/ca65.cfg')
+        require('../generators/ca65/ca65.cfg'),
+        require('../generators/ca65/chr-files')
     ];
 
     if (currentGame.includeC) {

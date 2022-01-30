@@ -1,4 +1,7 @@
-const mappers = require("../data/mappers");
+const mappers = require("../data/mappers"),
+    slugify = require('../util/slugify'),
+    fs = require('fs'),
+    path = require('path');
 
 const CONFIG_VERSION = 10000;
 
@@ -131,6 +134,10 @@ class BaseGameConfiguration {
         return this.getVersionString();
     }
 
+    get romName() {
+        return slugify(this.name) + '.nes';
+    }
+
     getMapperDefinition() {
         return mappers[this.mapper];
     }
@@ -154,6 +161,24 @@ class BaseGameConfiguration {
 
     toString() {
         return JSON.stringify(this.toObject(), null, 4);
+    }
+
+    static fromString(str) {
+        const obj = JSON.parse(str);
+        const game = new BaseGameConfiguration(obj.name, {});
+        Object.keys(obj).forEach(key => {
+            try {
+                game[key] = obj[key];
+            } catch (e) {
+                logger.debug('Skipping field', key, 'assuming getter only.', e.toString());
+            }
+        });
+        return game;
+    }
+
+    static fromDirectory(dir) {
+        const strConfig = fs.readFileSync(path.join(dir, '.create-nes-game.config.json')).toString();
+        return BaseGameConfiguration.fromString(strConfig);
     }
 
     static get BaseGameConfigurationFields() {

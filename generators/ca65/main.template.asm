@@ -63,8 +63,8 @@ INES_SRAM   = <%= it.game.useSram ? 1 : 0 %> ; 1 = battery backed SRAM at $6000-
 ;
 
 .segment "TILES"
-.incbin "background.chr"
-.incbin "sprite.chr"
+.incbin "../../graphics/background.chr"
+.incbin "../../graphics/sprite.chr"
 
 ;
 ; vectors placed at top 6 bytes of memory area

@@ -2,15 +2,19 @@
 require('./util/logger');
 
 const AppConfiguration = require('./config/app-configuration'),
-    BaseGameConfiguration = require('./config/base-game-configuration');
+    path = require('path');
 
-logger.info('App started n stuff');
+logger.debug('App started with arguments', AppConfiguration.command, AppConfiguration.arguments, 'working dir: ', AppConfiguration.workingDirectory);
 
-const game = new BaseGameConfiguration('beees', {mapper: 'nrom'});
-
-// logger.info('smile, you\'re on gameboy camera', game.toString());
-
-// FIXME: there should be an interface of commands here - this should only be the default if not in a create-nes-game project already
-const CreateCommand = require('./commands/create');
-
-CreateCommand.run();
+try {
+    const command = require('./commands/' + AppConfiguration.command);
+    logger.debug('Command loaded', AppConfiguration.command);
+    
+    command.run().then(() => process.exit(0), error => {
+        logger.error('Failed running command', error);
+        process.exit(1);
+    });
+} catch (e) {
+    logger.error('Unable to run command', AppConfiguration.command, e);
+    process.exit(1);
+}

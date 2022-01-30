@@ -6,10 +6,11 @@ a bunch of optional features, hit create, then build your game!
 
 ## Features
 
-* Generates ca65 config, and the code required to put "hello world" on the screen
+* Generates all config, and the code required to put "hello world" on the screen
 * Can choose to create code in assembly or C
 * Interactive mapper and size choices
-* Build your rom with one command: `nes build`
+* Build your rom with one command: `create-nes-game build`
+* Support for debugging C and assembly in mesen with source code
 * Optionally include rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
 * Optionally configure your game to build with CI tools like circleci
 
@@ -35,11 +36,11 @@ From there, you can run `create-nes-game run` to test your rom. You can also edi
 
 ## Where can I put my code?
 
-The general answer is to use the "src" directory. There are subfolders for assembly (asm) and
+The general answer is to use the "source" directory. There are subfolders for assembly (assembly) and
 optionally for C, if you've enabled that. You can create as many subfolders as you'd like beneath
 these.
 
-Assembly code must be included from `src/asm/main.asm`, using the `.include` feature of ca65.
+Assembly code must be included from `source/assembly/main.asm`, using the `.include` feature of ca65.
 
-All C code in the `src/c/` folder will automatically be compiled and included - you do not need
+All C code in the `sourcec/` folder will automatically be compiled and included - you do not need
 to do anything besides calling functions. 

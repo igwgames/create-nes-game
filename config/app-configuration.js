@@ -4,25 +4,38 @@ const path = require('path'),
     process = require('process'),
     helpCommand = require('../commands/help');
 
+// This ends up grabbing all configuration from the cli, including commands
+// Perhaps not the clearest thing ever written, apologies if this trips you up.
 class AppConfiguration {
     debugMode = false;
     workingDirectory = null;
     isControlledFolder = false;
     cacheDirectory = path.join(os.tmpdir(), 'create-nes-game', 'cache');
-
+    arguments = [];
+    isUsingScratchpad = false;
+    command = 'help';
+    isInProjectDirectory = null;
 
     constructor() {
-        const args = process.argv.map(a => a.toLowerCase().trim());
+        const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
 
         // Since we parse all other args here, look for help and dump it out.
         if (args.indexOf('--help') !== -1 || args.indexOf('-h') !== -1) {
-            helpCommand();
-            process.exit(0);
+            this.command = 'help';
+            this.arguments = [];
+            return;
         }
 
-        this.workingDirectory = process.cwd();
-        // FIXME: Dumb
-        this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
+        // Mark debug mode early, so we can see other warnings we might hit
+        this.debugMode = (process.env.DEBUG === 'true') || (args.indexOf('--debug') !== -1 || args.indexOf('-v') !== -1 || args.indexOf('--verbose') !== -1);
+        if (this.debugMode) {
+            console.debug('[create-nes-game] [debug] Debug mode enabled');
+        }
+
+
+        // Determine if we are in a project directory, and update working dir as needed
+        this.workingDirectory = this._determineWorkingDirectory();
+        this.isInProjectDirectory = fs.existsSync(path.join(this.workingDirectory, '.create-nes-game.config.json'));
 
         // FIXME: Implement isControlledFolder
 
@@ -39,7 +52,41 @@ class AppConfiguration {
             }
         }
 
-        this.debugMode = (process.env.DEBUG === 'true') || (args.indexOf('--debug') !== -1 || args.indexOf('-v') !== -1 || args.indexOf('--verbose') !== -1);
+        if (args.indexOf('--scratchpad') !== -1) {
+            console.warn('[create-nes-game] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
+            this.isUsingScratchpad = true;
+            this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
+        }
+
+        this.arguments = args.filter(a => !a.startsWith('-'));
+        if (this.isInProjectDirectory) {
+            this.command = this.arguments[0] ?? 'help';
+        } else {
+            this.command = 'create';
+        }
+    }
+
+    _determineWorkingDirectory(dir = process.cwd(), prev = null) {
+        let wd = path.resolve(dir);
+
+        if (prev === dir) {
+            throw new Error('Hit directory root, it ain\'t here');
+        }
+
+        // Recurse upwards until we either find a .create-nes-game.config.json or have nowhere to go
+        if (fs.existsSync(path.join(wd, '.create-nes-game.config.json'))) {
+            return wd;
+        } else {
+            try {
+                wd = this._determineWorkingDirectory(path.resolve(path.join(wd, '..')), wd);
+            } catch (e) {
+                if (this.debugMode) {
+                    console.debug('[create-nes-game] [debug] Hit the end of the line trying to find parent directory.', e.toString());
+                }
+                return process.cwd();
+            }
+        }
+        return wd;
     }
 }
 

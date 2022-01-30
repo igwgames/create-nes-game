@@ -32,5 +32,10 @@
     "eta": "^1.12.3",
     "inquirer": "^8.2.0",
     "node-stream-zip": "^1.15.0"
+  },
+  "pkg": {
+    "targets": ["node14-win", "node14-linux", "node14-darwin"],
+    "assets": ["generators/ca65", "generators/cc65"],
+    "outputPath": "./dist"
   }
 }
