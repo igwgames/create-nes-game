@@ -7,6 +7,17 @@ const fs = require('fs'),
 
 async function createConfig(game, directory) {
     
+    // Make sure the emulators folder exists (it could be empty)
+    try { 
+        fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'tools', 'emulators')); 
+    } catch (e) { 
+        // If it exists we don't care, otherwise if it might be permissions, we do!
+        if (e.code !== 'EEXIST') {
+            logger.error('Failed creating a directory while installing emulator! Do you have write permissions to the folder?', e);
+            throw new Error('Failed creating a directory while installing emulator');
+        }
+    }
+    
     switch (game.installEmulator) {
         case 'mesen':
             return downloadMesen(game, directory);
