@@ -29,7 +29,7 @@ class AppConfiguration {
         // Mark debug mode early, so we can see other warnings we might hit
         this.debugMode = (process.env.DEBUG === 'true') || (args.indexOf('--debug') !== -1 || args.indexOf('-v') !== -1 || args.indexOf('--verbose') !== -1);
         if (this.debugMode) {
-            console.debug('[create-nes-game] [debug] Debug mode enabled');
+            console.debug('[' + this.binaryName + '] [debug] Debug mode enabled');
         }
 
 
@@ -53,7 +53,7 @@ class AppConfiguration {
         }
 
         if (args.indexOf('--scratchpad') !== -1) {
-            console.warn('[create-nes-game] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
+            console.warn('[' + this.binaryName + '] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
             this.isUsingScratchpad = true;
             this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
         }
@@ -81,12 +81,16 @@ class AppConfiguration {
                 wd = this._determineWorkingDirectory(path.resolve(path.join(wd, '..')), wd);
             } catch (e) {
                 if (this.debugMode) {
-                    console.debug('[create-nes-game] [debug] Hit the end of the line trying to find parent directory.', e.toString());
+                    console.debug('[' + this.binaryName + '] [debug] Hit the end of the line trying to find parent directory.', e.toString());
                 }
                 return process.cwd();
             }
         }
         return wd;
+    }
+
+    get binaryName() {
+        return 'create-nes-game';
     }
 }
 

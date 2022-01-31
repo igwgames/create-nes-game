@@ -1,8 +1,6 @@
-// Downloads the cc65/ca65 binaries, and puts them in a known location. 
-// This also gets everything else they distribute, lib files, etc etc.
+// Downloads your selected emulator, and puts it in a known location.
 const fs = require('fs'),
     path = require('path'),
-    process = require('process'),
     StreamZip = require('node-stream-zip'),
     appConfiguration = require('../../config/app-configuration'),
     downloadFile = require('../../util/download-file');
@@ -34,15 +32,18 @@ async function downloadMesen(game, directory) {
             throw new Error('Encountered an error downloading mesen binaries; cannot continue.');
         }
     } else {
-        logger.debug('Using cached cc65 zip');
+        logger.debug('Using cached mesen zip');
     }
     // Now extract it to the tools directory, shifting it around as needed
 
     try {
         fs.mkdirSync(path.join(directory, 'tools', 'emulators', 'mesen'));
     } catch (e) {
-        logger.error('Failed creating a directory while installing mesen', e);
-        throw new Error('Failed creating a directory while installing mesen');
+        // If it exists we don't care, otherwise if it might be permissions, we do!
+        if (e.code !== 'EEXIST') {
+            logger.error('Failed creating a directory while installing mesen', e);
+            throw new Error('Failed creating a directory while installing mesen');
+        }
     }
 
     logger.debug('Starting to unzip mesen to project tools directory', zipFile);
