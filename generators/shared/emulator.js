@@ -17,7 +17,7 @@ async function createConfig(game, directory) {
             throw new Error('Failed creating a directory while installing emulator');
         }
     }
-    
+
     switch (game.installEmulator) {
         case 'mesen':
             return downloadMesen(game, directory);
@@ -45,8 +45,8 @@ async function downloadMesen(game, directory) {
     } else {
         logger.debug('Using cached mesen zip');
     }
+    
     // Now extract it to the tools directory, shifting it around as needed
-
     try {
         fs.mkdirSync(path.join(directory, 'tools', 'emulators', 'mesen'));
     } catch (e) {
