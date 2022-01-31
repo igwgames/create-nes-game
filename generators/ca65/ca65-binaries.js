@@ -80,8 +80,11 @@ async function createConfig(game, directory) {
     try {
         fs.mkdirSync(path.join(directory, 'tools', 'cc65'));
     } catch (e) {
-        logger.error('Failed creating a directory while installing cc65', e);
-        throw new Error('Failed creating a directory while installing cc65');
+        // If it exists we don't care, otherwise if it might be permissions, we do!
+        if (e.code !== 'EEXIST') {
+            logger.error('Failed creating a directory while installing cc65', e);
+            throw new Error('Failed creating a directory while installing cc65');
+        }
     }
 
     logger.debug('Starting to unzip cc65 to project tools directory', zipFile);
