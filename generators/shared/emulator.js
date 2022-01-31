@@ -9,7 +9,7 @@ async function createConfig(game, directory) {
     
     // Make sure the emulators folder exists (it could be empty)
     try { 
-        fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'tools', 'emulators')); 
+        fs.mkdirSync(path.join(directory, 'tools', 'emulators')); 
     } catch (e) { 
         // If it exists we don't care, otherwise if it might be permissions, we do!
         if (e.code !== 'EEXIST') {

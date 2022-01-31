@@ -8,7 +8,8 @@
   },
   "scripts": {
     "clean-scratchpad": "rm -r ./scratchpad/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-all": "pkg --public ."
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,27 @@
     "node-stream-zip": "^1.15.0"
   },
   "pkg": {
-    "targets": ["node14-win", "node14-linux", "node14-darwin"],
-    "assets": ["generators/ca65", "generators/cc65"],
+    "targets": [
+      "node14-win",
+      "node14-linux",
+      "node14-darwin"
+    ],
+    "assets": [
+      "generators/**/*.asm",
+      "generators/**/*.cfg",
+      "generators/**/*.nam",
+      "generators/**/*.chr",
+      "generators/**/*.pal"
+    ],
+    "scripts": [
+      "generators/**/*.js",
+      "commands/**/*.js",
+      "generators/*.js",
+      "commands/*.js"
+    ],
     "outputPath": "./dist"
+  },
+  "devDependencies": {
+    "pkg": "^5.5.2"
   }
 }

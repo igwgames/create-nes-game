@@ -1,11 +1,11 @@
 // Creates graphics files used in the examples
 
-const fs = require('fs'),
+const copyFileSync = require('../../util/copy-file-sync'),
     path = require('path');
 
 function createConfig(game, directory) {
-    fs.copyFileSync(path.join(__dirname, './background.template.chr'), path.join(directory, 'graphics', 'background.chr'));
-    fs.copyFileSync(path.join(__dirname, './sprite.template.chr'), path.join(directory, 'graphics', 'sprite.chr'));
+    copyFileSync(path.join(__dirname, './background.template.chr'), path.join(directory, 'graphics', 'background.chr'));
+    copyFileSync(path.join(__dirname, './sprite.template.chr'), path.join(directory, 'graphics', 'sprite.chr'));
 }
 
 createConfig.stepName = 'chr (graphics) files';

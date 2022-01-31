@@ -42,5 +42,5 @@ these.
 
 Assembly code must be included from `source/assembly/main.asm`, using the `.include` feature of ca65.
 
-All C code in the `sourcec/` folder will automatically be compiled and included - you do not need
-to do anything besides calling functions. 
+All C code in the `source/c/` folder will automatically be compiled and included - you do not need
+to do anything.
