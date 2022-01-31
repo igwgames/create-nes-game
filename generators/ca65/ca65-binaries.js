@@ -96,7 +96,12 @@ async function createConfig(game, directory) {
     }
     logger.debug('cc65 extraction complete.');
 
-    // Okay, we done.
+    if (process.platform !== 'win32') {
+        logger.debug('Non-windows platform, need to chmod the binaries to allow execution');
+        fs.readdirSync(path.join(directory, 'tools', 'cc65', 'bin')).forEach(file => {
+            fs.chmodSync(path.join(directory, 'tools', 'cc65', 'bin', file), 0o755);
+        });
+    }
 }
 createConfig.stepName = 'cc65 binaries';
 

@@ -40,6 +40,7 @@ async function run() {
     }
 
     logger.debug('Created game record', currentGame.toString());
+    logger.info('Creating your game - this will take a moment...');
 
     const generators = [
         require('../generators/ca65/directory-structure'), 

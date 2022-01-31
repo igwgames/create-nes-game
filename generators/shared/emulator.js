@@ -68,6 +68,11 @@ async function downloadMesen(game, directory) {
     }
     logger.debug('mesen extraction complete.');
 
+    if (process.platform !== 'win32') {
+        logger.debug('Non-windows platform, need to chmod the binary');
+        fs.chmodSync(path.join(directory, 'tools', 'emulators', 'mesen', 'Mesen.exe'), 0o755);
+    }
+
     // Okay, we done.
 }
 createConfig.stepName = 'emulator binaries';
