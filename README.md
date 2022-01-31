@@ -10,7 +10,7 @@ a bunch of optional features, hit create, then build your game!
 * Can choose to create code in assembly or C
 * Interactive mapper and size choices
 * Build your rom with one command: `create-nes-game build`
-* Support for debugging C and assembly in mesen with source code
+* Out-of-the-box support for debugging C and assembly in mesen with source code
 * Optionally include rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
 * Optionally configure your game to build with CI tools like circleci
 
