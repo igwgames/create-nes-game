@@ -44,9 +44,7 @@ function getBinaryZip() {
         case 'aix':
             logger.warn('bsd and aix platforms are unsupported. Using the linux binaries and hoping for the best!');
         case 'linux':
-            // FIXME: Create this so we can create a url for it
-            throw new Error('cc65 binaries not built for linux! Contact the maintainer, they should be.');
-            return {name: 'cc65-2.19-win.zip', url: ''};
+            return {name: 'cc65-2.19-linux.zip', url: 'https://gde-files.nes.science/cc65-2.19-linux.zip'};
         case 'darwin':
             throw new Error('Project initialization failed: cc65 binaries for mac os are not currently available. If you have a working build, please get in contact!');
         case 'win32':
