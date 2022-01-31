@@ -1,8 +1,7 @@
 const path = require('path'),
     fs = require('fs'),
     os = require('os'),
-    process = require('process'),
-    helpCommand = require('../commands/help');
+    process = require('process');
 
 // This ends up grabbing all configuration from the cli, including commands
 // Perhaps not the clearest thing ever written, apologies if this trips you up.
@@ -15,6 +14,7 @@ class AppConfiguration {
     isUsingScratchpad = false;
     command = 'help';
     isInProjectDirectory = null;
+    allowColors = true;
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
@@ -56,6 +56,11 @@ class AppConfiguration {
             console.warn('[' + this.binaryName + '] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
             this.isUsingScratchpad = true;
             this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
+        }
+
+        if (args.indexOf('--no-colors') !== -1) {
+            console.info('disabled');
+            this.allowColors = false;
         }
 
         this.arguments = args.filter(a => !a.startsWith('-'));

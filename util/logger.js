@@ -11,6 +11,9 @@ const colors = {
     gray: "\u001b[38;5;244m"
 };
 
+// Kill colors if requested
+if (!AppConfiguration.allowColors) { Object.keys(colors).forEach(key => colors[key] = ''); }
+
 const levelColors = {
     debug: colors.deepBlue,
     trace: colors.deepBlue,
