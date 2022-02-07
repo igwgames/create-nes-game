@@ -59,7 +59,6 @@ class AppConfiguration {
         }
 
         if (args.indexOf('--no-colors') !== -1) {
-            console.info('disabled');
             this.allowColors = false;
         }
 
