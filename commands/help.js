@@ -12,7 +12,7 @@ Available subcommands:
 
   create - Create a new game. Automatically called if not in ${appConfiguration.binaryName} project folder.
   build - Build the game in this directory
-  install - Install any needed tools to build and run your game (Use this after cloning from git)
+  download-dependencies - Install any needed tools to build and run your game (Use this after cloning from git)
   run - Run the configured emulator with your game
   clean - Remove all temporary files and roms created by the tool
 

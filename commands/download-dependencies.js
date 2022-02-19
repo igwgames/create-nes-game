@@ -6,7 +6,7 @@ const appConfiguration = require('../config/app-configuration'),
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
 
-    logger.info('Installing tools to compile and play:', game.name);
+    logger.info('Downloading and configuring tools to compile and play:', game.name);
 
     // Make sure the tools folder exists at all. It could not, ya know.
     try { 

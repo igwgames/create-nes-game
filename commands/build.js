@@ -10,8 +10,8 @@ async function run() {
     const ca65Bin = process.platform === 'win32' ? 'ca65.exe' : 'ca65';
 
     if (!fs.existsSync(path.join(appConfiguration.workingDirectory, 'tools', 'cc65', 'bin', ca65Bin))) {
-        logger.error(`Build tools (cc65 suite) not found. You may need to run \`${appConfiguration.binaryName} install\``);
-        throw new Error(`Build tools (cc65 suite) not found. You may need to run \`${appConfiguration.binaryName} install\``);
+        logger.error(`Build tools (cc65 suite) not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
+        throw new Error(`Build tools (cc65 suite) not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
     }
 
 

@@ -23,8 +23,8 @@ async function run() {
     }
 
     if (!fs.existsSync(execFile)) {
-        logger.error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} install\``);
-        throw new Error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} install\``);
+        logger.error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
+        throw new Error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
     }
 
     const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
