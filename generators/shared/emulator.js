@@ -22,7 +22,9 @@ async function createConfig(game, directory) {
         case 'mesen':
             return downloadMesen(game, directory);
         // FIXME: Implement fceux download
-        // FIXME: handle "system" - most likely skip
+        case 'system default':
+            // Nothing to do here, just use the system default
+            return;
         default:
             throw new Error('Do not know how to install emulator: ' + game.installEmulator);
     }
