@@ -21,7 +21,8 @@ async function createConfig(game, directory) {
     switch (game.installEmulator) {
         case 'mesen':
             return downloadMesen(game, directory);
-        // FIXME: Implement fceux download
+        case 'fceux':
+            return downloadFceux(game, directory);
         case 'system default':
             // Nothing to do here, just use the system default
             return;
@@ -33,13 +34,12 @@ async function createConfig(game, directory) {
 async function downloadMesen(game, directory) {
 
     // First download the zip to a known location on disk.
-    const zipInfo = {name: 'Mesen.0.9.9.zip', url: 'https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip'}
-    ;
-    const zipFile = path.join(appConfiguration.cacheDirectory, zipInfo.name);
+    const mesenInfo = {name: 'Mesen.0.9.9.zip', url: 'https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip'};
+    const zipFile = path.join(appConfiguration.cacheDirectory, mesenInfo.name);
     if (!fs.existsSync(zipFile)) {
-        logger.debug('Downloading mesen from', zipInfo);
+        logger.debug('Downloading mesen from', mesenInfo);
         try {
-            await downloadFile(zipInfo.url, zipFile);
+            await downloadFile(mesenInfo.url, zipFile);
         } catch (e) {
             logger.error('Encountered an error downloading mesen binaries; cannot continue.', e);
             throw new Error('Encountered an error downloading mesen binaries; cannot continue.');
@@ -77,6 +77,9 @@ async function downloadMesen(game, directory) {
 
     // Okay, we done.
 }
+
+
+
 createConfig.stepName = 'emulator binaries';
 
 module.exports = createConfig;
