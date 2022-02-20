@@ -21,8 +21,6 @@ async function createConfig(game, directory) {
     switch (game.installEmulator) {
         case 'mesen':
             return downloadMesen(game, directory);
-        case 'fceux':
-            return downloadFceux(game, directory);
         case 'system default':
             // Nothing to do here, just use the system default
             return;
