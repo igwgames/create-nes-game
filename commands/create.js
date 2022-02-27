@@ -65,6 +65,23 @@ async function run() {
         logger.debug('Starting step:', generators[i].stepName);
         await generators[i](currentGame, gamePath);
     }
+
+    await require('./install-system-dependencies')();
+
+    if (!appConfiguration.isInstalled) {
+        logger.info(`${appConfiguration.binaryName} isn't installed globally.`);
+        logger.info(`If you would like to be able to run ${appConfiguration.binaryName} in any folder, you can install it with `)
+        logger.info(`  \`${os.platform() === 'win32' ? '' : 'sudo '}./create-nes-game install\``)
+    }
+
+    logger.info(`Success! Your game has been created in ${currentGame.name}/
+Switch into that directory, and you can run the following useful commands: 
+
+- ${appConfiguration.binaryName} build - Build your game
+- ${appConfiguration.binaryName} test  - Run the tests for your game
+- ${appConfiguration.binaryName} run   - Play your game!
+`);
+
 }
 
 module.exports = {run};

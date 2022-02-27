@@ -70,6 +70,7 @@ class AppConfiguration {
             if (this.arguments[0] && this.arguments[0] === 'install') {
                 this.command = 'install';
             } else {
+                console.info('[' + this.binaryName + '] [warn] Command ' + this.arguments[0] + ' ignored, not in a game directory.');
                 this.command = 'create';
             }
         }

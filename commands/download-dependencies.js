@@ -19,6 +19,8 @@ async function run() {
         }
     }
 
+    await require('./install-system-dependencies').run();
+
     const generators = [
         require('../generators/ca65/ca65-binaries'),
         require('../generators/shared/emulator')
