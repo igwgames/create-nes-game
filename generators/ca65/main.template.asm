@@ -8,6 +8,9 @@
 ; Note: Much of this was lifted and adapted from the nerdy nights tutorials
 ; https://nerdy-nights.nes.science
 
+; System defines for various registers on the console
+.include "./system-defines.asm"
+
 ;
 ; iNES header
 ; 
@@ -95,19 +98,19 @@
 	reset:
 		sei       ; mask interrupts
 		lda #0
-		sta $2000 ; disable NMI
-		sta $2001 ; disable rendering
-		sta $4015 ; disable APU sound
-		sta $4010 ; disable DMC IRQ
+		sta PPU_CTRL    ; disable NMI
+		sta PPU_MASK    ; disable rendering
+		sta APU_STATUS  ; disable APU sound
+		sta APU_DMC_IRQ ; disable DMC IRQ
 		lda #$40
-		sta $4017 ; disable APU IRQ
-		cld       ; disable decimal mode
+		sta APU_FRAME_COUNTER ; disable APU IRQ
+		cld                   ; disable decimal mode
 		ldx #$FF
 		txs       ; initialize stack
 		; wait for first vblank
-		bit $2002
+		bit PPU_STATUS
 		:
-			bit $2002
+			bit PPU_STATUS
 			bpl :-
 		; clear all RAM to 0
 		lda #0
@@ -135,12 +138,12 @@
 			bne :-
 		; wait for second vblank
 		:
-			bit $2002
+			bit PPU_STATUS
 			bpl :-
 		; NES is initialized, ready to begin!
 		; enable the NMI for graphical updates, and jump to our main program
 		lda #%10001000
-		sta $2000
+		sta PPU_CTRL
 		jmp main
 
 
@@ -148,27 +151,27 @@
 	main:
 
 		; First let's clear the nametables 
-		lda $2002   ; reset PPU status
+		lda PPU_STATUS   ; reset PPU status
 		lda #$20
-		sta $2006
+		sta PPU_ADDR
 		lda #$00
-		sta $2006
+		sta PPU_ADDR
 		ldx #$08
 		ldy #$00
 		lda #$24    ; clear background tile
 		@nametableWriteLoop:
-			sta $2007
+			sta PPU_DATA
 			dey 
 			bne @nametableWriteLoop
 			dex 
 			bne @nametableWriteLoop
 
 		; Next we'll write palettes from the palette we define below
-		lda $2002
+		lda PPU_STATUS
 		lda #$3f
-		sta $2006
+		sta PPU_ADDR
 		lda #$00
-		sta $2006
+		sta PPU_ADDR
 		ldx #$00
 		@loadPalettesLoop:
 			lda palette,X   ; load data from adddress (palette + X)
@@ -176,18 +179,18 @@
 								; 2nd time through loop it will load palette+1
 								; 3rd time through loop it will load palette+2
 								; etc
-			sta $2007
+			sta PPU_DATA
 			inx 
 			cpx #$20
 			bne @loadPalettesLoop
 
 					
 	; Use nested loops to load the background efficiently
-		lda $2002               ; read PPU status to reset the high/low latch
+		lda PPU_STATUS          ; read PPU status to reset the high/low latch
 		lda #$20
-		sta $2006               ; write high byte of $2000 address
+		sta PPU_ADDR            ; write high byte of $2000 address
 		lda #$00
-		sta $2006               ; write low byte of $2000 address
+		sta PPU_ADDR            ; write low byte of $2000 address
 
 		lda #<background 
 		sta backgroundPointerLo ; put the low byte of address of background into pointer
@@ -200,7 +203,7 @@
 
 			@insideLoop:
 				lda (backgroundPointerLo),Y       ; copy one background byte from address in pointer + Y
-				sta $2007               ; runs 256*4 times
+				sta PPU_DATA            ; runs 256*4 times
 
 				iny                     ; inside loop counter
 				cpy #$00                
@@ -214,9 +217,9 @@
 
 		cli             ; Re-enable interrupts
 		lda #%10001000  ; enable NMI, sprites from pattern table 1, background from 0
-		sta $2000
+		sta PPU_CTRL
 		lda #%00011110  ; background and sprites enable, no left clipping
-		sta $2001
+		sta PPU_MASK
 
 		; After getting through the drawing, just run an infinite loop. 
 		@forever:
@@ -239,7 +242,7 @@
 
 		; Tell the ppu to draw sprites from $0200 to the screen
 		lda #$02
-		sta $4014
+		sta OAM_DMA
 
 		inc nmiFrameCount
 

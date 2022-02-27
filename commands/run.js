@@ -10,6 +10,11 @@ async function run() {
 
     const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
 
+    if (!fs.existsSync(romPath)) {
+        logger.error('Rom not available! Try building it first with create-nes-game build!');
+        process.exit(1);
+    }
+
     logger.debug('Finding an emulator to run this game...');
     let execFile = ''
     let execArgs = [romPath];

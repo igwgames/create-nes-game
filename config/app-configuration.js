@@ -1,7 +1,8 @@
 const path = require('path'),
     fs = require('fs'),
     os = require('os'),
-    process = require('process');
+    process = require('process'),
+    findExecutable = require('../util/find-executable');
 
 // This ends up grabbing all configuration from the cli, including commands
 // Perhaps not the clearest thing ever written, apologies if this trips you up.
@@ -95,6 +96,10 @@ class AppConfiguration {
 
     get binaryName() {
         return 'create-nes-game';
+    }
+
+    get isInstalled() {
+        return !!findExecutable('create-nes-game');
     }
 }
 

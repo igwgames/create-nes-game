@@ -1,4 +1,8 @@
 const mappers = require('../data/mappers');
+const colors = {
+    reset: "\x1b[0m",
+    blue: "\x1b[36m",
+};
 
 const allQuestions = [
 
@@ -16,51 +20,11 @@ const allQuestions = [
         }
     },
     {
-        // TODO: Implement this, requested feature.
-        // See: http://pineight.com/nes/mapperwizard.html
-        // See also: https://wiki.nesdev.org/w/index.php/Comparison_of_Nintendo_mappers
-        // It might be better to create a quick-n-dirty web version
-        question: 'Have you already decided on a mapper?',
-        type: 'choice',
-        possibleValues: ['yes', 'no'],
-        defaultValue: 'no',
-        showIf: () => false,
-        onSubmit: (game, userValue) => {
-            game._useMapperPicker = userValue === 'yes';
-            return true;
-        }
-    },
-    {
-        question: 'Which features would you like?',
-        type: 'checklist',
-        possibleValues: [
-            'beginner friendly',
-            'rom > 32k',
-            'rom > 256k',
-            'chr Rom',
-            'chr Ram',
-            'multiple chr Banks',
-            'software mirroring',
-            'prg ram',
-            '32k prg ram',
-            'small chr banks',
-            'small prg banks',
-            'single screen mirror'
-        ],
-        defaultValue: ['beginner friendly'],
-        showIf: (game) => game._useMapperPicker,
-        onSubmit: (game, userValue) => {
-            // TODO: Create smart implementation map
-            game._suggestedMapper = 'nrom';
-            return true;
-        }
-    },
-    {
-        question: 'What mapper should the rom use?',
+        question: `What mapper should the rom use?\nnrom is by far the simplest. Use ${colors.blue}https://mapper.nes.science${colors.reset} to compare\n`,
         type: 'choice', 
         possibleValues: Object.keys(mappers),
         defaultValue: 'nrom',
-        showIf: (game) => !game._useMapperPicker,
+        showIf: () => true,
         onSubmit: (game, userValue) => {
             game.mapper = userValue;
             return true;
