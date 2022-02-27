@@ -67,7 +67,11 @@ class AppConfiguration {
         if (this.isInProjectDirectory) {
             this.command = this.arguments[0] ?? 'help';
         } else {
-            this.command = 'create';
+            if (this.arguments[0] && this.arguments[0] === 'install') {
+                this.command = 'install';
+            } else {
+                this.command = 'create';
+            }
         }
     }
 
