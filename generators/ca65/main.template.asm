@@ -56,6 +56,8 @@
 ; 
 ; This is a section of "special" variables that can be accessed faster than the rest, because they are in the first "page" of
 ; memory. It can have up to 256 bytes worth of variables in it. They otherwise work the same as all other variables.
+;
+
 .segment "ZEROPAGE"
 	backgroundPointerLo: .res 1    ; pointer variables declared in RAM
 	backgroundPointerHi: .res 1    ; low byte first, high byte immediately after
@@ -67,6 +69,7 @@
 ; 
 ; This is the sprite memory for your game. IT is used for "hardware" sprites (you might create more information for your)
 ; sprites elsewhere. Don't add anything here.
+
 .segment "OAM"
 	oam: .res 256        ; sprite OAM data to be uploaded by DMA
 
@@ -74,6 +77,7 @@
 ; BSS variables
 ; 
 ; This is the "rest" of the memory for your game. There are about 1500 bytes available in total.
+
 .segment "BSS"
 ; yourvariable: .res 8
 
@@ -94,6 +98,7 @@
 	; This is used to reset the NES (and sometimes memory on your cartridge) to a known state, so the game
 	; can play consistently. Don't change this unless you know what you're doing!
 	; Note: It should be the first thing written to the CODE segment, so it's always the first thing the console runs!
+	;
 
 	reset:
 		sei       ; mask interrupts
@@ -147,7 +152,13 @@
 		jmp main
 
 
-	; Main entrypoint, this is where most of your code goes
+	;
+	; Main entrypoint
+	; 
+	; This is the "start" of your game. It is the very first thing that is run after power on.
+	; You'll often want to put a logic loop here, or something like that.
+	; 
+
 	main:
 
 		; First let's clear the nametables 
@@ -166,7 +177,8 @@
 			dex 
 			bne @nametableWriteLoop
 
-		; Next we'll write palettes from the palette we define below
+		; Next we'll write palettes that we define later on in the file. This will write
+		; both the nametable and sprite palettes.
 		lda PPU_STATUS
 		lda #$3f
 		sta PPU_ADDR
@@ -185,7 +197,7 @@
 			bne @loadPalettesLoop
 
 					
-	; Use nested loops to load the background efficiently
+		; Use nested loops to load the background efficiently
 		lda PPU_STATUS          ; read PPU status to reset the high/low latch
 		lda #$20
 		sta PPU_ADDR            ; write high byte of $2000 address
@@ -215,20 +227,21 @@
 			cpx #$04                ; needs to happen $04 times, to copy 1KB data
 			bne @outsideLoop         
 
+		; Re-enable everything to show the graphics again.
 		cli             ; Re-enable interrupts
 		lda #%10001000  ; enable NMI, sprites from pattern table 1, background from 0
 		sta PPU_CTRL
 		lda #%00011110  ; background and sprites enable, no left clipping
 		sta PPU_MASK
 
-		; After getting through the drawing, just run an infinite loop. 
+		; After getting through the drawing, just run an infinite loop. Effectively crashes the game on the new screen.
 		@forever:
 			jmp @forever 
 
 	;
 	; NMI Handler
 	; 
-	; This will run once every frame, and give you a chance to update graphics. Keep it lean!
+	; This will run once every frame, and give you a chance to update graphics. Keep it short!
 	;
 
 	nmi:
@@ -244,9 +257,10 @@
 		lda #$02
 		sta OAM_DMA
 
+		; Keep track of how many frames have run (note: this loops over to 0 after 255.)
 		inc nmiFrameCount
 
-		; Restore all registers
+		; Restore all registers from the stack
 		pla
 		tay
 		pla
@@ -256,7 +270,12 @@
 		rti ; Return from interrupt 
 
 
-	; Helper function: Wait until the frame count is incremented by the nmi method
+	; 
+	; Helper function: Wait for a vblank to happen
+	; 
+	; Waits until the frame count is incremented by the nmi method
+	; 
+
 	vblankwait:
 		lda nmiFrameCount
 		sta vblankPreviousFrame
@@ -265,8 +284,10 @@
 			cmp nmiFrameCount
 			beq @vblank_wait
 		rts
-	
-	; Empty irq handler, since we do not use them
+	;
+	; IRQ Handler
+	;
+	; Empty - we don't need to use them, but a handler must be present.
 	irq:
 		rti
 
@@ -277,7 +298,6 @@
 	;
 
 	; Include the nametable data as a binary file
-	; FIXME: Would it be clearer to include this as text, or in a .asm file?
 	background:
 		.incbin "../../graphics/example.nam"
 	
@@ -285,5 +305,5 @@
 	palette:
 		; Foreground first
 		.incbin "../../graphics/example.pal"
-		; Next, background. We can just use the same ones again
+		; Next, background. We don't have two palettes created, so repeat the same palette for now
 		.incbin "../../graphics/example.pal"

@@ -9,7 +9,10 @@
   "scripts": {
     "clean-scratchpad": "rm -r ./scratchpad/*",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-all": "pkg --public ."
+    "pkg": "pkg --public . ",
+    "build-all": "npm run pkg && npm run package-win && npm run package-linux",
+    "package-win": "mv ./dist/create-nes-game-win.exe ./dist/create-nes-game.exe && cd dist && zip create-nes-game.zip create-nes-game.exe",
+    "package-linux": "cd dist && tar --transform=\"flags=r;s|create-nes-game-linux|create-nes-game|\" --file=\"create-nes-game.tar.gz\" --mode=\"a+rwx\" -cvz ./create-nes-game-linux"
   },
   "repository": {
     "type": "git",

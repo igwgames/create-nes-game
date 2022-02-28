@@ -66,7 +66,7 @@ async function run() {
         await generators[i](currentGame, gamePath);
     }
 
-    await require('./install-system-dependencies')();
+    await require('./install-system-dependencies').run();
 
     if (!appConfiguration.isInstalled) {
         logger.info(`${appConfiguration.binaryName} isn't installed globally.`);

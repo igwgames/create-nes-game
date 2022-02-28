@@ -39,6 +39,7 @@ async function run() {
             }
 
             try {
+                logger.info('Installing dependencies - this may take up 5-10 minutes, please be patient.');
                 await spawnAndWait('apt-get', 'sudo', null, ['apt-get', 'install', '-y', 'mono-complete', 'libsdl2-2.0', 'gnome-themes-standard']);
                 logger.info('Successfully installed dependencies');
             } catch (e) {
