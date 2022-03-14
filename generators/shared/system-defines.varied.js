@@ -90,11 +90,20 @@ function getCString() {
 //
 
 ${Object.keys(allDefines[defineGroup]).map(name => {
-    return '#define ' + name + ' 0x' + allDefines[defineGroup][name].toString(16) + '\n';
-})}
+    return '#define ' + name + ' 0x' + allDefines[defineGroup][name].toString(16);
+}).join('\n')}
 `
     
-    });
+    }).join('\n') + `
+// 
+// Shortcuts 
+// These are shortcuts to writing and reading raw registers on the NES. This seems a little bit
+// easier to read as a newbie. You could also replace a lot of these with a library. Enabling 
+// neslib for example should remove most/all usage of this.
+//
+#define WRITE_REGISTER(name, val) ((*(unsigned char*)name) = val);
+#define READ_REGISTER(name) (*(unsigned char*)name);
+    `;
 }
 
 function createConfig(game, directory) {

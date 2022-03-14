@@ -14,31 +14,38 @@ async function run() {
 }
 
 async function linkCa65(game) {
+    return doLink(game);
+}
+
+async function linkCc65(game) {
+    // Need to add the nes library files from cc65 to do some default stuff
+    const wd = appConfiguration.workingDirectory;
+    return doLink(game, [path.join(wd, 'tools', 'cc65', 'lib', 'nes.lib')]);
+}
+
+async function doLink(game, additionalOFiles = []) {
     const wd = appConfiguration.workingDirectory;
 
     // Make sure the tmp and rom directories exists if it didn't already
     try { fs.mkdirSync(path.join(wd, 'rom')); } catch (e) { /* Exists, probably don't care */ }
 
-    // First assemble all the, uh, assembly.
+    // Find all of the object files to combine
     const ld65 = path.join(wd, 'tools', 'cc65', 'bin', 'ld65');
 
     // Let's make a rom!
-    const oFiles = fs.readdirSync(path.join(wd, 'temp')).filter(s => s.endsWith('.o'))
+    const oFiles = [
+        ...fs.readdirSync(path.join(wd, 'temp')).filter(s => s.endsWith('.o')).map(f => path.join(wd, 'temp', f)),
+        ...additionalOFiles,
+    ];
 
     await spawnAndWait('ld65', ld65, 'temp/*.o', [
         '-o', path.join(wd, 'rom', game.romName),
         '-C', path.join(wd, 'config', 'ca65.cfg'),
+        ...oFiles,
         '--dbgfile', path.join(wd, 'rom', game.romName.replace('.nes', '.dbg')),
-        ...oFiles.map(f => path.join(wd, 'temp', f))
     ]);
 
     logger.info('Game built successfully:', path.join('rom', game.romName));
-
-}
-
-// NOTE: This might very well be the same across both! Combine these together if it makes sense.
-async function linkCc65(game) {
-    throw new Error('cc65 support has not yet been written');
 }
 
 module.exports = {run};

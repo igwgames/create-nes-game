@@ -4,7 +4,8 @@ const questions = require('../creation-wizard/questions'),
     BaseGameConfigurationFields = BaseGameConfiguration.BaseGameConfigurationFields,
     inquirer = require('inquirer'),
     path = require('path'),
-    fs = require('fs');
+    fs = require('fs'),
+    os = require('os');
 
 async function run() {
 
@@ -55,7 +56,8 @@ async function run() {
     ];
 
     if (currentGame.includeC) {
-        // FIXME: Uh, yeah. things.
+        generators.push(require('../generators/cc65/system-runtime.asm'));
+        generators.push(require('../generators/cc65/main.c'));
     } else {
         generators.push(require('../generators/ca65/main.asm'));
     }
