@@ -101,8 +101,8 @@ ${Object.keys(allDefines[defineGroup]).map(name => {
 // easier to read as a newbie. You could also replace a lot of these with a library. Enabling 
 // neslib for example should remove most/all usage of this.
 //
-#define WRITE_REGISTER(name, val) ((*(unsigned char*)name) = val);
-#define READ_REGISTER(name) (*(unsigned char*)name);
+#define write_register(name, val) ((*(unsigned char*)name) = val);
+#define read_register(name) (*(unsigned char*)name);
     `;
 }
 
