@@ -36,6 +36,7 @@
 ;
 
 .export _init, _exit,__STARTUP__:absolute=1
+.export _junk
 .import initlib,push0,popa,popax,_main,zerobss,copydata
 .import __RAM_START__   ,__RAM_SIZE__
 .import __ROM0_START__  ,__ROM0_SIZE__
@@ -77,7 +78,7 @@
 .segment "ZEROPAGE"
 	nmiFrameCount: .res 1          ; 256 byte counter, will increment every time nmi is called. Used to wait for vblank
 	vblankPreviousFrame: .res 1    ; Used to track when we started waiting for vblank
-
+	_junk: .res 1                  ; Used to make register writes not get optimized away. Kinda silly
 ;
 ; OAM Memory
 ; 

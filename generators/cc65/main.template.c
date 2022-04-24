@@ -7,7 +7,7 @@
 
 //
 // Global Variables (zeropage) 
-// Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!.
+// Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
 //
 #pragma bss-name(push, "ZEROPAGE")
     unsigned char i;
@@ -26,6 +26,14 @@
 //
 const unsigned char welcomeMessage[] = "Make something unique!";
 
+// Color palette for the screen to use
+const unsigned char palette[] = { 
+    0x0f, 0x00, 0x10, 0x13, 
+    0x0f, 0x01, 0x21, 0x31,
+    0x0f, 0x06, 0x16, 0x26,
+    0x0f, 0x09, 0x19, 0x29
+};
+
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -34,23 +42,38 @@ const unsigned char welcomeMessage[] = "Make something unique!";
 // 
 void main(void) {
     // Turn off the screen
-    WRITE_REGISTER(PPU_CTRL, 0x00);
+    write_register(PPU_MASK, 0x00);
 
     // Read ppu status to reset the system
-    READ_REGISTER(PPU_ADDR);
+    read_register(PPU_STATUS);
 
-    // Write the address $2064 to the screen, we we can start drawing text
-    WRITE_REGISTER(PPU_ADDR, 0x20);
-    WRITE_REGISTER(PPU_ADDR, 0x64);
+    // Set the address of the ppu to $3f00 to set the background palette
+    write_register(PPU_ADDR, 0x3f);
+    write_register(PPU_ADDR, 0x00);
+
+    // Write the background palette, byte-by-byte.
+    for (i = 0; i != 16; ++i) {
+        write_register(PPU_DATA, palette[i]);
+    }
+
+    // Write the address $2064 to the ppu, where we can start drawing text on the screen
+    write_register(PPU_ADDR, 0x20);
+    write_register(PPU_ADDR, 0x64);
 
     i = 0;
     while (welcomeMessage[i]) {
-        WRITE_REGISTER(PPU_DATA, welcomeMessage[i]);
+        // Add 0x60 to the ascii value of each character, to get it to line up with where the ascii table is in our chr file
+        write_register(PPU_DATA, welcomeMessage[i] + 0x80);
         ++i;
     }
 
+    // Set the scroll to 0,0
+    write_register(PPU_SCROLL, 0);
+    write_register(PPU_SCROLL, 0);
+
+
     // Turn the screen back on
-    WRITE_REGISTER(PPU_CTRL, 0x1e);
+    write_register(PPU_MASK, 0x1e);
 
     // Infinite loop to end things
     while (1) {}

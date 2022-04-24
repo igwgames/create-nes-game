@@ -95,14 +95,25 @@ ${Object.keys(allDefines[defineGroup]).map(name => {
 `
     
     }).join('\n') + `
+//
+// Internal use variables
+// Some variables used by the engine. You probably don't need to understand these. Just skip
+// over them unless you know what you're doing!
+
+// Used in "read_register" below, to make sure the call isn't optimized away. If you avoid calling
+// read_register entirely, you can get rid of this. (It's defined in system-runtime.asm)
+
+extern volatile unsigned char junk;
+#pragma zpsym ("junk")
+
 // 
 // Shortcuts 
 // These are shortcuts to writing and reading raw registers on the NES. This seems a little bit
 // easier to read as a newbie. You could also replace a lot of these with a library. Enabling 
 // neslib for example should remove most/all usage of this.
 //
-#define write_register(name, val) ((*(unsigned char*)name) = val);
-#define read_register(name) (*(unsigned char*)name);
+#define write_register(name, val) ((*(unsigned char*)name) = val)
+#define read_register(name) junk = (*(unsigned char*)name)
     `;
 }
 

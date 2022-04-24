@@ -38,6 +38,7 @@ function getBinaryZip() {
 
     // NOTE: If re-hosting these zips gets expensive, we could probably create a github project that literally just hosts the releases of these. Maybe
     // with a nice build script for the linux version. Or maybe build both, give another source. Options, options.
+    // TODO: Convert linux to building the script automatically. Don't forget to make sure `make` and `build-essential` (etc, etc) are installed first
     switch (process.platform) {
         case 'freebsd':
         case 'openbsd':
