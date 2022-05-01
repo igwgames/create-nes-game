@@ -9,8 +9,22 @@ async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
 
     // Make sure all required directories exist, if they didn't already
-    try { fs.mkdirSync(path.join(wd, 'temp')); } catch (e) { /* Exists, probably don't care */ }
-    try { fs.mkdirSync(path.join(wd, 'rom')); } catch (e) { /* Exists, probably don't care */ }
+    try {
+        fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'temp')); 
+    } catch (e) {
+        if (e.code !== 'EEXIST') {
+            logger.error('Failed creating a directory while compiling! Do you have write permissions to the folder?', e);
+            throw new Error('Failed creating a directory while compiling');
+        }
+    }
+    try { 
+        fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'rom')); 
+    } catch (e) {
+        if (e.code !== 'EEXIST') {
+            logger.error('Failed creating a directory while compiling! Do you have write permissions to the folder?', e);
+            throw new Error('Failed creating a directory while compiling');
+        }
+    }
 
     // Only c games actually compile
     if (!game.includeC) { 
@@ -29,12 +43,23 @@ async function compileCc65(game) {
     const allC = recursiveReaddirSync(path.join(wd, 'source', 'c'));
     
     await Promise.all(allC.map(file => {
+        // Could be quite a recursive directory path, make sure to create it.
+        const outFile = outputFilePath(file);
+        try {
+            fs.mkdirSync(path.dirname(outFile));
+        } catch (e) {
+            if (e.code !== 'EEXIST') {
+                logger.error('Failed creating a directory while compiling! Do you have write permissions to the folder?', e);
+                throw new Error('Failed creating a directory while compiling');
+            }    
+        }
+
         return spawnAndWait('cc65', cc65, path.relative(wd, file), [
             '-I', '.',
             '-Oi', file,
             '--add-source',
             '--include-dir', './tools/cc65/include',
-            '-o', outputFilePath(file),
+            '-o', outFile,
             '--debug-info'
         ])
     }))

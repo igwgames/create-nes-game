@@ -30,16 +30,19 @@ async function run() {
             logger.warn(' - mono-complete');
             logger.warn(' - libsdl2-2.0');
             logger.warn(' - gnome-themes-standard');
-            const shouldInstall = await inquirer.prompt([{
-                type: 'confirm', 
-                name: 'v', 
-                message: `Would you like to try to automatically install them with apt? (Will require your sudo password)`, 
-                default: false
-            }]);
 
-            if (!shouldInstall.v) {
-                logger.debug('User aborted install');
-                return; 
+            if (!appConfiguration.assumeYes) {
+                const shouldInstall = await inquirer.prompt([{
+                    type: 'confirm', 
+                    name: 'v', 
+                    message: `Would you like to try to automatically install them with apt? (Will require your sudo password)`, 
+                    default: false
+                }]);
+
+                if (!shouldInstall.v) {
+                    logger.debug('User aborted install');
+                    return; 
+                }
             }
 
             try {

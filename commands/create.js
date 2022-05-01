@@ -52,7 +52,8 @@ async function run() {
         require('../generators/ca65/chr-files'),
         require('../generators/ca65/nam-files'),
         require('../generators/shared/system-defines.varied'),
-        require('../generators/shared/emulator')
+        require('../generators/shared/emulator'),
+        require('../generators/ci-providers/ci-config')
     ];
 
     if (currentGame.includeC) {

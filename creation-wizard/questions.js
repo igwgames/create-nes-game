@@ -98,7 +98,7 @@ const allQuestions = [
         type: 'choice',
         possibleValues: ['none', 'circleci'],
         defaultValue: 'none',
-        showIf: (game) => false,
+        showIf: (game) => true,
         onSubmit: (game, userValue) => {
             game.ciProvider = userValue;
             return true;

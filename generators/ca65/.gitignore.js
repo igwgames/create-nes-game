@@ -6,6 +6,7 @@ function createConfig(game, directory) {
     let gitignore = `
 tools/cc65
 tools/emulators
+tools/nes-test
 temp
 nes.sh
 nes.bat

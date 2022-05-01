@@ -59,6 +59,11 @@ async function createConfig(game, directory) {
         logger.error('Could not copy nes-test binary - something is wrong.', e);
         throw new Error('Unable to copy nes-test bin');
     }
+
+    if (process.platform !== 'win32') {
+        logger.debug('Non-windows platform, need to chmod the binary');
+        fs.chmodSync(path.join(directory, 'tools', 'nes-test', 'nes-test'), 0o755);
+    }
     
 }
 

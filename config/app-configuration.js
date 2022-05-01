@@ -16,6 +16,7 @@ class AppConfiguration {
     command = 'help';
     isInProjectDirectory = null;
     allowColors = true;
+    assumeYes = false;
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
@@ -61,6 +62,10 @@ class AppConfiguration {
 
         if (args.indexOf('--no-colors') !== -1) {
             this.allowColors = false;
+        }
+
+        if (args.indexOf ('--assume-yes') !== -1 || args.indexOf('-y') !== -1) {
+            this.assumeYes = true;
         }
 
         this.arguments = args.filter(a => !a.startsWith('-'));
