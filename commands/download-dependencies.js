@@ -25,6 +25,9 @@ async function run() {
         require('../generators/ca65/ca65-binaries'),
         require('../generators/shared/emulator')
     ];
+    if (game.testProvider === 'nes-test') {
+        generators.push(require('../generators/nes-test/nes-test-binary'));
+    }
 
 
     for (let i = 0; i < generators.length; i++) {

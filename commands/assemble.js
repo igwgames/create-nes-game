@@ -44,8 +44,8 @@ async function assembleFiles(game, filesToCompile) {
         return spawnAndWait('ca65', ca65, path.relative(wd, file), [
             '-I', '.',
             '-o', outputFilePath(file),
-            '--debug-info',
-            file
+            file,
+            '--debug-info'
         ]);
     }));
 }

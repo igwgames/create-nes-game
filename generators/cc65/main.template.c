@@ -19,6 +19,9 @@
 //
 // EXAMPLE: 
 // unsigned char myBigBufferArray[32];
+<% if (it.game.testProvider !== 'none') { %>
+unsigned char testVariable;
+<% } %>
 
 //
 // Constant variables
@@ -74,6 +77,11 @@ void main(void) {
 
     // Turn the screen back on
     write_register(PPU_MASK, 0x1e);
+
+    <% if (it.game.testProvider !== 'none') { %>
+    // Update variable used in unit tests
+    testVariable = 1;
+    <% } %>
 
     // Infinite loop to end things
     while (1) {}

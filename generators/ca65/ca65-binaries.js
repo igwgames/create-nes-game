@@ -130,14 +130,6 @@ async function createConfig(game, directory) {
         await spawnAndWait(`cp ${binPath}/cc65-2.19 ${extractDir}`, 'cp', null, ['-r', `${binPath}/cc65-2.19/.`, extractDir]);
         logger.debug('cc65 build and copy complete.');
     }
-
-    /*
-    if (process.platform !== 'win32') {
-        logger.debug('Non-windows platform, need to chmod the binaries to allow execution');
-        fs.readdirSync(path.join(directory, 'tools', 'cc65', 'bin')).forEach(file => {
-            fs.chmodSync(path.join(directory, 'tools', 'cc65', 'bin', file), 0o755);
-        });
-    }*/
 }
 createConfig.stepName = 'cc65 binaries';
 

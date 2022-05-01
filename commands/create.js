@@ -62,6 +62,11 @@ async function run() {
         generators.push(require('../generators/ca65/main.asm'));
     }
 
+    if (currentGame.testProvider === 'nes-test') {
+        generators.push(require('../generators/nes-test/nes-test-binary'));
+        generators.push(require('../generators/nes-test/sample-test'));
+    }
+
     const gamePath = path.join(appConfiguration.workingDirectory, currentGame.name);
     for (let i = 0; i < generators.length; i++) {
         logger.debug('Starting step:', generators[i].stepName);

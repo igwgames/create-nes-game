@@ -30,10 +30,12 @@ async function compileCc65(game) {
     
     await Promise.all(allC.map(file => {
         return spawnAndWait('cc65', cc65, path.relative(wd, file), [
+            '-I', '.',
             '-Oi', file,
-            '--add-source', 
+            '--add-source',
             '--include-dir', './tools/cc65/include',
-            '-o', outputFilePath(file)
+            '-o', outputFilePath(file),
+            '--debug-info'
         ])
     }))
 }

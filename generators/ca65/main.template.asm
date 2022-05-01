@@ -80,6 +80,9 @@
 
 .segment "BSS"
 ; yourvariable: .res 8
+<% if (it.game.testProvider !== 'none') { %>
+testVariable: .res 1
+<% } %>
 
 
 ; 
@@ -233,6 +236,12 @@
 		sta PPU_CTRL
 		lda #%00011110  ; background and sprites enable, no left clipping
 		sta PPU_MASK
+
+		<% if (it.game.testProvider !== 'none') { %>
+		; Set testVariable to 1 for unit tests
+		lda #1
+		sta testVariable
+		<% } %>
 
 		; After getting through the drawing, just run an infinite loop. Effectively crashes the game on the new screen.
 		@forever:
