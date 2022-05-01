@@ -12,6 +12,12 @@ function createConfig(game, directory) {
         case 'none':
             logger.debug('No ci provider configured, skipping ci setup');
             return;
+        case 'github':
+            // If you don't have permission to create directories by now, we probably know.
+            try { fs.mkdirSync(path.join(directory, '.github', 'workflows'), {recursive: true}) } catch (e) {}
+            fs.writeFileSync(path.join(directory, '.github', 'workflows', 'main.yml'), eta.render(fs.readFileSync(path.join(__dirname, 'github-workflow-main.template.yml')).toString(), {game, mapper}));
+            break;
+
         case 'circleci':
             // If you don't have permission to create directories by now, we probably know.
             try { fs.mkdirSync(path.join(directory, '.circleci')) } catch (e) {}

@@ -96,11 +96,11 @@ const allQuestions = [
         // TODO: Implement (not phase 1)
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
-        possibleValues: ['none', 'circleci'],
+        possibleValues: ['none', 'circleci', 'github (no tests)'],
         defaultValue: 'none',
         showIf: (game) => true,
         onSubmit: (game, userValue) => {
-            game.ciProvider = userValue;
+            game.ciProvider = userValue.replace(' (no tests)', '');
             return true;
         }
     }, 

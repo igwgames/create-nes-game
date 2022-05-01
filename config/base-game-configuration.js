@@ -48,7 +48,7 @@ const BaseGameConfigurationFields = {
     ciProvider: {
         type: 'string',
         default: 'none',
-        possibleValues: ['none', 'circleci']
+        possibleValues: ['none', 'circleci', 'github']
     },
     testProvider: {
         type: 'string',
