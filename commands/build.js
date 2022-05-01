@@ -18,7 +18,9 @@ async function run() {
     const steps = [
         require('./compile'),
         require('./assemble'),
-        require('./link')
+        require('./link'),
+        {run: function() { logger.info('===================='); }},
+        require('./stats')
     ];
     
     for (let i = 0; i < steps.length; i++) {
