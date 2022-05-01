@@ -109,8 +109,8 @@ extern volatile unsigned char junk;
 // 
 // Shortcuts 
 // These are shortcuts to writing and reading raw registers on the NES. This seems a little bit
-// easier to read as a newbie. You could also replace a lot of these with a library. Enabling 
-// neslib for example should remove most/all usage of this.
+// easier to read as a newbie. You could also replace a lot of these with a library. Neslib eliminates
+// the need for most/all of these.
 //
 #define write_register(name, val) ((*(unsigned char*)name) = val)
 #define read_register(name) junk = (*(unsigned char*)name)

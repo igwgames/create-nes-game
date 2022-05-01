@@ -6,6 +6,7 @@ const fs = require('fs'),
     axios = require('axios'),
     StreamZip = require('node-stream-zip'),
     appConfiguration = require('../../config/app-configuration');
+const spawnAndWait = require('../../util/spawn-and-wait');
 
 // If this gets much use, let's move it to a library
 async function downloadFile(url, dest) {
@@ -45,7 +46,7 @@ function getBinaryZip() {
         case 'aix':
             logger.warn('bsd and aix platforms are unsupported. Using the linux binaries and hoping for the best!');
         case 'linux':
-            return {name: 'cc65-2.19-linux.zip', url: 'https://gde-files.nes.science/cc65-2.19-linux.zip'};
+            return {name: 'V2.19.tar.gz', url: 'https://github.com/cc65/cc65/archive/refs/tags/V2.19.tar.gz'};
         case 'darwin':
             throw new Error('Project initialization failed: cc65 binaries for mac os are not currently available. If you have a working build, please get in contact!');
         case 'win32':
@@ -86,23 +87,57 @@ async function createConfig(game, directory) {
         }
     }
 
-    logger.debug('Starting to unzip cc65 to project tools directory', zipFile);
-    const zip = new StreamZip.async({file: zipFile});
-    try {
-        await zip.extract(null, path.join(directory, 'tools', 'cc65'));
-        await zip.close();
-    } catch (e) {
-        logger.error('Failed unzipping cc65 to project tools directory', e);
-        throw new Error('Failed unzipping cc65 to project tools directory');
-    }
-    logger.debug('cc65 extraction complete.');
+    if (process.platform === 'win32') {
+        logger.debug('Starting to unzip cc65 to project tools directory', zipFile);
+        const zip = new StreamZip.async({file: zipFile});
+        try {
+            await zip.extract(null, path.join(directory, 'tools', 'cc65'));
+            await zip.close();
+        } catch (e) {
+            logger.error('Failed unzipping cc65 to project tools directory', e);
+            throw new Error('Failed unzipping cc65 to project tools directory');
+        }
+        logger.debug('cc65 extraction complete.');
+    } else {
+        logger.debug('Extracting and building cc65');
+        const binPath = path.join(appConfiguration.cacheDirectory, 'cc65-bin');
+        if (!fs.existsSync(path.join(binPath, 'cc65-2.19', 'bin', 'cc65'))) {
+            logger.info('Downloading and building cc65 for the first time. This may take a few minutes... (this should only happen once)')
+            try {
+                try { 
+                    fs.mkdirSync(binPath); 
+                } catch (e) {
+                    if (e.code !== 'EEXIST') {
+                        logger.error('Failed creating a temp directory while installing cc65', e);
+                        throw new Error('Failed creating a tempdirectory while installing cc65');            
+                    }
+                }
+                await spawnAndWait('tar -xvzf ' + zipFile, 'tar', null, ['-xvzf', zipFile], {cwd: binPath});
+                await spawnAndWait('make', 'make', null, [], {cwd: path.join(binPath, 'cc65-2.19')});
+                // Clean up extra stuff we don't want (that takes up a ton of space)
+                await spawnAndWait('rm -rf wrk libwrk', 'rm', null, ['-r', 'wrk', 'libwrk'], {cwd: path.join(binPath, 'cc65-2.19')});
+            } catch (e) {
+                logger.error('Failed building cc65, cannot continue!', e);
+                throw new Error('Failed building cc65');
+            }
+        } else {
+            logger.debug('Using cached cc65 build');
+        }
 
+        logger.debug('Copying cc65 into project directory');
+        const extractDir = path.join(directory, 'tools', 'cc65');
+        // We're on linux, so we know we've got cp. Why make it complex?
+        await spawnAndWait(`cp ${binPath}/cc65-2.19 ${extractDir}`, 'cp', null, ['-r', `${binPath}/cc65-2.19/.`, extractDir]);
+        logger.debug('cc65 build and copy complete.');
+    }
+
+    /*
     if (process.platform !== 'win32') {
         logger.debug('Non-windows platform, need to chmod the binaries to allow execution');
         fs.readdirSync(path.join(directory, 'tools', 'cc65', 'bin')).forEach(file => {
             fs.chmodSync(path.join(directory, 'tools', 'cc65', 'bin', file), 0o755);
         });
-    }
+    }*/
 }
 createConfig.stepName = 'cc65 binaries';
 

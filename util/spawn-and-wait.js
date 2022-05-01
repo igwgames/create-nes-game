@@ -5,10 +5,10 @@ const childProcess = require('child_process'),
 // Wraps running an outside command. 
 // NOTE: logCmd and file are both only used in output logs. cmd and args are the real things that matter. cmd should be the
 // full path to the command (c:\blah\blah\blah.exe or /home/dorkus/blah)
-function spawnAndWait(logCmd, cmd, file, args = []) {
+function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
     logger.debug('Running: ' + path.relative(appConfiguration.workingDirectory, cmd) + ' ' + args.join(' '));
     return new Promise((resolve, reject) => {
-        const proc = childProcess.spawn(cmd, args, {cwd: appConfiguration.workingDirectory});
+        const proc = childProcess.spawn(cmd, args, {cwd: options.cwd || appConfiguration.workingDirectory});
 
         proc.stdout.on('data', data => {
             const strs = data.toString().split('\n').filter(l => l.length > 0);
