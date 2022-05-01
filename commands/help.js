@@ -14,7 +14,9 @@ Available subcommands:
   build - Build the game in this directory
   download-dependencies - Install any needed tools to build and run your game (Use this after cloning from git)
   run - Run the configured emulator with your game
+  test - Run unit tests for your game (if you opted to enable them)
   clean - Remove all temporary files and roms created by the tool
+  install - install create-nes-game globally, so you can use it anywhere
 
 Advanced commands:
 
@@ -23,6 +25,7 @@ Advanced commands:
     compile - Compile any C in the project to assembly (noop in assembly projects)
     assemble - Assemble assembly in the project & any compiled c into object files
     link - Assemble all object files into a nes rom your emulator can run
+    stats - Show stats for the current rom, including free space
 `
     );
 
