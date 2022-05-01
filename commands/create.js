@@ -52,6 +52,7 @@ async function run() {
         require('../generators/ca65/chr-files'),
         require('../generators/ca65/nam-files'),
         require('../generators/shared/system-defines.varied'),
+        require('../generators/shared/graphics.config.asm'),
         require('../generators/shared/emulator'),
         require('../generators/ci-providers/ci-config')
     ];

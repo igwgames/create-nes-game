@@ -47,6 +47,10 @@ async function run() {
                 currentByteRun = 0;
             }
         }
+        if (currentByteRun > 8) {
+            freeBytes += currentByteRun;
+            thisBankFreeBytes += currentByteRun;
+        }
         bankFreeBytes.push(thisBankFreeBytes);
     }
 

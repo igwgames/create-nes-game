@@ -34,15 +34,13 @@ async function run() {
                 logger.error('Please create a directory for the file and add it to your path manually.');
                 process.exit(1);
             }
-            // FIXME: Del
-            // powershell = "%SystemRoot%\\system32\\WindowsPowerShell\\v1.0\\powershell.exe";
             break;
         case 'linux':
         case 'freebsd':
         case 'openbsd':
         case 'darwin': 
             if (process.getuid() !== 0) {
-                logger.error('The install command must be run as root, as it installs for all users!');
+                logger.error('The install command must be run as root, as it installs for all users! Try again with sudo.');
                 logger.error('You can manually add the binary to your path if this is not an option.');
                 process.exit(1);
             }

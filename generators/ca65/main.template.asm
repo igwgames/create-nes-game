@@ -31,13 +31,12 @@
 	.byte $0, $0, $0, $0, $0, $0, $0, $0 ; padding
 
 ;
-; CHR ROM data
+; Graphics
+; 
+; Includes chr files for the graphics -see the included file for more details.
 ;
 
-; FIXME: Break this into a config file 
-.segment "TILES"
-	.incbin "../../graphics/background.chr"
-	.incbin "../../graphics/sprite.chr"
+.include "../../graphics/graphics.config.asm"
 
 ;
 ; Vectors
