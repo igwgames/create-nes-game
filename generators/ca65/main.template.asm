@@ -68,6 +68,7 @@
 ; 
 ; This is the sprite memory for your game. IT is used for "hardware" sprites (you might create more information for your)
 ; sprites elsewhere. Don't add anything here.
+;
 
 .segment "OAM"
 	oam: .res 256        ; sprite OAM data to be uploaded by DMA
@@ -83,6 +84,17 @@
 testVariable: .res 1
 <% } %>
 
+<% if (it.game.useSram) { %>
+;
+; SRAM
+; This is an additional section of ram that will keep the same value between restarts of the console.
+; You can use it as regular RAM too, but make sure to clear it manually before use!
+;
+.segment "SRAM"
+testSramVariable: .res 1
+; yourVariable: .res 8
+
+<% } %>
 
 ; 
 ; Main Code area
@@ -228,6 +240,26 @@ testVariable: .res 1
 			inx                     ; increment outside loop counter
 			cpx #$04                ; needs to happen $04 times, to copy 1KB data
 			bne @outsideLoop         
+
+		<% if (it.game.useSram) { %>
+		; Increment testSramVariable, which won't be reset when the game is turned off.
+		inc testSramVariable
+
+		; Draw a tile to the screen based on the value of testSramVariable
+		lda PPU_STATUS
+		lda #$20
+		sta PPU_ADDR
+		lda #$50
+		sta PPU_ADDR
+
+		lda testSramVariable
+		sta PPU_DATA
+		<% } %>
+
+		; Reset ppu scrolling by writing 0 to both the X and Y positions.
+		lda #0
+		sta PPU_SCROLL
+		sta PPU_SCROLL
 
 		; Re-enable everything to show the graphics again.
 		cli             ; Re-enable interrupts

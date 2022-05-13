@@ -82,6 +82,19 @@ const allQuestions = [
         }
     },
     {
+        question: 'Would you like to add battery-backed RAM? (WRAM/SRAM)',
+        type: 'choice',
+        // Future: add support for 32k banks, needs demo of how to use, implementation , etc
+        // possibleValues: (game) => ['none', '8kb'].concat(game.getMapperDefinition().features['32k prg ram'] ? ['32kb'] : []),
+        possibleValues: (game) => ['none', '8kb'],
+        defaultValue: (game) => 'none',
+        showIf: (game) => game.getMapperDefinition().features['prg ram'],
+        onSubmit: (game, userValue) => {
+            game.useSram = userValue !== 'none';
+            game.sramSize = userValue !== '32kb' ? 8 : 32
+        }
+    },
+    {
         question: 'Would you like to use C?',
         type: 'choice',
         possibleValues: ['yes', 'no'],
@@ -93,7 +106,6 @@ const allQuestions = [
         }
     }, 
     {
-        // TODO: Implement (not phase 1)
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
         possibleValues: ['none', 'circleci', 'github (no unit tests)'],

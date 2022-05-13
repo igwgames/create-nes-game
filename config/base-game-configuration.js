@@ -28,6 +28,16 @@ const BaseGameConfigurationFields = {
         default: false,
         possibleValues: [true, false]
     },
+    useSram: {
+        type: 'boolean',
+        default: false,
+        possibleValues: [true, false]
+    },
+    sramSize: {
+        type: 'number',
+        default: 8,
+        possibleValues: [8, 32]
+    },
     chrBanks: {
         // 8K banks, do conversion if you're counting 4k banks.
         type: 'number',

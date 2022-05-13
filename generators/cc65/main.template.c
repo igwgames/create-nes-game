@@ -37,6 +37,21 @@ const unsigned char palette[] = {
     0x0f, 0x09, 0x19, 0x29
 };
 
+<% if (it.game.useSram) { %>
+//
+// SRAM Variables
+// Variables in this section will not lose their value when the console is reset. 
+// Make sure to clear the values if you expect them to be in a known state on first startup!
+//
+
+#pragma bss-name (push, "SRAM")
+
+unsigned char testSramVariable;
+// unsigned char yourVariableHere;
+
+#pragma bss-name(pop)
+<% } %>
+
 //
 // Main entrypoint
 // This is where your game will start running. It should essentially be an endless loop in most
@@ -69,6 +84,13 @@ void main(void) {
         write_register(PPU_DATA, welcomeMessage[i] + 0x80);
         ++i;
     }
+
+    <% if (it.game.useSram) { %>
+    // Increment the test sram variable, which will be saved to the cart/disk
+    ++testSramVariable;
+    // Draw this value as a tile on the screen, right after our welcome message
+    write_register(PPU_DATA, testSramVariable);
+    <% } %>
 
     // Set the scroll to 0,0
     write_register(PPU_SCROLL, 0);
