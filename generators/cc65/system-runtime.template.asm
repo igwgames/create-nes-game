@@ -11,6 +11,9 @@
 
 ; System defines for various registers on the console
 .include "./system-defines.asm"
+<% if (it.game.mapper !== 'nrom') { %>
+.include "./mapper.asm"
+<% } %>
 
 ;
 ; iNES header
@@ -179,6 +182,11 @@
 
         jsr	initlib
 
+<% if (it.game.mapper !== 'nrom') { %>
+		; Do any initialization the mapper needs
+		jsr initialize_mapper
+
+<% } %>
         ; The main() function in your C
 		jmp _main
 

@@ -54,12 +54,14 @@ async function run() {
         require('../generators/shared/system-defines.varied'),
         require('../generators/shared/graphics.config.asm'),
         require('../generators/shared/emulator'),
-        require('../generators/ci-providers/ci-config')
+        require('../generators/ci-providers/ci-config'),
+        require('../generators/ca65/mapper.asm')
     ];
 
     if (currentGame.includeC) {
         generators.push(require('../generators/cc65/system-runtime.asm'));
         generators.push(require('../generators/cc65/main.c'));
+        generators.push(require('../generators/cc65/mapper.h'));
     } else {
         generators.push(require('../generators/ca65/main.asm'));
     }

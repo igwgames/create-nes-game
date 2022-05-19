@@ -10,6 +10,9 @@
 
 ; System defines for various registers on the console
 .include "./system-defines.asm"
+<% if (it.game.mapper !== 'nrom') { %>
+.include "./mapper.asm"
+<% } %>
 
 ;
 ; iNES header
@@ -159,6 +162,12 @@ testSramVariable: .res 1
 		:
 			bit PPU_STATUS
 			bpl :-
+
+<% if (it.game.mapper !== 'nrom') { %>
+		; Do any initialization the mapper needs
+		jsr initialize_mapper
+
+<% } %>
 		; NES is initialized, ready to begin!
 		; enable the NMI for graphical updates, and jump to our main program
 		lda #%10001000

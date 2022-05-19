@@ -6,9 +6,17 @@
 ; use.
 ;
 
-.segment "TILES"
+; First bank, this is used by default
+.segment "CHR_00"
 	.incbin "./background.chr"
 	.incbin "./sprite.chr"
+
+; Other chr banks need some data in them - repeated chr data can be replaced.
+<% for (let i = 1; i < it.game.chrBanks; i++) { %>
+.segment "CHR_<%= i.toString().padStart(2, '0') %>"
+    .incbin "./background.chr"
+    .incbin "./sprite.chr"
+<% } %>
 
 <% } else { %>
 
