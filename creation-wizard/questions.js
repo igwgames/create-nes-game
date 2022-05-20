@@ -7,6 +7,7 @@ const colors = {
 const allQuestions = [
 
     {
+        id: "name",
         question: 'Name for game (no spaces)',
         type: 'input',
         showIf: () => true,
@@ -20,6 +21,7 @@ const allQuestions = [
         }
     },
     {
+        id: "mapper",
         question: `What mapper should the rom use?\nnrom is by far the simplest. Use ${colors.blue}https://mapper.nes.science${colors.reset} to compare\n`,
         type: 'choice', 
         possibleValues: Object.keys(mappers),
@@ -31,6 +33,7 @@ const allQuestions = [
         }
     },
     {
+        id: "chr-ram",
         question: 'Would you like to use chr ram?',
         type: 'choice', 
         possibleValues: ['yes', 'no'],
@@ -45,6 +48,7 @@ const allQuestions = [
         }
     },
     {
+        id: "prg-banks",
         question: 'How many (16kb) prg banks should the rom have?',
         type: 'choice',
         possibleValues: (game) => game.getMapperDefinition().prgBankOptions,
@@ -56,6 +60,7 @@ const allQuestions = [
         }
     },
     {
+        id: "chr-banks",
         question: 'How many (8kb) chr banks should the rom have?',
         type: 'choice',
         possibleValues: (game) => game.getMapperDefinition().chrBankOptions,
@@ -67,6 +72,7 @@ const allQuestions = [
         }
     },
     {
+        id: "mirroring",
         question: 'How would you like mirroring set by default?',
         type: 'choice',
         possibleValues: (game) => [
@@ -82,6 +88,7 @@ const allQuestions = [
         }
     },
     {
+        id: "chr-ram",
         question: 'Would you like to add battery-backed RAM? (WRAM/SRAM)',
         type: 'choice',
         // Future: add support for 32k banks, needs demo of how to use, implementation , etc
@@ -95,6 +102,7 @@ const allQuestions = [
         }
     },
     {
+        id: "use-c",
         question: 'Would you like to use C?',
         type: 'choice',
         possibleValues: ['yes', 'no'],
@@ -106,6 +114,7 @@ const allQuestions = [
         }
     }, 
     {
+        id: "ci-provider",
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
         possibleValues: ['none', 'circleci', 'github (no unit tests)'],
@@ -117,6 +126,7 @@ const allQuestions = [
         }
     }, 
     {
+        id: "test-provider",
         question: 'What test provider would you like to use?',
         type: 'choice',
         possibleValues: ['none', 'nes-test'],
@@ -128,6 +138,7 @@ const allQuestions = [
         }
     },
     {
+        id: "emulator",
         question: 'Which emulator would you like to install?',
         type: 'choice',
         possibleValues: ['system default', 'mesen', 'fceux'],

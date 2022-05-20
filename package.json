@@ -9,6 +9,9 @@
   "scripts": {
     "clean-scratchpad": "rm -r ./scratchpad/*",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "full-integration-test": "npm run create-test-roms && npm run full-integration-test-no-roms",
+    "create-test-roms": "node ./test/integration/generate-roms",
+    "full-integration-test-no-roms": "npx jasmine --config=test/integration/jasmine.json",
     "pkg": "pkg --public . ",
     "build-all": "npm run pkg && npm run package-win && npm run package-linux",
     "package-win": "mv ./dist/create-nes-game-win.exe ./dist/create-nes-game.exe && cd dist && zip create-nes-game.zip create-nes-game.exe",
@@ -59,6 +62,8 @@
     "outputPath": "./dist"
   },
   "devDependencies": {
+    "jasmine": "^4.1.0",
+    "nes-test": "github:cppchriscpp/nes-test",
     "pkg": "^5.5.2"
   }
 }

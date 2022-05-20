@@ -17,6 +17,7 @@ class AppConfiguration {
     isInProjectDirectory = null;
     allowColors = true;
     assumeYes = false;
+    presetAnswers = {};
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
@@ -66,6 +67,20 @@ class AppConfiguration {
 
         if (args.indexOf ('--assume-yes') !== -1 || args.indexOf('-y') !== -1) {
             this.assumeYes = true;
+        }
+
+        while (args.indexOf('--answer') !== -1) {
+            // PSST! This isn't documented for a reason! It's kinda garbage. If you've got a use case, please
+            // create an issue or a PR so we can make this a first class citizen before spreading it around.
+            const val = args.splice(args.indexOf('--answer'), 2)[1].split('=');
+            // Really, REALLY bad type coercion. 
+            if (val[1] == parseInt(val[1], 10)) {
+                val[1] = parseInt(val[1], 10);
+            } else {
+                val[1] = val[1].trim();
+            }
+            this.presetAnswers[val[0]] = val[1];
+            console.info('bla', this.presetAnswers);
         }
 
         this.arguments = args.filter(a => !a.startsWith('-'));

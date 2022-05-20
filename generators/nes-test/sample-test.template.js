@@ -28,7 +28,7 @@ describe('Sample Tests', () => {
 
         afterEach(async () => {
             // Exit the emulator
-            emulator.stop();
+            await emulator.stop();
         });
 
         it('Updates testVariable to 1 when it is done drawing', async () => {

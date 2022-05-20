@@ -1,0 +1,14 @@
+{
+  "spec_dir": "test/integration",
+  "spec_files": [
+    "**/*[sS]pec.?(m)js",
+    "**/test-all-roms.js"
+  ],
+  "helpers": [
+    "helpers/**/*.?(m)js"
+  ],
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "random": true
+  }
+}

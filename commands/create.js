@@ -12,19 +12,31 @@ async function run() {
     logger.info('Ready to start making a game! Fill out these prompts to figure out what configuration you need.');
 
     // Get name manually, since it's a bit odd, and we need it to initialize the game.
-    let currentGame = null;
-    let name = await inquirer.prompt([{type: 'input', name: 'v', message: questions[0].question, validate: (val) => {
-        const valMsg = BaseGameConfigurationFields.name.validates(val); 
-        if (valMsg !== true) { return valMsg; }
-        if (fs.existsSync(path.join(appConfiguration.workingDirectory, val))) { return 'Directory already exists'; }
-        return true;
-    }}]);
+    let currentGame = null,
+        name;
+    if (appConfiguration.presetAnswers.name) {
+        name = {v: appConfiguration.presetAnswers.name};
+        logger.info('Using preset name', name.v);
+    } else {
+        name = await inquirer.prompt([{type: 'input', name: 'v', message: questions[0].question, validate: (val) => {
+            const valMsg = BaseGameConfigurationFields.name.validates(val); 
+            if (valMsg !== true) { return valMsg; }
+            if (fs.existsSync(path.join(appConfiguration.workingDirectory, val))) { return 'Directory already exists'; }
+            return true;
+        }}]);
+    }
     currentGame = new BaseGameConfiguration(name.v);
     
     // TODO: I probably should rewrite this to serve everything in one "session", but that's a bit of work.
     for (let i = 1; i < questions.length; i++) {
         const question = questions[i];
         if (!question.showIf(currentGame)) { continue; }
+
+        if (appConfiguration.presetAnswers[question.id]) {
+            logger.debug('Using preset field value', question.id, appConfiguration.presetAnswers[question.id]);
+            question.onSubmit(currentGame, appConfiguration.presetAnswers[question.id]);
+            continue;
+        }
         
         if (question.type === 'choice') {
             let res = await inquirer.prompt([{

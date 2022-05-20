@@ -8,7 +8,7 @@ const fs = require('fs'),
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
     // nrom is effectively the 'no mapper' mapper. 
-    if (game.mapper !== 'NROM') {
+    if (game.mapper.toLowerCase() !== 'nrom') {
         fs.writeFileSync(path.join(directory, 'source', 'assembly', 'mapper.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'mapper.template.asm')).toString(), {game, mapper}));
     } else {
         logger.debug('Skipping mapper.asm for nrom mapper');
