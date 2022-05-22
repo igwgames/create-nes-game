@@ -3,7 +3,8 @@ const process = require('process'),
     path = require('path'),
     fs = require('fs'),
     appConfiguration = require('../config/app-configuration'),
-    BaseGameConfiguration = require('../config/base-game-configuration');
+    BaseGameConfiguration = require('../config/base-game-configuration'),
+    findExecutable = require('../util/find-executable');
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
@@ -24,7 +25,16 @@ async function run() {
             // Yes, believe it or not this is cross-platform. Mono is weiiiird.
             execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'mesen', 'Mesen.exe');
             break;
-            // FIXME: Implement fceux
+        case 'fceux':
+            switch (process.platform) {
+                case 'win32':
+                case 'win64':
+                    execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'fceux', 'fceux.exe');
+                    break;
+                default:
+                    execFile = findExecutable('fceux');
+            }
+            break;
         case 'system default':
             switch (process.platform) {
                 case 'win32':
@@ -47,7 +57,8 @@ async function run() {
     }
 
     if (game.installEmulator !== 'system default' && !fs.existsSync(execFile)) {
-        logger.error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
+        logger.error(`Emulator (${game.installEmulator}) not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
+        logger.debug('Emulator path: ' + execFile);
         throw new Error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
     }
 

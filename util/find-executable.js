@@ -17,7 +17,7 @@ function findExecutable(exe) {
         extensions.map((ext) => path.join(d, exe + ext))
     );
     try {
-        return candidates.map(checkFileExists).filter(c => c !== null).length > 0;
+        return candidates.map(checkFileExists).filter(c => c !== null)[0];
     } catch (e) {
         return null;
     }
