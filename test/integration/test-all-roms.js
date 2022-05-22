@@ -8,10 +8,7 @@ const fs = require('fs'),
     NesEmulator = require('nes-test').NesEmulator,
     path = require('path'),
     romDir = path.join(__dirname, 'test-roms'),
-    RomCommands = require('./rom-commands'),
-    spawnAndWait = require('../../util/spawn-and-wait'),
-    // FIXME: Be smart about os, use proper one
-    bin = "../../../dist/create-nes-game-win";
+    RomCommands = require('./rom-commands');
 
 
 describe('Test all roms', () => {
