@@ -88,7 +88,7 @@ const allQuestions = [
         }
     },
     {
-        id: "chr-ram",
+        id: "prg-ram",
         question: 'Would you like to add battery-backed RAM? (WRAM/SRAM)',
         type: 'choice',
         // Future: add support for 32k banks, needs demo of how to use, implementation , etc

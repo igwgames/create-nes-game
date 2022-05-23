@@ -219,6 +219,40 @@ testSramVariable: .res 1
 			cpx #$20
 			bne @loadPalettesLoop
 
+<% if (it.game.useChrRam) { %>
+		; Next we need to load graphics data into the chr ram, so we see something on the screen. So, let's use nested 
+		; loops to copy that all over. 
+		; NOTE: This copies both the background and sprite graphics at once, since we store them in prg in sequence. 
+		; If you want to break them up, change the `cpx #$20` line below to be `cpx #$10` to only copy 4kb then repeat
+		; the code again with a new address!
+		lda PPU_STATUS ; read ppu status to reset the high/low latch
+		lda #0
+		sta PPU_ADDR ; Write the high byte
+		sta PPU_ADDR ; Write 0 to the low byte as well, since we want to start at $0000
+
+		lda #<background_graphics
+		sta backgroundPointerLo ; put the low byte of address of background into pointer
+		lda #>background_graphics   ; #> is the same as HIGH() function in NESASM, used to get the high byte
+		sta backgroundPointerHi ; put high byte of address into pointer
+
+		ldx #$00                ; start at pointer + 0
+		ldy #$00
+		@ramOutsideLoop:
+
+			@ramInsideLoop:
+				lda (backgroundPointerLo),Y       ; copy one background byte from address in pointer + Y
+				sta PPU_DATA            ; runs 256*32 times
+
+				iny                     ; inside loop counter
+				cpy #$00                
+				bne @ramInsideLoop         ; run inside loop 256 times before continuing
+
+			inc backgroundPointerHi     ; low byte went from 0 -> 256, so high byte needs to be changed now
+
+			inx                     ; increment outside loop counter
+			cpx #$20                ; needs to happen $20 times, to copy 8KB data
+			bne @ramOutsideLoop
+<% } %>
 					
 		; Use nested loops to load the background efficiently
 		lda PPU_STATUS          ; read PPU status to reset the high/low latch

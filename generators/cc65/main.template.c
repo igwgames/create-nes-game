@@ -2,6 +2,11 @@
 
 // Include defines for various pieces of the NES hardware
 #include "system-defines.h"
+<% if (it.game.useChrRam) { %>
+
+// Include defines for graphics data stored in rom
+#include "graphics/graphics.config.h"
+<% } %>
 
 <%- /* FIXME: Include bank helpers if appropriate here */ %>
 
@@ -11,6 +16,9 @@
 //
 #pragma bss-name(push, "ZEROPAGE")
     unsigned char i;
+<% if (it.game.useChrRam) { %>
+    unsigned int chrRamAddressIncrement;
+<% } %>
 #pragma bss-name(pop)
 
 //
@@ -62,8 +70,23 @@ void main(void) {
     // Turn off the screen
     write_register(PPU_MASK, 0x00);
 
-    // Read ppu status to reset the system
+    // Read ppu status to reset the ppu register, and have it ready to accept an address.
     read_register(PPU_STATUS);
+<% if (it.game.useChrRam) { %>
+    // Set the address of the ppu to 0x0000, which is where we draw sprites 
+    write_register(PPU_ADDR, 0x00);
+    write_register(PPU_ADDR, 0x00);
+    // Write the chr data to the screen, byte-by-byte. This does 0x2000 bytes total, for both the sprites, 
+    // and the background. 
+    for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
+        write_register(PPU_DATA, sprite_graphics[chrRamAddressIncrement]);
+    }
+    // We filled 0x1000 bytes, so we can jump straight into writing background graphics now.
+    for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
+        write_register(PPU_DATA, background_graphics[chrRamAddressIncrement]);
+    }
+
+<% } %>
 
     // Set the address of the ppu to $3f00 to set the background palette
     write_register(PPU_ADDR, 0x3f);

@@ -78,6 +78,11 @@
         lda MMC1_MIRRORING_VERTICAL
         ; Mirroring writes to mmc1's ctrl register with everything we care about, so do that.
         jsr mmc1_set_mirroring
+        ; Set bank 0 and 1 to the first 2 chr banks
+        lda #0
+        jsr mmc1_set_chr_bank_0
+        lda #1
+        jsr mmc1_set_chr_bank_1
         rts
 <% if (it.game.prgBanks > 2) { /* 2 banks get merged into one large prg bank for ease of use, so only do for 3+ */ %>
 ; Every bank needs a reset method at the start to get the mapper to start in the right state. So, do that.

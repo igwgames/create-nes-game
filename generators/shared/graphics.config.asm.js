@@ -8,6 +8,10 @@ const fs = require('fs'),
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
     fs.writeFileSync(path.join(directory, 'graphics', 'graphics.config.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'graphics.config.template.asm')).toString(), {game, mapper}));
+
+    if (game.includeC) {
+        fs.writeFileSync(path.join(directory, 'graphics', 'graphics.config.h'), eta.render(fs.readFileSync(path.join(__dirname, 'graphics.config.template.h')).toString(), {game, mapper}));
+    }
 }
 
 createConfig.stepName = 'graphics.config.asm';

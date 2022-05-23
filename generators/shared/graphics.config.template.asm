@@ -28,13 +28,26 @@
 ; manually in your code. 
 ; 
 ; You will probably want to add compression to this data, since you have limited space!
-; It also is a good idea to move this to a bank other than the primary.
+; It also is a good idea to move this to a prg bank other than the primary.
 ;
+<% if (it.game.includeC) { %>
+; Any new grahpics you add here also need to be added to `graphics.config.h` as extern 
+; variables, so they can be read from C code. 
+;
+<% } %>
 
-.segment "PRG"
+.segment "CODE"
     
     <%= (it.game.includeC ? '_background_graphics:' : 'background_graphics:') %>
         .incbin "./background.chr"
-    <%= (it.game.includeC ? '_sprite_graphics:' : 'sprite_graphics:') %>
 
+    <%= (it.game.includeC ? '_sprite_graphics:' : 'sprite_graphics:') %>
+        .incbin "./sprite.chr"
+
+;
+; Make sure to export all symbols created, too, so we can read them from our code!
+;
+.export <%= (it.game.includeC ? '_background_graphics' : 'background_graphics') %>
+
+.export <%= (it.game.includeC ? '_sprite_graphics' : 'sprite_graphics') %>
 <% } %>
