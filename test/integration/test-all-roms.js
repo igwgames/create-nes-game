@@ -1,7 +1,10 @@
 // bootstrap this thing separately. Kinda gross...
 require('../../util/logger');
-// This is absolute nastiness... I should probably expose these somehow.
-require('../../node_modules/nes-test/util/jasmine-matchers');
+// Install the image matchers provided with nes-test
+
+beforeAll(() => {
+    require('nes-test').JasmineMatchers.installMatchers();
+});
 
 const fs = require('fs'),
     NesRomFile = require('nes-test').NesRomFile,

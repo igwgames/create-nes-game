@@ -7,7 +7,7 @@ const fs = require('fs'),
     RomCommands = require('./rom-commands'),
     spawnAndWait = require('../../util/spawn-and-wait'),
     // FIXME: Be smart about os, use proper one
-    bin = "../../../dist/create-nes-game-win";
+    bin = "../../../dist/create-nes-game";
 
 fs.rmdirSync(romDir, {recursive: true, force: true});
 
