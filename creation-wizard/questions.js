@@ -38,7 +38,14 @@ const allQuestions = [
         type: 'choice', 
         possibleValues: ['yes', 'no'],
         defaultValue: 'no',
-        showIf: (game) => game.getMapperDefinition().features['chr ram'],
+        runDefault: (game) => {
+            if (game.getMapperDefinition().features['chr rom']) {
+                game.useChrRam = false;
+            } else {
+                game.useChrRam = true;
+            }
+        },
+        showIf: (game) => game.getMapperDefinition().features['chr ram'] && game.getMapperDefinition().features['chr rom'],
         onSubmit: (game, userValue) => {
             game.useChrRam = userValue === 'yes';
             if (game.useChrRam) {

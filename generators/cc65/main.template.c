@@ -79,11 +79,11 @@ void main(void) {
     // Write the chr data to the screen, byte-by-byte. This does 0x2000 bytes total, for both the sprites, 
     // and the background. 
     for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
-        write_register(PPU_DATA, sprite_graphics[chrRamAddressIncrement]);
+        write_register(PPU_DATA, background_graphics[chrRamAddressIncrement]);
     }
     // We filled 0x1000 bytes, so we can jump straight into writing background graphics now.
     for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
-        write_register(PPU_DATA, background_graphics[chrRamAddressIncrement]);
+        write_register(PPU_DATA, sprite_graphics[chrRamAddressIncrement]);
     }
 
 <% } %>

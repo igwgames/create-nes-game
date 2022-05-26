@@ -18,5 +18,7 @@ extern void __fastcall__ mmc1_set_prg_bank(unsigned char bank);
 <% } else if (it.game.mapper === 'mmc3') { %>
 
 <% } else if (it.game.mapper === 'unrom') { %>
+// Set the prg bank currently used in the first slot.
+extern void __fastcall__ unrom_set_prg_bank(unsigned char bank);
 
 <% } else throw new Error ('Uknown mapper: ' + it.game.mapper + '! Cannot generate game'); %>

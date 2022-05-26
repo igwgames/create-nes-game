@@ -30,7 +30,12 @@ async function run() {
     // TODO: I probably should rewrite this to serve everything in one "session", but that's a bit of work.
     for (let i = 1; i < questions.length; i++) {
         const question = questions[i];
-        if (!question.showIf(currentGame)) { continue; }
+        if (question.runDefault) {
+            question.runDefault(currentGame);
+        }
+        if (!question.showIf(currentGame)) { 
+            continue; 
+        }
 
         if (appConfiguration.presetAnswers[question.id]) {
             logger.debug('Using preset field value', question.id, appConfiguration.presetAnswers[question.id]);

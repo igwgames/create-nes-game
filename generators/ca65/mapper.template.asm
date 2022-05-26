@@ -104,5 +104,39 @@
 <% } else if (it.game.mapper === 'mmc3') { %>
 
 <% } else if (it.game.mapper === 'unrom') { %>
+;
+; UNROM Mapper registers, for use with the functions below
+; 
+.define UNROM_BANK_SELECT $8000
+
+.segment "CODE"
+
+    ; Bank table, used to 
+    unrom_banktable:
+        .byte $00, $01, $02, $03, $04, $05, $06, $07
+        .byte $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
+
+
+    ; Set the prg bank to be used.
+    unrom_set_prg_bank:
+    _unrom_set_prg_bank:
+        tax
+        sta unrom_banktable, x
+        rts
+
+    initialize_mapper:
+        ; Start in bank 0
+        lda #0
+        jsr unrom_set_prg_bank
+        rts
+
+<% if (it.game.prgBanks > 2) { /* 2 banks get merged into one large prg bank for ease of use, so only do for 3+ */ %>
+; Make sure to put something in every bank, so the library doesn't get confused. Let's just jump to reset.
+<% for (let i = 0; i < it.game.prgBanks - 1; i++) { %>
+.segment "ROM_<%= i.toString().padStart(2, '0') %>" 
+    jmp reset
+<% } %>
+<% } %>
+
 
 <% } else throw new Error ('Uknown mapper: ' + it.game.mapper + '! Cannot generate game'); %>
