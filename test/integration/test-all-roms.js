@@ -24,7 +24,7 @@ describe('Test all roms', () => {
 
             const emu = new NesEmulator(romFile);
             await emu.start();
-            await emu.runCpuFrames(1);
+            await emu.runCpuFrames(10);
             expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
             const beforeCount = await emu.getByteValue('nmiFrameCount');
             expect(await emu.getByteValue('nmiFrameCount')).withContext(ctx).toEqual(beforeCount + 1);

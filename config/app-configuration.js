@@ -80,8 +80,8 @@ class AppConfiguration {
                 val[1] = val[1].trim();
             }
             this.presetAnswers[val[0]] = val[1];
-            console.info('bla', this.presetAnswers);
         }
+        console.info('bla', this.presetAnswers);
 
         this.arguments = args.filter(a => !a.startsWith('-'));
         if (this.isInProjectDirectory) {

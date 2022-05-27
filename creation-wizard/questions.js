@@ -72,6 +72,11 @@ const allQuestions = [
         type: 'choice',
         possibleValues: (game) => game.getMapperDefinition().chrBankOptions,
         defaultValue: (game) => game.getMapperDefinition().chrBankOptions[game.getMapperDefinition().chrBankOptions.length - 1],
+        runDefault: (game) => {
+            if (game.useChrRam) { 
+                game.chrBanks = 0; 
+            }
+        },
         showIf: (game) => !game.useChrRam,
         onSubmit: (game, userValue) => {
             game.chrBanks = userValue;

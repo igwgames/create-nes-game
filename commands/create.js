@@ -28,6 +28,7 @@ async function run() {
     currentGame = new BaseGameConfiguration(name.v);
     
     // TODO: I probably should rewrite this to serve everything in one "session", but that's a bit of work.
+    logger.debug('Preset answer list', appConfiguration.presetAnswers);
     for (let i = 1; i < questions.length; i++) {
         const question = questions[i];
         if (question.runDefault) {
@@ -37,7 +38,7 @@ async function run() {
             continue; 
         }
 
-        if (appConfiguration.presetAnswers[question.id]) {
+        if (typeof appConfiguration.presetAnswers[question.id] !== 'undefined') {
             logger.debug('Using preset field value', question.id, appConfiguration.presetAnswers[question.id]);
             question.onSubmit(currentGame, appConfiguration.presetAnswers[question.id]);
             continue;
