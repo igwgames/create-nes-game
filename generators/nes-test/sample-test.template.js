@@ -32,7 +32,7 @@ describe('Sample Tests', () => {
         });
 
         it('Updates testVariable to 1 when it is done drawing', async () => {
-            await emulator.runCpuFrames(1);
+            await emulator.runCpuFrames(10);
             expect(await emulator.getByteValue('testVariable')).toEqual(1);
         });
 

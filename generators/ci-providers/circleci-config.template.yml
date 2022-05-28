@@ -3,42 +3,23 @@ jobs:
   build:
     resource_class: small
     docker:
-      # Using -browsers version to enable xvfb, to help mesen, in case we need nes-test
-      - image: cimg/node:17.2.0-browsers
+      # FIXME: use a real version, when we start to publish
+      - image: cppchriscpp/create-nes-game:test-image 
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # check out the code in the project directory
-      - run: 
-          name: Download create-nes-game
-          command: wget https://cpprograms.net/devnull/create-nes-game.tar.gz
-      - run:
-          name: Extract create-nes-game
-          command: tar xvzf create-nes-game.tar.gz
-      - restore_cache:
-          key: rom-tools-{{ .Branch }}
-          paths:
-            - /tmp/create-nes-game
-      # This step will be VERY slow on first build and when restoring. The caching above/below this step try to help.
-      # In the future it would make sense to make a docker image with everything preinstalled
       - run:
           name: Install dependencies
-          command: ./create-nes-game download-dependencies --assume-yes
-      - save_cache:
-          key: rom-tools-{{ .Branch }}
-          paths: 
-            - /tmp/create-nes-game
+          command: create-nes-game download-dependencies --assume-yes
       - run: 
           name: Build game
-          command: ./create-nes-game build
+          command: create-nes-game build
 <% if (it.game.testProvider !== 'none') { %>
       - run:
-          name: Create .config folder if it doesn't exist, for nes-test
-          command: mkdir ~/.config || echo "home config dir exists already"
-      - run:
           name: Test game
-          command: ./create-nes-game test
+          command: create-nes-game test
 <% } %>
       # Store your rom on circleci's servers (warning: artifacts are automatically deleted after 30 days!)
       - store_artifacts:

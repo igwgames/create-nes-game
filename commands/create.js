@@ -9,6 +9,8 @@ const questions = require('../creation-wizard/questions'),
 
 async function run() {
 
+    await require('./install-system-dependencies').run();
+
     logger.info('Ready to start making a game! Fill out these prompts to figure out what configuration you need.');
 
     // Get name manually, since it's a bit odd, and we need it to initialize the game.
@@ -94,8 +96,6 @@ async function run() {
         logger.debug('Starting step:', generators[i].stepName);
         await generators[i](currentGame, gamePath);
     }
-
-    await require('./install-system-dependencies').run();
 
     if (!appConfiguration.isInstalled) {
         logger.info(`${appConfiguration.binaryName} isn't installed globally.`);

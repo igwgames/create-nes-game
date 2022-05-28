@@ -21,7 +21,6 @@ async function run() {
             logger.warn(' - build-essential');
             logger.warn(' - mono-complete');
             logger.warn(' - libsdl2-2.0');
-            logger.warn(' - gnome-themes-standard');
             return;
         } else {
             logger.warn('The following packages are required for the tool to work:');
@@ -29,7 +28,6 @@ async function run() {
             logger.warn(' - build-essential');
             logger.warn(' - mono-complete');
             logger.warn(' - libsdl2-2.0');
-            logger.warn(' - gnome-themes-standard');
 
             if (!appConfiguration.assumeYes) {
                 const shouldInstall = await inquirer.prompt([{
@@ -49,7 +47,7 @@ async function run() {
                 logger.info('Installing dependencies - this may take up 5-10 minutes, please be patient.');
                 await spawnAndWait('apt-get update', 'sudo', null, ['apt-get', 'update']);
                 logger.debug('Finished update, starting install.');
-                await spawnAndWait('apt-get', 'sudo', null, ['apt-get', 'install', '-y', 'tar', 'build-essential', 'mono-complete', 'libsdl2-2.0', 'gnome-themes-standard']);
+                await spawnAndWait('apt-get', 'sudo', null, ['apt-get', 'install', '-y', 'tar', 'build-essential', 'mono-complete', 'libsdl2-2.0']);
                 logger.info('Successfully installed dependencies');
             } catch (e) {
                 logger.error('Failed installing dependencies! Error follows, will try to continue anyway', e);

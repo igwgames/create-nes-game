@@ -3,28 +3,23 @@ on: [push]
 jobs:
   build_rom:
     runs-on: ubuntu-latest
+    # FIXME: use a real version, when we start to publish
+    container: cppchriscpp/create-nes-game:test-image
     name: Compile rom
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: wget https://cpprograms.net/devnull/create-nes-game.tar.gz
-        name: Download create-nes-game
-      - run: tar xvzf create-nes-game.tar.gz
-        name: Extract create-nes-game
-      - run: ./create-nes-game download-dependencies --assume-yes
-        name: Install dependencies
-      - run: ./create-nes-game build
-        name: Build the game
+      - name: Move things into the spots github CI expects them in
+        run: "cp -a /root/. /github/home"
+      - name: Install dependencies
+        run: create-nes-game download-dependencies --assume-yes
+      - name: Build the game
+        run: create-nes-game build
 <% if (it.game.testProvider !== 'none' && false) { %>
-      # This section disabled because I just can't figure out what mesen wants from github actions. If you find out, PLEASE PR!!!!
-      # I know the circle version works, with this config: https://github.com/CircleCI-Public/cimg-node/blob/main/17.9/browsers/Dockerfile
-      - name: Install xvfb for tests 
-      # Some of these packages are probably unnecessary, if you want a way to make things go faster
-        run: sudo apt-get install -y xvfb xdg-utils libxkbcommon-x11-0 libgtk-3-0 libxcursor1 libxss1 libgbm1 libcairo2 libatspi2.0-0 libdbus-glib-1-2 libgtk-3-dev libxt6 fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 
       - name: Start xvfb 
         run: sudo Xvfb :99 -screen 0 1280x1024x24 &
-      - name: Run tests
-        run: DISPLAY=:99 ./create-nes-game test
+      - name: Run unit tests
+        run: DISPLAY=:99 create-nes-game test --debug
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 <% } %>
