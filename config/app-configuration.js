@@ -18,6 +18,9 @@ class AppConfiguration {
     allowColors = true;
     assumeYes = false;
     presetAnswers = {};
+    nonDirectoryCommands = ["help", "create", "install", "check-update", "update"]
+    // FIXME: Aim at gh pages
+    updateUrl = 'http://localhost:8080/latest-version.json'
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
@@ -31,9 +34,15 @@ class AppConfiguration {
 
         // Mark debug mode early, so we can see other warnings we might hit
         this.debugMode = (process.env.DEBUG === 'true') || (args.indexOf('--debug') !== -1 || args.indexOf('-v') !== -1 || args.indexOf('--verbose') !== -1);
-        if (this.debugMode) {
-            console.debug('[' + this.binaryName + '] [debug] Debug mode enabled');
+        logger.setDebugMode(this.debugMode);
+        if (args.indexOf('--no-colors') !== -1) {
+            this.allowColors = false;
+        } else {
+            this.allowColors = true;
         }
+        logger.setAllowColors(this.allowColors);
+        logger.setBinaryName(this.binaryName);
+        logger.debug('[' + this.binaryName + '] [debug] Debug mode enabled');
 
 
         // Determine if we are in a project directory, and update working dir as needed
@@ -50,19 +59,15 @@ class AppConfiguration {
                 fs.mkdirSync(this.cacheDirectory);
             } catch (e) {
                 // NOTE: Cannot use logger here, it depends on this class.
-                console.error('Cannot write cache directory, cannot continue', e);
+                logger.error('Cannot write cache directory, cannot continue', e);
                 throw new Error('Cache directory does not exist or is not writeable! Cannot continue. You can set it manually with the CACHE_DIRECTORY environment variable');
             }
         }
 
         if (args.indexOf('--scratchpad') !== -1) {
-            console.warn('[' + this.binaryName + '] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
+            logger.warn('[' + this.binaryName + '] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
             this.isUsingScratchpad = true;
             this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
-        }
-
-        if (args.indexOf('--no-colors') !== -1) {
-            this.allowColors = false;
         }
 
         if (args.indexOf ('--assume-yes') !== -1 || args.indexOf('-y') !== -1) {
@@ -81,7 +86,6 @@ class AppConfiguration {
             }
             this.presetAnswers[val[0]] = val[1];
         }
-        console.info('bla', this.presetAnswers);
 
         this.arguments = args.filter(a => !a.startsWith('-'));
         if (this.isInProjectDirectory) {
@@ -90,10 +94,16 @@ class AppConfiguration {
             if (this.arguments[0] && this.arguments[0] === 'install') {
                 this.command = 'install';
             } else {
-                if (this.arguments[0] && this.arguments[0] !== 'create') {
-                    console.info('[' + this.binaryName + '] [warn] Command ' + this.arguments[0] + ' ignored, not in a game directory.');
+                if (this.arguments[0]) {
+                    if (this.nonDirectoryCommands.indexOf(this.arguments[0].toLowerCase()) === -1) {
+                        logger.warn('[' + this.binaryName + '] [warn] Command ' + this.arguments[0] + ' ignored, not in a game directory.');
+                        this.command = 'create';
+                    } else {
+                        this.command = this.arguments[0];
+                    }
+                } else {
+                    this.command = 'create';
                 }
-                this.command = 'create';
             }
         }
     }
@@ -113,7 +123,7 @@ class AppConfiguration {
                 wd = this._determineWorkingDirectory(path.resolve(path.join(wd, '..')), wd);
             } catch (e) {
                 if (this.debugMode) {
-                    console.debug('[' + this.binaryName + '] [debug] Hit the end of the line trying to find parent directory.', e.toString());
+                    logger.debug('[' + this.binaryName + '] [debug] Hit the end of the line trying to find parent directory.', e.toString());
                 }
                 return process.cwd();
             }
