@@ -82,6 +82,10 @@ async function run() {
         generators.push(require('../generators/cc65/system-runtime.asm'));
         generators.push(require('../generators/cc65/main.c'));
         generators.push(require('../generators/cc65/mapper.h'));
+
+        if (currentGame.includeCLibrary) {
+            generators.push(require('../generators/neslib/neslib'));
+        }
     } else {
         generators.push(require('../generators/ca65/main.asm'));
     }

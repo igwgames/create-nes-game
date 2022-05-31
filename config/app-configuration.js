@@ -89,7 +89,12 @@ class AppConfiguration {
 
         this.arguments = args.filter(a => !a.startsWith('-'));
         if (this.isInProjectDirectory) {
-            this.command = this.arguments[0] ?? 'help';
+            if (this.arguments[0]) {
+                this.command = this.arguments[0];
+                this.arguments.shift();
+            } else {
+                this.command = 'help';
+            }
         } else {
             if (this.arguments[0] && this.arguments[0] === 'install') {
                 this.command = 'install';

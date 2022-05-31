@@ -126,6 +126,18 @@ const allQuestions = [
         }
     }, 
     {
+        id: "c-library",
+        question: "Would you like to include a C library?",
+        type: 'choice',
+        possibleValues: ['none', 'neslib with famitone2', 'neslib with famitracker'],
+        defaultValue: 'none',
+        showIf: (game) => game.includeC,
+        onSubmit: (game, userValue) => {
+            game.includeCLibrary = userValue;
+            return true;
+        }
+    },
+    {
         id: "ci-provider",
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
@@ -161,7 +173,6 @@ const allQuestions = [
             return true;
         }
     },
-    // TODO: Mappings for banking library and C libraries
 
 ];
 

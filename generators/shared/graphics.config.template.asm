@@ -31,18 +31,24 @@
 ; It also is a good idea to move this to a prg bank other than the primary.
 ;
 <% if (it.game.includeC) { %>
-; Any new grahpics you add here also need to be added to `graphics.config.h` as extern 
+; Any new graphics you add here also need to be added to `graphics.config.h` as extern 
 ; variables, so they can be read from C code. 
+;
+<% } %>
+<% if (it.game.includeCLibrary !== 'none') { %>
+; additionally, the data is run-length encoded. This will automatically be done for 
+; any .chr,.nam and .bin files you add to the graphics directory. neslib has a utility 
+; to uncompress them.
 ;
 <% } %>
 
 .segment "CODE"
     
     <%= (it.game.includeC ? '_background_graphics:' : 'background_graphics:') %>
-        .incbin "./background.chr"
+        .incbin "<%= (it.game.includeCLibrary === 'none' ? './background.chr' : './background.rle.chr') %>"
 
     <%= (it.game.includeC ? '_sprite_graphics:' : 'sprite_graphics:') %>
-        .incbin "./sprite.chr"
+        .incbin "<%= (it.game.includeCLibrary === 'none' ? './sprite.chr' : './sprite.rle.chr') %>"
 
 ;
 ; Make sure to export all symbols created, too, so we can read them from our code!

@@ -20,7 +20,7 @@ logger.debug('App started with arguments', AppConfiguration.command, AppConfigur
             await command.run() 
             process.exit(0);
         } catch (e) {
-            logger.error('Failed running command', error);
+            logger.error('Failed running command', e);
             process.exit(1);
         }
     } catch (e) {

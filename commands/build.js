@@ -16,6 +16,7 @@ async function run() {
 
 
     const steps = [
+        require('./rle'),
         require('./compile'),
         require('./assemble'),
         require('./link'),

@@ -6,15 +6,14 @@
 #include "graphics/graphics.config.h"
 <% } %>
 
+#include "neslib.h"
+
 //
 // Global Variables (zeropage) 
 // Small, frequently-used variables should go in this space. There are only around 250 bytes to go around, so choose wisely!
 //
 #pragma bss-name(push, "ZEROPAGE")
     unsigned char i;
-<% if (it.game.useChrRam) { %>
-    unsigned int chrRamAddressIncrement;
-<% } %>
 #pragma bss-name(pop)
 
 //
@@ -64,43 +63,32 @@ unsigned char testSramVariable;
 // 
 void main(void) {
     // Turn off the screen
-    write_register(PPU_MASK, 0x00);
+    ppu_off();
 
-    // Read ppu status to reset the ppu register, and have it ready to accept an address.
-    read_register(PPU_STATUS);
 <% if (it.game.useChrRam) { %>
     // Set the address of the ppu to 0x0000, which is where we draw sprites 
-    write_register(PPU_ADDR, 0x00);
-    write_register(PPU_ADDR, 0x00);
-    // Write the chr data to the screen, byte-by-byte. This does 0x2000 bytes total, for both the sprites, 
-    // and the background. 
-    for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
-        write_register(PPU_DATA, background_graphics[chrRamAddressIncrement]);
-    }
-    // We filled 0x1000 bytes, so we can jump straight into writing background graphics now.
-    for (chrRamAddressIncrement = 0; chrRamAddressIncrement < 0x1000; ++chrRamAddressIncrement) {
-        write_register(PPU_DATA, sprite_graphics[chrRamAddressIncrement]);
-    }
+    vram_adr(0x0000);
+    // Write the chr data to the screen, from run-length encoded data.
+    vram_unrle(background_graphics);
+    vram_unrle(sprite_graphics);
 
 <% } %>
 
     // Set the address of the ppu to $3f00 to set the background palette
-    write_register(PPU_ADDR, 0x3f);
-    write_register(PPU_ADDR, 0x00);
+    vram_adr(0x3f00);
 
     // Write the background palette, byte-by-byte.
     for (i = 0; i != 16; ++i) {
-        write_register(PPU_DATA, palette[i]);
+        vram_put(palette[i]);
     }
 
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
-    write_register(PPU_ADDR, 0x20);
-    write_register(PPU_ADDR, 0x64);
+    vram_adr(0x2064);
 
     i = 0;
     while (welcomeMessage[i]) {
         // Add 0x60 to the ascii value of each character, to get it to line up with where the ascii table is in our chr file
-        write_register(PPU_DATA, welcomeMessage[i] + 0x80);
+        vram_put(welcomeMessage[i] + 0x80);
         ++i;
     }
 
@@ -108,22 +96,32 @@ void main(void) {
     // Increment the test sram variable, which will be saved to the cart/disk
     ++testSramVariable;
     // Draw this value as a tile on the screen, right after our welcome message
-    write_register(PPU_DATA, testSramVariable);
+    vram_put(testSramVariable);
     <% } %>
 
     // Set the scroll to 0,0
-    write_register(PPU_SCROLL, 0);
-    write_register(PPU_SCROLL, 0);
+    scroll(0, 0);
 
 
     // Turn the screen back on
-    write_register(PPU_MASK, 0x1e);
+    ppu_on_all();
 
     <% if (it.game.testProvider !== 'none') { %>
     // Update variable used in unit tests
     testVariable = 1;
     <% } %>
 
+    // Play the first song built into the rom
+    music_play(0);
+
     // Infinite loop to end things
-    while (1) {}
+    while (1) {
+        // If the user is pressing A, make a sound!
+        if (pad_poll(0) & PAD_A) {
+            // Play sound effect 0 on channel 0 (second argument can be 0-3, lower is higher priority)
+            sfx_play(0, 0);
+        }
+        // Don't run until a frame has run.
+        ppu_wait_nmi();
+    }
 }

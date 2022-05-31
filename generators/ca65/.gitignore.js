@@ -15,6 +15,9 @@ nes.bat
 ./create-nes-game
 ./create-nes-game-*
 *.nes
+graphics/*.rle.nam
+graphics/*.rle.bin
+graphics/*.rle.chr
     `
     fs.writeFileSync(path.join(directory, '.gitignore'), gitignore);
 }

@@ -7,7 +7,11 @@ const fs = require('fs'),
 
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
-    fs.writeFileSync(path.join(directory, 'source', 'c', 'main.c'), eta.render(fs.readFileSync(path.join(__dirname, 'main.template.c')).toString(), {game, mapper}));
+    if (game.includeCLibrary === 'none') {
+        fs.writeFileSync(path.join(directory, 'source', 'c', 'main.c'), eta.render(fs.readFileSync(path.join(__dirname, 'main.template.c')).toString(), {game, mapper}));
+    } else {
+        fs.writeFileSync(path.join(directory, 'source', 'c', 'main.c'), eta.render(fs.readFileSync(path.join(__dirname, 'main-neslib.template.c')).toString(), {game, mapper}));
+    }
 }
 
 createConfig.stepName = 'main.c';

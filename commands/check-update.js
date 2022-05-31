@@ -23,7 +23,7 @@ async function run() {
 
     } catch (e) {
         logger.warn('Checking for latest version failed - you can check online at https://cppchriscpp.github.io/create-nes-game');
-        logger.debug('Version check error', e);
+        logger.debug('Version check error', e.toString());
     }
 }
 

@@ -187,6 +187,10 @@
 		jsr initialize_mapper
 
 <% } %>
+<% if (it.game.includeCLibrary !== 'none') { %>
+		; Initialize our library
+		jsr initialize_library
+<% } %>
         ; The main() function in your C
 		jmp _main
 
@@ -212,6 +216,11 @@
 
 		; Keep track of how many frames have run (note: this loops over to 0 after 255.)
 		inc nmiFrameCount
+<% if (it.game.includeCLibrary !== 'none') { %>
+
+		; Call neslib's nmi methods
+		jsr neslib_nmi
+<% } %>
 
         ; Add your custom code or calls here!
 
@@ -262,3 +271,62 @@
 		.incbin "../../graphics/example.pal"
 		; Next, background. We don't have two palettes created, so repeat the same palette for now
 		.incbin "../../graphics/example.pal"
+<% if (it.game.includeCLibrary !== 'none') { %>
+<% if (it.game.includeCLibrary === 'neslib with famitone2') { %>
+;
+; famitone2 settings
+;
+; This configures the settings for famitone2.
+;
+
+FT_BASE_ADR     = $0100 ;page in the RAM used for FT2 variables, should be $xx00
+FT_SFX_STREAMS  = 4     ;number of sound effects played at once, 1..4
+
+FT_DPCM_ENABLE  = 0	    ;undefine to exclude all DMC code
+FT_SFX_ENABLE   = 1	    ;undefine to exclude all sound effects code
+FT_THREAD       = 1     ;undefine if you are calling sound effects from the same thread as the sound update call
+
+FT_PAL_SUPPORT  = 0     ;undefine to exclude PAL support
+FT_NTSC_SUPPORT = 1     ;undefine to exclude NTSC support
+
+.ifdef __DMC_START__
+FT_DPCM_OFF     = __DMC_START__ ;set in the linker CFG file via MEMORY/DMC section
+                                ;'start' there should be $c000..$ffc0, in 64-byte steps
+.else
+; Give it a dummy value to make it compile, if not using DPCM
+FT_DPCM_OFF	    = $c000
+.endif
+<% } %>
+
+;
+; Library data
+; 
+; Includes all initialization for the used library (<%= it.game.includeCLibrary %>)
+;
+
+.include "./neslib-system.asm"
+.include "./neslib.asm"
+
+;
+; Music and sound data
+; 
+; This is the music and sound effects for your game. If you move these into a different bank,
+; make sure you update the nmi method in neslib.asm to switch banks too!
+;
+
+.segment "RODATA"
+
+music_data:
+	.include "../../sound/music.asm"
+
+.if(FT_SFX_ENABLE)
+sounds_data:
+	.include "../../sound/sfx.asm"
+.endif
+
+.segment "SAMPLES"
+
+.if(FT_DPCM_ENABLE)
+	.incbin "../sound/music.dmc"
+.endif
+<% } %>

@@ -10,7 +10,8 @@ const defaults = {
     "ci-provider": "none",
     // Alwys use nes-test! Testing relies on it!
     "test-provider": "nes-test",
-    "emulator": "system default"
+    "emulator": "system default",
+    "c-library": "none"
 };
 
 let RomCommands = [{
@@ -77,6 +78,24 @@ let RomCommands = [{
     prgBanks: 16,
     mirroring: "horizontal",
     useC: "no"
+}, {
+    name: "simple-unrom-32-neslib",
+    mapper: "unrom",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2"
+}, {
+    name: "simple-nrom-16-neslib",
+    mapper: "nrom",
+    chrRam: "no",
+    prgBanks: 1,
+    chrBanks: 1,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2"
 }];
 
 RomCommands = RomCommands.map(elem => {
