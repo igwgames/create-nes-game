@@ -1,4 +1,7 @@
-on: [tag]
+on:
+  push:
+    tags: 
+      - v*
 
 jobs:
   build_tool:
