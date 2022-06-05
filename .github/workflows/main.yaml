@@ -28,7 +28,7 @@ jobs:
       - name: Start xvfb 
         run: sudo Xvfb :99 -screen 0 1280x1024x24 &
       - name: Run big whale integration tests
-        run: DISPLAY=:99 npm run full-integration-test
+        run: npm run full-integration-test
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
