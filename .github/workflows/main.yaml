@@ -32,9 +32,9 @@ jobs:
         run: npm run rewrite-site-version
 
       - name: More debugging junk FIXME KILL DIS
-        run: ls -lah . && pwd && echo $HOME 
+        run: ls -lah /home/runner && pwd && echo $HOME 
       - name: Move a bunch of stuff from our home to root's, since we need root help
-        run: sudo cp -r /home/github/.config /root
+        run: sudo cp -r $HOME/.config /root
       - name: Debugging junk, REMOVE ME FIXME
         run: sudo ls -lah /root/.config
       - name: Start xvfb & Run big whale integration tests
