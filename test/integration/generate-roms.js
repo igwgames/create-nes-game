@@ -17,7 +17,7 @@ try {
 }
 
 const promises = RomCommands.map(async cmd => {
-    const args = ['--debug', '--assume-yes'];
+    const args = ['--assume-yes'];
     Object.keys(cmd).forEach(key => {
         args.push('--answer');
         args.push(key + '=' + cmd[key]);
