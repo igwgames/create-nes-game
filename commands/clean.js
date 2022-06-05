@@ -5,8 +5,8 @@ const appConfiguration = require('../config/app-configuration'),
 async function run() {
     logger.debug('Running rm on all generated files');
 
-    fs.rmdirSync(path.join(appConfiguration.workingDirectory, 'temp'), {recursive: true});
-    fs.rmdirSync(path.join(appConfiguration.workingDirectory, 'rom'), {recursive: true});
+    fs.rmSync(path.join(appConfiguration.workingDirectory, 'temp'), {recursive: true});
+    fs.rmSync(path.join(appConfiguration.workingDirectory, 'rom'), {recursive: true});
     const rleFiles = fs.readdirSync(path.join(appConfiguration.workingDirectory, 'graphics')).filter(f => (f.endsWith('.rle.bin') || f.endsWith('.rle.chr') || f.endsWith('.rle.nam')));
     rleFiles.forEach(f => fs.rmSync(path.join(appConfiguration.workingDirectory, 'graphics', f)));
 

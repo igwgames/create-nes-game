@@ -3,14 +3,15 @@ require('../../util/logger');
 
 const fs = require('fs'),
     path = require('path'),
+    os = require('os'),
     romDir = path.join(__dirname, 'test-roms'),
     RomCommands = require('./rom-commands'),
     spawnAndWait = require('../../util/spawn-and-wait'),
     // FIXME: Be smart about os, use proper one
-    bin = "../../../dist/create-nes-game";
+    bin = "../../../dist/create-nes-game" + (os.platform() === 'linux') ? '-linux' : '';
 
 try {
-    fs.rmdirSync(romDir, {recursive: true, force: true});
+    fs.rmSync(romDir, {recursive: true, force: true});
 } catch (e) {
     logger.debug('Failed removing existing roms. Maybe they arent really existing, moving on.', e);
 }
