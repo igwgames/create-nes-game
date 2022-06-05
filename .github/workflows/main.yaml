@@ -32,18 +32,20 @@ jobs:
         run: npm run rewrite-site-version
 
       - name: More debugging junk FIXME KILL DIS
-        run: ls -lah /home/runner/.config && pwd && echo $HOME && ls -lah /github && ls -lah /github/home && ls -lahR /github/home/.config
+        run: ls -lah /home/runner/.config && pwd && echo $HOME
       - name: Move a bunch of stuff from our home to root's, since we need root help
         run: sudo cp -r $HOME/.config /root
       - name: Debugging junk, REMOVE ME FIXME
         run: sudo ls -lah /root/.config
       - name: Start xvfb & Run big whale integration tests
         run: sudo Xvfb :99 -screen 0 1280x1024x24 & 
-      - name: Run integration tests
+      - name: Create test roms
         run: sudo node ./test/integration/generate-roms
       - name: Doge
-        run: sudo ls -lahR /root/.config
-      - name: Part 2
+        run: sudo ls -lahR /root/.config 
+      - name: Screw it, try the thing I shouldn't. If you're trying to hack later, have fun with this one...
+        uses: mxschmitt/action-tmate@v3
+      - name: Run integration tests
         run: sudo npx jasmine --config=test/integration/jasmine.json
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
       #  uses: docker://cppchriscpp/create-nes-game:latest
