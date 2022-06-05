@@ -6,7 +6,13 @@ on:
 jobs:
   build_tool:
     runs-on: ubuntu-latest
-    name: Update package.json, build everything, run an integration test, rewrite docs, then finally publish to gh and docker
+    name: Release new version
+    # What this does, in human form: 
+    # - Update package.json
+    # - build everything
+    # - run an integration test
+    # - rewrite docs
+    # - publish to gh and docker
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,9 +35,7 @@ jobs:
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
         uses: docker://cppchriscpp/create-nes-game:latest
         with: 
-          args: |
-            apt-get install -y nodejs npm;
-            npm run full-integration-test
+          args: bash -c "apt-get install -y nodejs npm && npm run full-integration-test"
       #- name: Clean up xvfb
       #  uses: bcomnes/cleanup-xvfb@v1
 
