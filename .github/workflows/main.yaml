@@ -42,7 +42,7 @@ jobs:
       - name: Run integration tests
         run: sudo node ./test/integration/generate-roms
       - name: Doge
-        name: sudo ls -lahR /root/.config
+        run: sudo ls -lahR /root/.config
       - name: Part 2
         run: sudo npx jasmine --config=test/integration/jasmine.json
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
