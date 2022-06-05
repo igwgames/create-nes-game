@@ -32,7 +32,7 @@ jobs:
         run: npm run rewrite-site-version
 
       - name: More debugging junk FIXME KILL DIS
-        run: ls -lah /home/runner && pwd && echo $HOME 
+        run: ls -lah /home/runner/.config && pwd && echo $HOME && ls -lah /home/runner/.config/nes-test && ls -lah /home/runner/.config/create-nes-game
       - name: Move a bunch of stuff from our home to root's, since we need root help
         run: sudo cp -r $HOME/.config /root
       - name: Debugging junk, REMOVE ME FIXME
@@ -40,7 +40,9 @@ jobs:
       - name: Start xvfb & Run big whale integration tests
         run: sudo Xvfb :99 -screen 0 1280x1024x24 & 
       - name: Run integration tests
-        run: sudo node ./test/integration/generate-roms && sudo npx jasmine --config=test/integration/jasmine.json
+        run: sudo node ./test/integration/generate-roms
+      - name: Part 2
+        run: sudo npx jasmine --config=test/integration/jasmine.json
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
       #  uses: docker://cppchriscpp/create-nes-game:latest
       #  with: 
