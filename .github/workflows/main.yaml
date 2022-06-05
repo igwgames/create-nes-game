@@ -36,11 +36,14 @@ jobs:
       - name: Debugging junk, REMOVE ME FIXME
         run: sudo ls -lah /root
       - name: Start xvfb & Run big whale integration tests
+        run: sudo Xvfb :99 -screen 0 1280x1024x24 & 
+      - name: Run integration tests
+        run: sudo node ./test/integration/generate-roms && sudo npx jasmine --config=test/integration/jasmine.json
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
       #  uses: docker://cppchriscpp/create-nes-game:latest
       #  with: 
       #    args: /usr/bin/sh -c "cp -a /root/. /github/home && chmod 777 /github/home && apt-get install -y nodejs npm && DISPLAY=:99 npm run full-integration-test"
-        run: sudo xvfb-run sudo npm run full-integration-test
+      #  run: sudo xvfb-run sudo npm run full-integration-test
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
