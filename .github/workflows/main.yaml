@@ -40,7 +40,7 @@ jobs:
       #  uses: docker://cppchriscpp/create-nes-game:latest
       #  with: 
       #    args: /usr/bin/sh -c "cp -a /root/. /github/home && chmod 777 /github/home && apt-get install -y nodejs npm && DISPLAY=:99 npm run full-integration-test"
-        run: sudo xvfb-run npm run full-integration-test
+        run: sudo xvfb-run sudo npm run full-integration-test
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
