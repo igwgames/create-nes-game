@@ -31,6 +31,8 @@ jobs:
       - name: Update version for site
         run: npm run rewrite-site-version
 
+      - name: Debugging junk, REMOVE ME FIXME
+        run: ls -lah /root
       - name: Start xvfb & Run big whale integration tests
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
       #  uses: docker://cppchriscpp/create-nes-game:latest
