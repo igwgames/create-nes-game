@@ -35,9 +35,9 @@ jobs:
         #run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
         uses: docker://cppchriscpp/create-nes-game:latest
         with: 
-          args: /usr/bin/sh -c "apt-get install -y nodejs npm && npm run full-integration-test"
-      #- name: Clean up xvfb
-      #  uses: bcomnes/cleanup-xvfb@v1
+          args: /usr/bin/sh -c "apt-get install -y nodejs npm && sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test"
+      - name: Clean up xvfb
+        uses: bcomnes/cleanup-xvfb@v1
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
