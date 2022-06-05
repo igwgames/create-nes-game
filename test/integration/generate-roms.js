@@ -10,13 +10,7 @@ const fs = require('fs'),
     // FIXME: Be smart about os, use proper one
     bin = "../../../dist/create-nes-game" + (os.platform() === 'linux' ? '-linux' : '');
 
-try {
-    fs.rmSync(romDir, {recursive: true, force: true});
-} catch (e) {
-    logger.debug('Failed removing existing roms. Maybe they arent really existing, moving on.', e);
-}
-
-const promises = RomCommands.map(async cmd => {
+async function createCmd(cmd) {
     const args = ['--assume-yes'];
     Object.keys(cmd).forEach(key => {
         args.push('--answer');
@@ -33,6 +27,19 @@ const promises = RomCommands.map(async cmd => {
         throw e;
 
     }
-});
+}
 
-Promise.all(promises).then(() => console.info('Done!'));
+try {
+    fs.rmSync(romDir, {recursive: true, force: true});
+} catch (e) {
+    logger.debug('Failed removing existing roms. Maybe they arent really existing, moving on.', e);
+}
+
+// Do one first just to make sure installs work/don't run 8 times in ci
+createCmd(RomCommands.shift()).then(() => {
+    const promises = RomCommands.map(createCmd);
+
+    promises[0].then(() => {
+        Promise.all(promises).then(() => console.info('Done!'));
+    });
+});
