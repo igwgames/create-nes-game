@@ -31,6 +31,8 @@ jobs:
       - name: Update version for site
         run: npm run rewrite-site-version
 
+      - name: Move a bunch of stuff from our home to root's, since we need root help
+        run: sudo cp -r ~/.config /root
       - name: Debugging junk, REMOVE ME FIXME
         run: sudo ls -lah /root
       - name: Start xvfb & Run big whale integration tests
