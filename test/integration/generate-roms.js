@@ -18,7 +18,7 @@ const promises = RomCommands.map(async cmd => {
         args.push(key + '=' + cmd[key]);
     })
 
-    try { fs.mkdirSync(romDir); } catch (e) { logger.debug('Failed creating test folder, probably nothing.', e); }
+    try { fs.mkdirSync(romDir, {recursive: true}); } catch (e) { logger.debug('Failed creating test folder, probably nothing.', e); }
     try {
         await spawnAndWait('CNG (' + cmd.name + ')', bin, null, args, {outputLevel: 'info', cwd: romDir});
         await spawnAndWait('CNG (' + cmd.name + ')', path.join('..', bin), null, ['build'], {cwd: path.join(romDir, cmd.name)});
