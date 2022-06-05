@@ -25,10 +25,8 @@ jobs:
       - name: Update version for site
         run: npm run rewrite-site-version
 
-      - name: Start xvfb 
-        run: sudo Xvfb :99 -screen 0 1280x1024x24 &
-      - name: Run big whale integration tests
-        run: npm run full-integration-test
+      - name: Start xvfb & Run big whale integration tests
+        run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npm run full-integration-test
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
