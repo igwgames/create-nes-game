@@ -9,7 +9,11 @@ const fs = require('fs'),
     // FIXME: Be smart about os, use proper one
     bin = "../../../dist/create-nes-game";
 
-fs.rmdirSync(romDir, {recursive: true, force: true});
+try {
+    fs.rmdirSync(romDir, {recursive: true, force: true});
+} catch (e) {
+    logger.debug('Failed removing existing roms. Maybe they arent really existing, moving on.', e);
+}
 
 const promises = RomCommands.map(async cmd => {
     const args = ['--debug', '--assume-yes'];
