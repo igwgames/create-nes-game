@@ -8,8 +8,8 @@ const childProcess = require('child_process'),
 function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
     logger.debug('Running: ' + path.relative(appConfiguration.workingDirectory, cmd) + ' ' + args.join(' '));
     return new Promise((resolve, reject) => {
-        const proc = childProcess.spawn(cmd, args, {cwd: options.cwd ?? appConfiguration.workingDirectory});
-        const outputLogLevel = options.outputLevel ?? 'debug';
+        const proc = childProcess.spawn(cmd, args, {cwd: options.cwd ? options.cwd : appConfiguration.workingDirectory});
+        const outputLogLevel = options.outputLevel ? options.outputLevel : 'debug';
 
 
         proc.stdout.on('data', data => {
