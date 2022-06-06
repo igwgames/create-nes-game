@@ -13,32 +13,37 @@ const fs = require('fs'),
     romDir = path.join(__dirname, 'test-roms'),
     RomCommands = require('./rom-commands');
 
+async function runRom(cmd) {
+    const romFile = path.join(romDir, cmd.name, 'rom', cmd.name + '.nes'),
+        rom = new NesRomFile(romFile),
+        ctx = "(" + cmd.name + ")";
+    expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
+
+    const emu = new NesEmulator(romFile);
+    await emu.ensureEmulatorAvailable();
+    await emu.start();
+    await emu.runCpuFrames(10);
+    expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
+    const beforeCount = await emu.getByteValue('nmiFrameCount');
+    expect(await emu.getByteValue('nmiFrameCount')).withContext(ctx).toEqual(beforeCount + 1);
+    const screenshot = await emu.takeScreenshot(cmd.name + '.png');
+    if (cmd['use-c'] === 'yes') {
+        expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-c_000.png');
+    } else {
+        expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-asm_000.png');
+    }
+    await emu.stop();
+}
 
 describe('Test all roms', () => {
     it('Runs all of the test roms, validates that they start', async () => {
-        const promises = RomCommands.map(async cmd => {
-            const romFile = path.join(romDir, cmd.name, 'rom', cmd.name + '.nes'),
-                rom = new NesRomFile(romFile),
-                ctx = "(" + cmd.name + ")";
-            expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
+        // Do first one separate to prep mesen, etc
+        const firstOne = RomCommands.shift();
+        await runRom(firstOne);
 
-            const emu = new NesEmulator(romFile);
-            await emu.ensureEmulatorAvailable();
-            await emu.start();
-            await emu.runCpuFrames(10);
-            expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
-            const beforeCount = await emu.getByteValue('nmiFrameCount');
-            expect(await emu.getByteValue('nmiFrameCount')).withContext(ctx).toEqual(beforeCount + 1);
-            const screenshot = await emu.takeScreenshot(cmd.name + '.png');
-            if (cmd['use-c'] === 'yes') {
-                expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-c_000.png');
-            } else {
-                expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-asm_000.png');
-            }
-            await emu.stop();
-        });
+        const promises = RomCommands.map(runRom);
 
 
         await Promise.all(promises);
-    });
+    }, 30000);
 });
