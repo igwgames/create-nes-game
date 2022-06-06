@@ -29,7 +29,8 @@ jobs:
       - name: Copy README.md into docs directory to update docs
         run: cp -f README.md docs/README.md
       - name: Update version for site
-        run: echo '{"version": "${{ env.RELEASE_VERSION }}"}' > docs/latest-version.json
+        run: |
+          echo "{\"version\": \"${{ env.RELEASE_VERSION }}\"}" > docs/latest-version.json
 
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
