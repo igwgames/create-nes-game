@@ -62,7 +62,7 @@ jobs:
             dist/*.tar.gz
             dist/*.zip
       - name: Check out main branch again for docs
-        run: git checkout main
+        run: git fetch && git checkout main
       - name: "Update github docs in main branch"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
