@@ -65,6 +65,7 @@ jobs:
             dist/*.tar.gz
             dist/*.zip
 
+      # Publish to the docs dir on main, after we're done. Yeah, this bit is a little weird.
       - name: Check out main branch again for docs
         run: git fetch && git checkout main
       - name: "Update github docs in main branch"

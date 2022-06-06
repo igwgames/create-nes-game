@@ -141,11 +141,11 @@ const allQuestions = [
         id: "ci-provider",
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
-        possibleValues: ['none', 'circleci', 'github (no unit tests)'],
+        possibleValues: ['none', 'circleci', 'github'],
         defaultValue: 'none',
         showIf: (game) => true,
         onSubmit: (game, userValue) => {
-            game.ciProvider = userValue.replace(' (no unit tests)', '');
+            game.ciProvider = userValue;
             return true;
         }
     }, 

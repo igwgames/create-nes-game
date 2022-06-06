@@ -15,7 +15,7 @@ jobs:
         run: create-nes-game download-dependencies --assume-yes
       - name: Build the game
         run: create-nes-game build
-<% if (it.game.testProvider !== 'none' && false) { %>
+<% if (it.game.testProvider !== 'none') { %>
       - name: Start xvfb 
         run: sudo Xvfb :99 -screen 0 1280x1024x24 &
       - name: Run unit tests
