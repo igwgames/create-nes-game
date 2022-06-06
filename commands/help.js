@@ -17,6 +17,7 @@ Available subcommands:
   test - Run unit tests for your game (if you opted to enable them)
   clean - Remove all temporary files and roms created by the tool
   install - install create-nes-game globally, so you can use it anywhere
+  check-update - Check for a newer version of create-nes-game manually.
 
 Advanced commands:
 
@@ -26,6 +27,7 @@ Advanced commands:
     assemble - Assemble assembly in the project & any compiled c into object files
     link - Assemble all object files into a nes rom your emulator can run
     stats - Show stats for the current rom, including free space
+    rle - Run-length encode any .chr, .nam, and .bin files in the graphics/ folder
 `
     );
 
