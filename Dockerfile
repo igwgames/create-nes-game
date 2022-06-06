@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND="noninteractive"
-RUN apt-get update && apt-get install -y xvfb xdg-utils libxkbcommon-x11-0 libgtk-3-0 libxcursor1 libxss1 libgbm1 libcairo2 libatspi2.0-0 libdbus-glib-1-2 libgtk-3-dev libxt6 fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 sudo
+RUN apt-get update && apt-get install -y xvfb xdg-utils libxkbcommon-x11-0 libgtk-3-0 libxcursor1 libxss1 libgbm1 libcairo2 libatspi2.0-0 libdbus-glib-1-2 libgtk-3-dev libxt6 fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 sudo mono-complete libsdl2-2.0 gnome-themes-standard
 COPY ./dist/create-nes-game-linux /usr/bin/create-nes-game
 # Preinstall mesen, nes-test, etc to make game builds faster.
 COPY ./test/integration/test-roms/simple-nrom-128-c /dummy-image

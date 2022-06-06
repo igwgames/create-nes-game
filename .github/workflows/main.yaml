@@ -26,10 +26,6 @@ jobs:
         run: npm version from-git --no-git-tag-version
       - name: Build everything
         run: npm run build-all
-      - name: Copy README.md into docs directory to update docs
-        run: cp -f README.md docs/README.
-      - name: Update version for site
-        run: npm run rewrite-site-version
 
       #- name: Move a bunch of stuff from our home to root's, since we need root help
       #  run: sudo cp -r $HOME/.config /root
@@ -61,6 +57,14 @@ jobs:
           files: |
             dist/*.tar.gz
             dist/*.zip
+
+      - name: Checkout the main branch (Instead of headless tag)
+        run: git checkout main
+      - name: Copy README.md into docs directory to update docs
+        run: cp -f README.md docs/README.md
+      - name: Update version for site
+        run: npm run rewrite-site-version
+
       - name: "Update github docs in main branch"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
