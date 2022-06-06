@@ -1,6 +1,4 @@
-# Create NES Game
-
-## About
+# create-nes-game
 
 Creates a barebones hello world game for the NES, alongside all build tools you need, and
 a ready-to-go emulator. Pick whether to write in assembly or c, the mapper you'd like, and
