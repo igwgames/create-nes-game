@@ -27,8 +27,8 @@ jobs:
       - name: Build everything
         run: npm run build-all
 
-      #- name: Move a bunch of stuff from our home to root's, since we need root help
-      #  run: sudo cp -r $HOME/.config /root
+      - name: Move a bunch of stuff from our home to root's, since we need root help
+        run: sudo cp -r $HOME/.config /root
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
       - name: Run integration tests
