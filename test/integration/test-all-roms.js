@@ -23,6 +23,7 @@ describe('Test all roms', () => {
             expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
 
             const emu = new NesEmulator(romFile);
+            await emu.ensureEmulatorAvailable();
             await emu.start();
             await emu.runCpuFrames(10);
             expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
