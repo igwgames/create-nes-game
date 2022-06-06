@@ -31,34 +31,19 @@ jobs:
       - name: Update version for site
         run: npm run rewrite-site-version
 
-      - name: More debugging junk FIXME KILL DIS
-        run: ls -lah /home/runner/.config && pwd && echo $HOME
-      - name: Move a bunch of stuff from our home to root's, since we need root help
-        run: sudo cp -r $HOME/.config /root
-      - name: Debugging junk, REMOVE ME FIXME
-        run: sudo ls -lah /root/.config
-      #- name: Start xvfb & Run big whale integration tests
-      #  run: sudo Xvfb :99 -screen 0 1280x1024x24 & 
+      #- name: Move a bunch of stuff from our home to root's, since we need root help
+      #  run: sudo cp -r $HOME/.config /root
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
-      - name: Doge
-        run: sudo ls -lahR /root/.config 
-      #- name: Screw it, try the thing I shouldn't. If you're trying to hack later, have fun with this one...
-      #  uses: mxschmitt/action-tmate@v3
       - name: Run integration tests
-        #run: sudo npx jasmine --config=test/integration/jasmine.json
         run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
-      #  uses: docker://cppchriscpp/create-nes-game:latest
-      #  with: 
-      #    args: /usr/bin/sh -c "cp -a /root/. /github/home && chmod 777 /github/home && apt-get install -y nodejs npm && DISPLAY=:99 npm run full-integration-test"
-      #  run: sudo xvfb-run sudo npm run full-integration-test
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: cppchriscpp
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Build and push Docker image
