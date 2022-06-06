@@ -22,10 +22,14 @@ jobs:
         run: npm install
       - name: Set version variable
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      
+      # Build the exe, and package it up
       - name: update package.json with new version
         run: npm version from-git --no-git-tag-version
       - name: Build everything
         run: npm run build-all
+
+      # Update the documentation, we'll use it later.
       - name: Copy README.md into docs directory to update docs
         run: cp -f README.md docs/README.md
       - name: Update version for site
@@ -60,6 +64,7 @@ jobs:
           files: |
             dist/*.tar.gz
             dist/*.zip
+
       - name: Check out main branch again for docs
         run: git fetch && git checkout main
       - name: "Update github docs in main branch"
