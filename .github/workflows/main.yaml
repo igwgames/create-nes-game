@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install apt stuff
-        run: "sudo apt-get update && sudo apt-get install -y xvfb xdg-utils libxkbcommon-x11-0 libgtk-3-0 libxcursor1 libxss1 libgbm1 libcairo2 libatspi2.0-0 libdbus-glib-1-2 libgtk-3-dev libxt6 fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 libgtk2.0-0"
+        run: "sudo apt-get update && sudo apt-get install -y xvfb xdg-utils libxkbcommon-x11-0 libgtk-3-0 libxcursor1 libxss1 libgbm1 libcairo2 libatspi2.0-0 libdbus-glib-1-2 libgtk-3-dev libxt6 fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libpango-1.0-0 libpangocairo-1.0-0 libxcursor1 libgtk2.0-0 mono-complete libsdl2-2.0 gnome-themes-standard" 
       - name: Install all the stuff
         run: npm install
       - name: Set version variable
