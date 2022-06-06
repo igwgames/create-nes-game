@@ -51,7 +51,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: cppchriscpp/create-nes-game:latest cppchriscpp/create-nes-game:${{ env.RELEASE_VERSION }}
+          tags: 
+            - cppchriscpp/create-nes-game:latest
+            - cppchriscpp/create-nes-game:${{ env.RELEASE_VERSION }}
 
       - name: Release to github
         uses: "marvinpinto/action-automatic-releases@latest"
