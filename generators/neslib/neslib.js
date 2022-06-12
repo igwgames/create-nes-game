@@ -3,7 +3,8 @@
 const fs = require('fs'),
     path = require('path'),
     eta = require('eta'),
-    mappers = require('../../data/mappers');
+    mappers = require('../../data/mappers'),
+    copyFileSync = require('../../util/copy-file-sync');
 
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
@@ -20,11 +21,29 @@ function createConfig(game, directory) {
             fs.writeFileSync(path.join(directory, 'sound', 'music.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'music.template.asm')).toString(), {game, mapper}));
             fs.writeFileSync(path.join(directory, 'sound', 'sfx.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'sfx.template.asm')).toString(), {game, mapper}));
 
-
             break;
 
         case 'neslib with famitracker':
-            throw new Error('unimplemented');
+            fs.writeFileSync(path.join(directory, 'source', 'c', 'neslib.h'), eta.render(fs.readFileSync(path.join(__dirname, 'neslib-famitracker.template.h')).toString(), {game, mapper}));
+            fs.writeFileSync(path.join(directory, 'source', 'assembly', 'neslib.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'neslib-famitracker.template.asm')).toString(), {game, mapper}));
+            fs.writeFileSync(path.join(directory, 'source', 'assembly', 'neslib-system.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'neslib-system-famitracker.template.asm')).toString(), {game, mapper}));
+            
+            try { 
+                fs.mkdirSync(path.join(directory, 'source', 'assembly', 'famitracker_driver')) 
+            } catch (e) {
+                logger.error('Failed making folder for famitracker driver', e);
+                throw new Error('Failed creating directory for famitracker driver');
+            }
+            const libFiles = fs.readdirSync(path.join(__dirname, 'famitracker_driver')).filter(f => f.endsWith('.s'));
+            libFiles.forEach(file => {
+                
+                copyFileSync(path.join(path.join(__dirname, 'famitracker_driver', file)), path.join(directory, 'source', 'assembly', 'famitracker_driver', file));
+            });
+            copyFileSync(path.join(__dirname, 'music-famitracker.bin'), path.join(directory, 'sound', 'music.bin'));
+            fs.writeFileSync(path.join(directory, 'sound', 'sfx.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'sfx.template.asm')).toString(), {game, mapper}));
+            copyFileSync(path.join(__dirname, 'samples-famitracker.bin'), path.join(directory, 'sound', 'samples.bin'));
+
+
             break;
         default:
             throw new Error('Unknown neslib derivative: ' + game.ciProvider);

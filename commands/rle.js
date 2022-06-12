@@ -56,7 +56,7 @@ async function run() {
 
         for (let i = 0; i < data.length; i++) {
             if (data[i] != sym || len === 255 || i === (data.length - 1)) {
-                if (data[i] === sym && i === (data.length = 1)) { len++; }
+                if (data[i] === sym && i === (data.length - 1)) { len++; }
                 if (len) {
                     newData[pp++] = sym;
                 }

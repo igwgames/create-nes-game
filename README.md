@@ -1,22 +1,25 @@
 # create-nes-game
 
-Creates a barebones hello world game for the NES, alongside all build tools you need, and
-a ready-to-go emulator. Pick whether to write in assembly or c, the mapper you'd like, and
-a bunch of optional features, hit create, then build your game!
+create-nes-game is a command line tool that creates a simple hello world game for the NES, 
+alongside all build tools you need, and a ready-to-go emulator. 
+
+All you have to do is answer a series of multiple-choice questions about what 
+language you want, a mapper, and optional features like libraries.
+
+The tool will give you a git-ready folder full of code, which it can be used to 
+compile and run. (and even unit test, if you want!)
+
 
 ## Features
 
-* Generates all config, and the code required to put "hello world" on the screen
-* Can choose to create code in assembly or C
-* Interactive mapper and size choices
+* Start your game with a working example and all configuration; no config files to change!
+* No installing separate software and adding it to path
+* Write code in assembly or C
+* Interactive walkthrough to choose everything, including mapper and size
 * Build your rom with one command: `create-nes-game build`
-* Out-of-the-box support for debugging C and assembly in mesen with source code
-* Optionally include rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
-* Optionally configure your game to build with CI tools like circleci
-
-# Getting Started
-
-TBD
+* Out-of-the-box support for debugging C and assembly in mesen, with full source code
+* Optional rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
+* Optional continuous integration support with either github or circleci
 
 # How does it work?
 
@@ -31,6 +34,10 @@ Finally, it will trigger a build the same way it will, creating a nes rom in the
 
 From there, you can run `create-nes-game run` to test your rom. You can also edit the source, then do 
 `create-nes-game build` to build any updates.
+
+# Getting Started
+
+TBD
 
 # FAQ
 

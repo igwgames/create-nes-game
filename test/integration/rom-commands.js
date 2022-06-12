@@ -96,6 +96,24 @@ let RomCommands = [{
     mirroring: "vertical",
     useC: "yes",
     cLibrary: "neslib with famitone2"
+},  {
+    name: "simple-unrom-32-neslib-ft",
+    mapper: "unrom",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
+}, {
+    name: "simple-nrom-16-neslib-ft",
+    mapper: "nrom",
+    chrRam: "no",
+    prgBanks: 1,
+    chrBanks: 1,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
 }];
 
 RomCommands = RomCommands.map(elem => {

@@ -46,6 +46,8 @@
 .import __STARTUP_LOAD__,__STARTUP_RUN__,__STARTUP_SIZE__
 .import	__CODE_LOAD__   ,__CODE_RUN__   ,__CODE_SIZE__
 .import	__RODATA_LOAD__ ,__RODATA_RUN__ ,__RODATA_SIZE__
+.import __DMC_LOAD__
+
 ; Zeropage variables required by cc65's engine
 .include "tools/cc65/asminc/zeropage.inc"
 
@@ -289,13 +291,29 @@ FT_THREAD       = 1     ;undefine if you are calling sound effects from the same
 FT_PAL_SUPPORT  = 0     ;undefine to exclude PAL support
 FT_NTSC_SUPPORT = 1     ;undefine to exclude NTSC support
 
-.ifdef __DMC_START__
-FT_DPCM_OFF     = __DMC_START__ ;set in the linker CFG file via MEMORY/DMC section
-                                ;'start' there should be $c000..$ffc0, in 64-byte steps
+.ifdef __DMC_LOAD__
+	FT_DPCM_OFF     = __DMC_LOAD__ ;set in the linker CFG file via MEMORY/DMC section
+									;'start' there should be $c000..$ffc0, in 64-byte steps
 .else
-; Give it a dummy value to make it compile, if not using DPCM
-FT_DPCM_OFF	    = $c000
+	; Give it a dummy value to make it compile, if not using DPCM
+	FT_DPCM_OFF	    = $c000
 .endif
+<% } else if (it.game.includeCLibrary === 'neslib with famitracker') { %>
+;
+; famitone2 settings
+;
+; This configures the settings for famitone2, used for sound effects.
+;
+
+FT_BASE_ADR=$0100			;page in RAM, should be $xx00
+
+FT_SFX_STREAMS			= 4	;number of sound effects played at once, 1..4
+.define FT_DPCM_ENABLE  1	;undefine to exclude all DMC code
+.define FT_SFX_ENABLE   1	;undefine to exclude all sound effects code
+.define FT_THREAD       1	;undefine if you call sound effects in the same thread as sound update
+.define FT_PAL_SUPPORT	1   ;undefine to exclude PAL support
+.define FT_NTSC_SUPPORT	1   ;undefine to exclude NTSC support
+
 <% } %>
 
 ;
@@ -317,16 +335,26 @@ FT_DPCM_OFF	    = $c000
 .segment "RODATA"
 
 music_data:
+<% if (it.game.includeCLibrary === 'neslib with famitone2') { %>
 	.include "../../sound/music.asm"
+<% } else if (it.game.includeCLibrary === 'neslib with famitracker') { %>
+	.incbin "../../sound/music.bin"
+
+music_dummy_data:
+
+	.byte $0D,$00,$0D,$00,$0D,$00,$0D,$00,$00,$10,$0E,$B8,$0B,$0F,$00,$16
+	.byte $00,$01,$40,$06,$96,$00,$18,$00,$22,$00,$22,$00,$22,$00,$22,$00
+	.byte $22,$00,$00,$3F
+<% } %>
 
 .if(FT_SFX_ENABLE)
 sounds_data:
 	.include "../../sound/sfx.asm"
 .endif
 
-.segment "SAMPLES"
+.segment "DMC"
 
 .if(FT_DPCM_ENABLE)
-	.incbin "../sound/music.dmc"
+	.incbin "../../sound/samples.bin"
 .endif
 <% } %>

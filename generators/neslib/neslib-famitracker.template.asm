@@ -2,9 +2,7 @@
 ;with improvements by VEG
 ;Feel free to do anything you want with this code, consider it Public Domain
 
-;v050517
-
-
+;modified to work with the FamiTracker music driver
 
 	.export _pal_all,_pal_bg,_pal_spr,_pal_col,_pal_clear
 	.export _pal_bright,_pal_spr_bright,_pal_bg_bright
@@ -15,7 +13,7 @@
 	.export _bank_spr,_bank_bg
 	.export _vram_read,_vram_write
 	.export _music_play,_music_stop,_music_pause
-	.export _sfx_play,_sample_play
+	.export _sfx_play
 	.export _pad_poll,_pad_trigger,_pad_state
 	.export _rand8,_rand16,_set_rand
 	.export _vram_adr,_vram_put,_vram_fill,_vram_inc,_vram_unrle
@@ -127,7 +125,91 @@ neslib_nmi:
 
 @skipNtsc:
 
-	jsr FamiToneUpdate
+	;play music, the code is modified to put data into output buffer instead of APU registers
+
+	lda <MUSIC_PLAY
+	ror
+	bcc :+
+	jsr ft_music_play
+	jmp :++
+:
+	lda #$30			;mute channels when music does not play
+	sta <BUF_4000
+	sta <BUF_4004
+	sta <BUF_400C
+	lda #$00
+	sta <BUF_4008
+:
+
+	;process all sound effect streams
+	
+	.if(FT_SFX_ENABLE)
+	
+	.if FT_SFX_STREAMS>0
+	ldx #FT_SFX_CH0
+	jsr _FT2SfxUpdate
+	.endif
+	.if FT_SFX_STREAMS>1
+	ldx #FT_SFX_CH1
+	jsr _FT2SfxUpdate
+	.endif
+	.if FT_SFX_STREAMS>2
+	ldx #FT_SFX_CH2
+	jsr _FT2SfxUpdate
+	.endif
+	.if FT_SFX_STREAMS>3
+	ldx #FT_SFX_CH3
+	jsr _FT2SfxUpdate
+	.endif
+	
+	.endif
+
+	;send data from the output buffer to the APU
+
+	lda <BUF_4000
+	sta $4000
+	lda <BUF_4001
+	sta $4001
+	lda <BUF_4002
+	sta $4002
+
+	lda <BUF_4003
+	cmp <PREV_4003
+	beq :+
+	sta <PREV_4003
+	sta $4003
+:
+
+	lda <BUF_4004
+	sta $4004
+	lda <BUF_4005
+	sta $4005
+	lda <BUF_4006
+	sta $4006
+
+	lda <BUF_4007
+	cmp <PREV_4007
+	beq :+
+	sta <PREV_4007
+	sta $4007
+:
+
+	lda <BUF_4008
+	sta $4008
+	lda <BUF_4009
+	sta $4009
+	lda <BUF_400A
+	sta $400A
+	lda <BUF_400B
+	sta $400B
+	lda <BUF_400C
+	sta $400C
+	lda <BUF_400D
+	sta $400D
+	lda <BUF_400E
+	sta $400E
+	lda <BUF_400F
+	sta $400F
 
 	;pla
 	;tay
@@ -135,11 +217,253 @@ neslib_nmi:
 	;tax
 	;pla
 
-    ;rti
+	; rti
 	rts
 
 
 
+;famitone sound effects code and structures
+
+FT_VARS=FT_BASE_ADR
+
+	.if(FT_PAL_SUPPORT)
+	.if(FT_NTSC_SUPPORT)
+FT_PITCH_FIX = (FT_PAL_SUPPORT|FT_NTSC_SUPPORT)			;add PAL/NTSC pitch correction code only when both modes are enabled
+	.endif
+	.endif
+
+
+;zero page variables
+
+FT_TEMP_PTR			= FT_TEMP		;word
+FT_TEMP_PTR_L		= FT_TEMP_PTR+0
+FT_TEMP_PTR_H		= FT_TEMP_PTR+1
+FT_TEMP_VAR1		= FT_TEMP+2
+
+;sound effect stream variables, 2 bytes and 15 bytes per stream
+;when sound effects are disabled, this memory is not used
+
+FT_PAL_ADJUST	    = FT_VARS+0
+FT_SFX_ADR_L		= FT_VARS+1
+FT_SFX_ADR_H		= FT_VARS+2
+FT_SFX_BASE_ADR		= FT_VARS+3
+
+FT_SFX_STRUCT_SIZE	= 15
+FT_SFX_REPEAT		= FT_SFX_BASE_ADR+0
+FT_SFX_PTR_L		= FT_SFX_BASE_ADR+1
+FT_SFX_PTR_H		= FT_SFX_BASE_ADR+2
+FT_SFX_OFF			= FT_SFX_BASE_ADR+3
+FT_SFX_BUF			= FT_SFX_BASE_ADR+4	;11 bytes
+
+
+;aliases for sound effect channels to use in user calls
+
+FT_SFX_CH0			= FT_SFX_STRUCT_SIZE*0
+FT_SFX_CH1			= FT_SFX_STRUCT_SIZE*1
+FT_SFX_CH2			= FT_SFX_STRUCT_SIZE*2
+FT_SFX_CH3			= FT_SFX_STRUCT_SIZE*3
+
+
+
+	.if(FT_SFX_ENABLE)
+
+;------------------------------------------------------------------------------
+; init sound effects player, set pointer to data
+; in: X,Y is address of sound effects data
+;------------------------------------------------------------------------------
+
+FamiToneSfxInit:
+
+	stx <TEMP+0
+	sty <TEMP+1
+	
+	ldy #0
+	
+	.if(FT_PITCH_FIX)
+
+	lda FT_PAL_ADJUST		;add 2 to the sound list pointer for PAL
+	bne @ntsc
+	iny
+	iny
+@ntsc:
+
+	.endif
+	
+	lda (TEMP),y		;read and store pointer to the effects list
+	sta FT_SFX_ADR_L
+	iny
+	lda (TEMP),y
+	sta FT_SFX_ADR_H
+
+	ldx #FT_SFX_CH0			;init all the streams
+
+@set_channels:
+
+	jsr _FT2SfxClearChannel
+	txa
+	clc
+	adc #FT_SFX_STRUCT_SIZE
+	tax
+	cpx #FT_SFX_CH0+FT_SFX_STRUCT_SIZE*FT_SFX_STREAMS
+	bne @set_channels
+
+	rts
+
+
+;internal routine, clears output buffer of a sound effect
+;in: A is 0
+;    X is offset of sound effect stream
+
+_FT2SfxClearChannel:
+
+	lda #0
+	sta FT_SFX_PTR_H,x		;this stops the effect
+	sta FT_SFX_REPEAT,x
+	sta FT_SFX_OFF,x
+	sta FT_SFX_BUF+6,x		;mute triangle
+	lda #$30
+	sta FT_SFX_BUF+0,x		;mute pulse1
+	sta FT_SFX_BUF+3,x		;mute pulse2
+	sta FT_SFX_BUF+9,x		;mute noise
+
+	rts
+
+
+;------------------------------------------------------------------------------
+; play sound effect
+; in: A is a number of the sound effect 0..127
+;     X is offset of sound effect channel, should be FT_SFX_CH0..FT_SFX_CH3
+;------------------------------------------------------------------------------
+
+FamiToneSfxPlay:
+
+	asl a					;get offset in the effects list
+	tay
+
+	jsr _FT2SfxClearChannel	;stops the effect if it plays
+
+	lda FT_SFX_ADR_L
+	sta <TEMP+0
+	lda FT_SFX_ADR_H
+	sta <TEMP+1
+
+	lda (TEMP),y		;read effect pointer from the table
+	sta FT_SFX_PTR_L,x		;store it
+	iny
+	lda (TEMP),y
+	sta FT_SFX_PTR_H,x		;this write enables the effect
+
+	rts
+
+
+	
+;internal routine, update one sound effect stream
+;in: X is offset of sound effect stream
+
+_FT2SfxUpdate:
+
+	lda FT_SFX_REPEAT,x		;check if repeat counter is not zero
+	beq @no_repeat
+	dec FT_SFX_REPEAT,x		;decrement and return
+	bne @update_buf			;just mix with output buffer
+
+@no_repeat:
+	lda FT_SFX_PTR_H,x		;check if MSB of the pointer is not zero
+	bne @sfx_active
+	rts						;return otherwise, no active effect
+
+@sfx_active:
+	sta <FT_TEMP_PTR_H		;load effect pointer into temp
+	lda FT_SFX_PTR_L,x
+	sta <FT_TEMP_PTR_L
+	ldy FT_SFX_OFF,x
+	clc
+
+@read_byte:
+	lda (FT_TEMP_PTR),y		;read byte of effect
+	bmi @get_data			;if bit 7 is set, it is a register write
+	beq @eof
+	iny
+	sta FT_SFX_REPEAT,x		;if bit 7 is reset, it is number of repeats
+	tya
+	sta FT_SFX_OFF,x
+	jmp @update_buf
+
+@get_data:
+	iny
+	stx <FT_TEMP_VAR1		;it is a register write
+	adc <FT_TEMP_VAR1		;get offset in the effect output buffer
+	and #$7f
+	tax
+	lda (FT_TEMP_PTR),y		;read value
+	iny
+	sta FT_SFX_BUF,x		;store into output buffer
+	ldx <FT_TEMP_VAR1
+	jmp @read_byte			;and read next byte
+
+@eof:
+	sta FT_SFX_PTR_H,x		;mark channel as inactive
+
+@update_buf:
+
+	lda <BUF_4000			;compare effect output buffer with main output buffer
+	and #$0f				;if volume of pulse 1 of effect is higher than that of the
+	sta <FT_TEMP_VAR1		;main buffer, overwrite the main buffer value with the new one
+	lda FT_SFX_BUF+0,x
+	and #$0f
+	cmp <FT_TEMP_VAR1
+	bcc @no_pulse1
+	lda FT_SFX_BUF+0,x
+	sta <BUF_4000
+	lda FT_SFX_BUF+1,x
+	sta <BUF_4002
+	lda FT_SFX_BUF+2,x
+	sta <BUF_4003
+@no_pulse1:
+
+	lda <BUF_4004		;same for pulse 2
+	and #$0f
+	sta <FT_TEMP_VAR1
+	lda FT_SFX_BUF+3,x
+	and #$0f
+	cmp <FT_TEMP_VAR1
+	bcc @no_pulse2
+	lda FT_SFX_BUF+3,x
+	sta <BUF_4004
+	lda FT_SFX_BUF+4,x
+	sta <BUF_4006
+	lda FT_SFX_BUF+5,x
+	sta <BUF_4007
+@no_pulse2:
+
+	lda FT_SFX_BUF+6,x		;overwrite triangle of main output buffer if it is active
+	beq @no_triangle
+	sta <BUF_4008
+	lda FT_SFX_BUF+7,x
+	sta <BUF_400A
+	lda FT_SFX_BUF+8,x
+	sta <BUF_400B
+@no_triangle:
+
+	lda <BUF_400C			;same as for pulse 1 and 2, but for noise
+	and #$0f
+	sta <FT_TEMP_VAR1
+	lda FT_SFX_BUF+9,x
+	and #$0f
+	cmp <FT_TEMP_VAR1
+	bcc @no_noise
+	lda FT_SFX_BUF+9,x
+	sta <BUF_400C
+	lda FT_SFX_BUF+10,x
+	sta <BUF_400E
+@no_noise:
+
+	rts
+
+	.endif
+	
+	
+	
 ;void __fastcall__ pal_all(const char *data);
 
 _pal_all:
@@ -768,19 +1092,48 @@ _vram_write:
 
 ;void __fastcall__ music_play(unsigned char song);
 
-_music_play=FamiToneMusicPlay
+_music_play:
+
+	ldx #<music_data
+	stx <ft_music_addr+0
+	ldx #>music_data
+	stx <ft_music_addr+1
+
+	ldx <NTSC_MODE
+	jsr ft_music_init
+	
+	lda #1
+	sta <MUSIC_PLAY
+	rts
 
 
 
 ;void __fastcall__ music_stop(void);
 
-_music_stop=FamiToneMusicStop
+_music_stop:
+
+	ldx #<music_dummy_data
+	stx <ft_music_addr+0
+	ldx #>music_dummy_data
+	stx <ft_music_addr+1
+	
+	lda #0
+	ldx <NTSC_MODE
+	jsr ft_music_init
+	
+	lda #0
+	sta <MUSIC_PLAY
+	rts
 
 
 
 ;void __fastcall__ music_pause(unsigned char pause);
 
-_music_pause=FamiToneMusicPause
+_music_pause:
+
+	inc <MUSIC_PLAY
+	
+	rts
 
 
 
@@ -806,28 +1159,18 @@ _sfx_play:
 .endif
 
 
-;void __fastcall__ sample_play(unsigned char sample);
-
-.if(FT_DPCM_ENABLE)
-_sample_play=FamiToneSamplePlay
-.else
-_sample_play:
-	rts
-.endif
-
 
 ;unsigned char __fastcall__ pad_poll(unsigned char pad);
 
 _pad_poll:
 
 	tay
-	ldx #3
+	ldx #0
 
 @padPollPort:
 
 	lda #1
 	sta CTRL_PORT1
-	sta <PAD_BUF-1,x
 	lda #0
 	sta CTRL_PORT1
 	lda #8
@@ -837,10 +1180,12 @@ _pad_poll:
 
 	lda CTRL_PORT1,y
 	lsr a
-	rol <PAD_BUF-1,x
-	bcc @padPollLoop
+	ror <PAD_BUF,x
+	dec <TEMP
+	bne @padPollLoop
 
-	dex
+	inx
+	cpx #3
 	bne @padPollPort
 
 	lda <PAD_BUF
@@ -1257,5 +1602,3 @@ palBrightTable8:
 	.byte $30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30
 	.byte $30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30
 	.byte $30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30,$30
-
-	.include "famitone2.asm"

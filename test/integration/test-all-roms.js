@@ -36,6 +36,8 @@ async function runRom(cmd) {
 }
 
 describe('Test all roms', () => {
+    // NOTE: This isn't really a good use of jasmine - it'd be nice to have tests for each thing, but that would make them
+    // run in sequence, which is _SLOW_ - as of now it's 5s vs 12s, and that'll only get worse. 
     it('Runs all of the test roms, validates that they start', async () => {
         // Do first one separate to prep mesen, etc
         const firstOne = RomCommands.shift();
