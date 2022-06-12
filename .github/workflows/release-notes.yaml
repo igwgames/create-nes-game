@@ -1,5 +1,6 @@
 on:
   release:
+    types: [published, unpublished, created, edited, deleted, released]
 
 jobs:
   build_notes:
@@ -38,7 +39,7 @@ jobs:
       - name: "Update github docs in main branch"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Automated documentation push for release ${{ env.RELEASE_VERSION }}
+          commit_message: Automated documentation push
           file_pattern: docs/*
           
 
