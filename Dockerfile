@@ -11,8 +11,8 @@ WORKDIR /app
 LABEL com.circleci.preserve-entrypoint=true
 
 ENV DISPLAY=":99"
-RUN	printf '#!/bin/sh\nXvfb :99 -screen 0 1280x1024x24 &\nexec "$@"\n' | sudo tee /docker-entrypoint.sh && \
-	sudo chmod +x /docker-entrypoint.sh
+RUN printf '#!/bin/sh\nXvfb :99 -screen 0 1280x1024x24 &\nexec "$@"\n' | sudo tee /docker-entrypoint.sh && \
+    sudo chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/sh"]
