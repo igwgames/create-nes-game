@@ -42,7 +42,7 @@ jobs:
               name: rel.name,
               assets: rel.assets.map(a => ({url: a.url, name: a.name, id: a.id, size: a.size, download_url: a.browser_download_url})),
               body: rel.body,
-              tar_url: rel.tarball_url
+              tar_url: rel.tarball_url,
               zip_url: rel.zipball_url
             })
           ))"

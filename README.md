@@ -51,3 +51,14 @@ Assembly code must be included from `source/assembly/main.asm`, using the `.incl
 
 All C code in the `source/c/` folder will automatically be compiled and included - you do not need
 to do anything.
+
+# For maintainers
+
+## How to create a release
+
+Releases are largely automated, but there are two manual steps needed: 
+
+1. Create a new tag locally using git, eg `git tag v1.0.1`, then push it using `git push --tags`
+2. Wait for the automation to create the new release...
+3. Update the release with real release notes from us. This will trigger updates to what we show in the 
+   app ui when you try to update.
