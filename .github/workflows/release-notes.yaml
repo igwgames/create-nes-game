@@ -45,7 +45,7 @@ jobs:
               tar_url: rel.tarball_url,
               zip_url: rel.zipball_url
             })
-          ))"
+          )))"
       - name: Remove temp file
         run: rm temp.json
 
