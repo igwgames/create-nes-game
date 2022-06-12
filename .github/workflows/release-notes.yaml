@@ -6,12 +6,6 @@ jobs:
   build_notes:
     runs-on: ubuntu-latest
     name: Release new version
-    # What this does, in human form: 
-    # - Update package.json
-    # - build everything
-    # - run an integration test
-    # - rewrite docs
-    # - publish to gh and docker
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,7 +27,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Testing output"
-        run: echo "beeeeees" ${{ steps.release_api_data.outputs.data }}
+        run: echo "${{ steps.release_api_data.outputs.data }}" > temp.json
+      - name: "Parsing out useful info"
+        run: |
+          node -e "require('fs').writeFileSync('docs/release-notes.json', 
+          JSON.stringify(
+            require('temp.json').map(rel => ({
+              url: rel.url, 
+              id: rel.id, 
+              tag_name: rel.tag_name, 
+              name: rel.name,
+              assets: rel.assets.map(a => ({url: a.url, name: a.name, id: a.id, size: a.size, download_url: a.browser_download_url})),
+              body: rel.body,
+              tar_url: rel.tarball_url
+              zip:url: rel.zipball_url
+            })
+          ))"
+      - name: Remove temp file
+        run: rm temp.json
 
 
       - name: "Update github docs in main branch"
