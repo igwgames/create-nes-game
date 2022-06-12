@@ -27,7 +27,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Testing output"
-        run: echo "${{ steps.release_api_data.outputs.data }}" > temp.json
+        run: |
+          cat > temp.json <<'EOF'
+          ${{ steps.release_api_data.outputs.data }}
+          EOF
       - name: "Parsing out useful info"
         run: |
           node -e "require('fs').writeFileSync('docs/release-notes.json', 
