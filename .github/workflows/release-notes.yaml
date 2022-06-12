@@ -1,0 +1,44 @@
+on:
+  release:
+
+jobs:
+  build_notes:
+    runs-on: ubuntu-latest
+    name: Release new version
+    # What this does, in human form: 
+    # - Update package.json
+    # - build everything
+    # - run an integration test
+    # - rewrite docs
+    # - publish to gh and docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Publish to the docs dir on main after any change to releases
+      - name: Check out main branch again for docs
+        run: git fetch && git checkout main
+
+      # NOTE: I don't paginate, so once we get 100 releases some history will drop off.
+      # This should be only used for "api" requests, so hopefully okay...
+      - name: Get api data for releases
+        uses: octokit/request-action@v2.x
+        id: release_api_data
+        with:
+          route: GET /repos/cppchriscpp/create-nes-game/releases
+          owner: cppchriscpp
+          repo: create-nes-game
+          per_page: 100
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Testing output"
+        run: echo "beeeeees" ${{ steps.release_api_data.outputs.data }}
+
+
+      - name: "Update github docs in main branch"
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated documentation push for release ${{ env.RELEASE_VERSION }}
+          file_pattern: docs/*
+          
+
