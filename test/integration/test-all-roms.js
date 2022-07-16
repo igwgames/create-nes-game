@@ -16,21 +16,21 @@ const fs = require('fs'),
 async function runRom(cmd) {
     const romFile = path.join(romDir, cmd.name, 'rom', cmd.name + '.nes'),
         rom = new NesRomFile(romFile),
-        ctx = "(" + cmd.name + ")";
+        ctx = cmd.name;
     expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
 
     const emu = new NesEmulator(romFile);
     await emu.ensureEmulatorAvailable();
     await emu.start();
     await emu.runCpuFrames(12);
-    expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
+    expect(await emu.getByteValue('testVariable')).withContext(`${ctx} - testVariable`).toEqual(1);
     const beforeCount = await emu.getByteValue('nmiFrameCount');
-    expect(await emu.getByteValue('nmiFrameCount')).withContext(ctx).toEqual(beforeCount + 1);
+    expect(await emu.getByteValue('nmiFrameCount')).withContext(`${ctx} - nmiFrameCount`).toEqual(beforeCount + 1);
     const screenshot = await emu.takeScreenshot(cmd.name + '.png');
     if (cmd['use-c'] === 'yes') {
-        expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-c_000.png');
+        expect(screenshot).withContext(`${ctx} - screenshot`).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-c_000.png');
     } else {
-        expect(screenshot).withContext(ctx).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-asm_000.png');
+        expect(screenshot).withContext(`${ctx} - screenshot`).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-asm_000.png');
     }
     await emu.stop();
 }
