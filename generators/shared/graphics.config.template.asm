@@ -31,6 +31,9 @@
 ; It also is a good idea to move this to a prg bank other than the primary.
 ;
 <% if (it.game.includeC) { %>
+; Make sure to start the names with an underscore - this tells the assembler to make the
+; data available to C. (C will not use the underscore)
+; 
 ; Any new graphics you add here also need to be added to `graphics.config.h` as extern 
 ; variables, so they can be read from C code. 
 ;

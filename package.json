@@ -55,7 +55,8 @@
       "generators/**/*.nam",
       "generators/**/*.chr",
       "generators/**/*.pal",
-      "generators/**/*.s"
+      "generators/**/*.s",
+      "generators/**/*.md"
     ],
     "scripts": [
       "generators/**/*.js",
