@@ -111,7 +111,7 @@ void main(void) {
     testVariable = 1;
     <% } %>
 
-    // Play the first song built into the rom
+    // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
     music_play(0);
 
     // Infinite loop to end things
