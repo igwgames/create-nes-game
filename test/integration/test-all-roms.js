@@ -22,7 +22,7 @@ async function runRom(cmd) {
     const emu = new NesEmulator(romFile);
     await emu.ensureEmulatorAvailable();
     await emu.start();
-    await emu.runCpuFrames(10);
+    await emu.runCpuFrames(12);
     expect(await emu.getByteValue('testVariable')).withContext(ctx).toEqual(1);
     const beforeCount = await emu.getByteValue('nmiFrameCount');
     expect(await emu.getByteValue('nmiFrameCount')).withContext(ctx).toEqual(beforeCount + 1);

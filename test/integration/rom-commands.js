@@ -1,10 +1,13 @@
 // Used to generate roms for the test commands with the various supported methods.
+// NOTE: There's probably a smart way to programatically list out all possibilities, which may be worth
+// doing at some point. For now I'm cherry-picking to try to catch edge cases.
 
 const defaults = {
     mapper: "nrom",
     "chr-ram": "yes",
     "prg-banks": 2,
     "chr-banks": 0,
+    "prg-ram": "none",
     "mirroring": "horizontal",
     "use-c": "no",
     "ci-provider": "none",
@@ -132,7 +135,78 @@ let RomCommands = [{
     mirroring: "vertical",
     useC: "yes",
     cLibrary: "neslib with famitracker"
- 
+}, {
+    name: "simple-mmc1-32-asm-chrram",
+    mapper: "mmc1 (skrom)",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "no",
+    cLibrary: "none"
+}, {
+    name: "simple-mmc1-128-asm-chrrom",
+    mapper: "mmc1 (skrom)",
+    chrRam: "no",
+    prgBanks: 8,
+    chrBanks: 4,
+    mirroring: "vertical",
+    useC: "no",
+    cLibrary: "none"
+}, {
+    name: "simple-mmc1-32-c-chrram",
+    mapper: "mmc1 (skrom)",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "none"
+}, {
+    name: "simple-mmc1-256-c-chrrom",
+    mapper: "mmc1 (skrom)",
+    chrRam: "no",
+    prgBanks: 16,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "none"
+}, {
+    name: "simple-mmc1-32-c-neslib-chrram",
+    mapper: "mmc1 (skrom)",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2"
+}, {
+    name: "simple-mmc1-64-c-neslib-chrrom",
+    mapper: "mmc1 (skrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2"
+}, {
+    name: "simple-mmc1-32-c-neslib-ft-chrram",
+    mapper: "mmc1 (skrom)",
+    chrRam: "yes",
+    prgBanks: 2,
+    chrBanks: 0,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
+}, {
+    name: "simple-mmc1-64-c-neslib-ft-chrrom",
+    mapper: "mmc1 (skrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 4,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
 }];
 
 RomCommands = RomCommands.map(elem => {
