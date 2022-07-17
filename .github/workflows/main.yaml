@@ -38,6 +38,8 @@ jobs:
 
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
+      - name: Possible workaround for https://github.com/mono/mono/issues/18238
+        run: rm -Rf ~/.config/.mono
       - name: Run integration tests
         run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
       - name: Clean up xvfb
