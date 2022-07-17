@@ -20,6 +20,11 @@ compile and run. (and even unit test, if you want!)
 * Optional rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
 * Optional continuous integration support with either github or circleci
 
+## Supported operating systems
+
+* Windows (x86 and x86_64)
+* Ubuntu (Other distros using apt may also work unofficially)
+
 # How does it work?
 
 The tool will ask you a series of questions about your game, giving reasonable defaults and 
