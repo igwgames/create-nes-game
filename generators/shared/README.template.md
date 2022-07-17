@@ -86,6 +86,20 @@ It also includes the famitracker driver, provided with [famitracker](http://fami
 
 <% } %>
 <% } %>
+<% if (it.game.includeCLibrary === 'neslib with famitracker') { %>
+# Music
+
+Music is created using [Famitracker 0.4.6](http://famitracker.com/). Once you have music you like, you'll need to
+export it for use with this engine. Follow these steps to do so: 
+
+1. In the `File` menu, select `Create NSF`.
+2. Toward the middle of the dialog, there is a `Type of file` dropdown - choose `BIN - Raw music data`
+3. Save the generated file into the `sound/` folder as `music.bin`.
+4. If it offers to save samples after the main save, save the second file in `sound/` as `samples.bin`.
+
+Next time you run `create-nes-game build` your new music will be added to the game.
+
+<% } %>
 -----
 
 This rom uses [create-nes-game](https://cppchriscpp.github.io/create-nes-game/)!
