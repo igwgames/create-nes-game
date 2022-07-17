@@ -6,8 +6,7 @@ beforeAll(() => {
     require('nes-test').JasmineMatchers.installMatchers();
 });
 
-const fs = require('fs'),
-    NesRomFile = require('nes-test').NesRomFile,
+const NesRomFile = require('nes-test').NesRomFile,
     NesEmulator = require('nes-test').NesEmulator,
     path = require('path'),
     romDir = path.join(__dirname, 'test-roms'),
@@ -42,10 +41,19 @@ describe('Test all roms', () => {
         // Do first one separate to prep mesen, etc
         const firstOne = RomCommands.shift();
         await runRom(firstOne);
+        console.info('First test completed, running the rest in chunks.');
 
-        const promises = RomCommands.map(runRom);
+        const chunkSize = 8;
+        const romCommandChunks = [];
+        for (let i = 0; i < RomCommands.length; i += chunkSize) {
+            romCommandChunks.push(RomCommands.slice(i, i + chunkSize))
+        }
 
 
-        await Promise.all(promises);
+        for (let i = 0; i < romCommandChunks.length; i++) {
+            console.info(`Running chunk ${i+1} of ${romCommandChunks.length+1}`)
+            await Promise.all(romCommandChunks[i].map(runRom))
+        }
+
     }, 30000);
 });
