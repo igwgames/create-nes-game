@@ -23,7 +23,7 @@ compile and run. (and even unit test, if you want!)
 ## Supported operating systems
 
 * Windows (x86 and x86_64)
-* Ubuntu (Other distros using apt may also work unofficially)
+* Ubuntu (x64) (Other distros using apt may also work unofficially)
 
 # How does it work?
 

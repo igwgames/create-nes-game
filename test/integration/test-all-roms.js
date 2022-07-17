@@ -41,6 +41,7 @@ describe('Test all roms', () => {
         // Do first one separate to prep mesen, etc
         const firstOne = RomCommands.shift();
         await runRom(firstOne);
+        // NOTE: This is mainly for github actions; it doesn't like me starting up 32+ processes for rom builds+tests at once
         console.info('First test completed, running the rest in chunks.');
 
         const chunkSize = 8;
