@@ -35,14 +35,12 @@ This rom includes unit tests that can be used to verify that the game works. Run
 
 └─ config/                  - Configuration for the assembler/compiler
 └─ graphics/                - Graphics data - backgrounds, palettes, and nametables
-|    graphics.config.asm    - Add references to new graphics files here to use them in C
-<% if (it.game.includeCLibrary === 'neslib with famitracker' || it.game.includeCLibrary === 'neslib with famitone2') { %>
-|    YOUR_FILE_NAME.nam     - Nametable data in binary form, such as exported from nesst
-|                             Will automatically be run-length encoded into files with the .rle suffix.
-<% } %>
+|    graphics.config.asm    - Add references to new graphics files here to use them from code
+|    YOUR_FILE_NAME.chr     - Graphics data in binary form, such as exported from nesst
+|                             Will automatically be run-length encoded into files with the .rle.chr suffix
 └─ rom/
 |    YOUR_GAME.nes          - The game rom
-|    YOUR_GAME.dbg          - Debugging information for the game - Mesen can use this to debug in assembly or c
+|    YOUR_GAME.dbg          - Debugging information for the game - Mesen can use this to debug your code directly
 <% if (it.game.includeCLibrary === 'neslib with famitracker' || it.game.includeCLibrary === 'neslib with famitone2') { %>
 └─ sound/
 <% if (it.game.includeCLibrary === 'neslib with famitracker') { %>

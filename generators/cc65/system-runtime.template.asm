@@ -257,22 +257,6 @@
     irq:
         rti
 
-    ;
-    ; Data
-    ; 
-    ; Game data is in this section. It's in the same code bank as above, and is only separated to make it easier to understand.
-    ;
-
-    ; Include the nametable data as a binary file
-    background:
-        .incbin "../../graphics/example.nam"
-    
-    ; Do the same with palettes
-    palette:
-        ; Foreground first
-        .incbin "../../graphics/example.pal"
-        ; Next, background. We don't have two palettes created, so repeat the same palette for now
-        .incbin "../../graphics/example.pal"
 <% if (it.game.includeCLibrary !== 'none') { %>
 <% if (it.game.includeCLibrary === 'neslib with famitone2') { %>
 ;
