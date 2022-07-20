@@ -207,6 +207,50 @@ let RomCommands = [{
     mirroring: "vertical",
     useC: "yes",
     cLibrary: "neslib with famitracker"
+}, {
+    name: "simple-mmc3-32-c-neslib-ft",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
+}, {
+    name: "simple-mmc3-32-c-neslib",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2"
+}, {
+    name: "simple-mmc3-32-c",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "yes",
+}, {
+    name: "simple-mmc3-32-asm",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 4,
+    chrBanks: 2,
+    mirroring: "vertical",
+    useC: "no"
+}, {
+    name: "simple-mmc3-256-c-neslib",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 64,
+    chrBanks: 32,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker"
+
 }];
 
 RomCommands = RomCommands.map(elem => {
