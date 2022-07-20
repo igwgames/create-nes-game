@@ -56,5 +56,8 @@ describe('Test all roms', () => {
             await Promise.all(romCommandChunks[i].map(runRom))
         }
 
+    // NOTE: This limit is really high to support github actions - though oddly it seems to time out way before the limit in place.
+    // I had a 30 second limit and it timed out with something that took 17 seconds when I upped it to 30. In short, if it's crashing, 
+    // we may need to up this test's time.
     }, 60000);
 });
