@@ -38,6 +38,8 @@ This rom includes unit tests that can be used to verify that the game works. Run
 |    graphics.config.asm    - Add references to new graphics files here to use them from code
 |    YOUR_FILE_NAME.chr     - Graphics data in binary form, such as exported from nesst
 |                             Will automatically be run-length encoded into files with the .rle.chr suffix
+|    YOUR_FILE_NAME.nam     - Nametable data in binary form, such as exported from nesst
+|                             Will automatically be run-length encoded into files with the .rle.nam suffix
 └─ rom/
 |    YOUR_GAME.nes          - The game rom
 |    YOUR_GAME.dbg          - Debugging information for the game - Mesen can use this to debug your code directly
