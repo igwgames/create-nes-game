@@ -56,5 +56,5 @@ describe('Test all roms', () => {
             await Promise.all(romCommandChunks[i].map(runRom))
         }
 
-    }, 30000);
+    }, 60000);
 });
