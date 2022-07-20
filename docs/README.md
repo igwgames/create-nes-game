@@ -23,7 +23,7 @@ compile and run. (and even unit test, if you want!)
 ## Supported operating systems
 
 * Windows (x86 and x86_64)
-* Ubuntu (Other distros using apt may also work unofficially)
+* Ubuntu (x64) (Other distros using apt may also work unofficially)
 
 # How does it work?
 
@@ -89,6 +89,16 @@ Nope, installation isn't required! It's only there as a convenience so you can t
 anywhere.
 
 If you prefer run the downloaded binary directly to build your games, that will work just fine.
+
+# Useful software 
+
+This is a list of software that's typically very helpful in NES development - either because it directly
+supports creating assets for the NES, or it creates things with open file formats that you can use.
+
+* Music composition: [Famitracker](https://famitracker.com)
+* Graphics creation: [NEXXT](https://www.patreon.com/frankengraphics) (Updates are free posts) or [NESST](https://shiru.untergrund.net/software.shtml)
+* Map creation: [Tiled](https://www.mapeditor.org/) (This requires you to convert the maps yourself - not plug and play!) 
+* C Library: [neslib](https://shiru.untergrund.net/software.shtml) (create-nes-game can automatically install this!)
 
 # For maintainers
 
