@@ -48,7 +48,7 @@ const BaseGameConfigurationFields = {
         // 16K banks, do conversion for other sizes
         type: 'number',
         default: 2,
-        possibleValues: [...Array(31).keys()].map(i => i+1)
+        possibleValues: [1, 2, 4, 8, 16, 32, 64, 128, 256]
     },
     includeC: {
         type: 'boolean',

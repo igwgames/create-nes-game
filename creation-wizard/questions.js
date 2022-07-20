@@ -56,7 +56,7 @@ const allQuestions = [
     },
     {
         id: "prg-banks",
-        question: 'How many (16kb) prg banks should the rom have?',
+        question: game => `How many (${mappers[game.mapper].prgBankSize}) prg banks should the rom have?`,
         type: 'choice',
         possibleValues: (game) => game.getMapperDefinition().prgBankOptions,
         defaultValue: (game) => game.getMapperDefinition().prgBankOptions[game.getMapperDefinition().prgBankOptions.length - 1],

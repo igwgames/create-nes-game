@@ -28,7 +28,7 @@
     INES_SRAM   = <%= it.game.useSram ? 1 : 0 %> ; 1 = battery backed SRAM at $6000-7FFF
 
     .byte 'N', 'E', 'S', $1A ; ID
-    .byte <%= it.game.prgBanks %> ; 16k PRG chunk count
+    .byte <%= (it.game.prgBanks / (it.mapper.prgBankSize === '8kb' ? 2 : 1)) %> ; 16k PRG chunk count
     .byte <%= it.game.useChrRam ? 0 : it.game.chrBanks %> ; 8k CHR chunk count
     .byte INES_MIRROR | (INES_SRAM << 1) | ((INES_MAPPER & $f) << 4)
     .byte (INES_MAPPER & %11110000)
@@ -110,7 +110,13 @@
 ; one will always be loaded. 
 ;
 
+<% if (it.game.mapper === 'mmc3 (tkrom)') { %>
+; The reset code MUST live in the last bank, because of how mmc3 works. Don't move this unless you know what
+; you're doing!
+.segment "CODE_2"
+<% } else { %>
 .segment "CODE"
+<% } %>
 
 
     ;
@@ -316,7 +322,13 @@ FT_SFX_STREAMS          = 4 ;number of sound effects played at once, 1..4
 ; make sure you update the nmi method in neslib.asm to switch banks too!
 ;
 
+<% if (it.game.mapper === 'mmc3 (tkrom)') { %>
+; Store music in the second fixed bank
+.segment "RODATA_2"
+<% } else { %>
 .segment "RODATA"
+<% } %>
+
 
 music_data:
 <% if (it.game.includeCLibrary === 'neslib with famitone2') { %>

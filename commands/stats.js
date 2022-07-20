@@ -2,10 +2,12 @@ const process = require('process'),
     path = require('path'),
     fs = require('fs'),
     appConfiguration = require('../config/app-configuration'),
+    mappers = require('../data/mappers'),
     BaseGameConfiguration = require('../config/base-game-configuration');
 
 async function run() {
-    const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
+    const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory),
+        mapper = mappers[game.mapper];
 
     const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
 
@@ -16,7 +18,7 @@ async function run() {
 
     logger.debug('Opening rom to get stats...');
     const romData = new Uint8Array(fs.readFileSync(romPath).buffer);
-    const prgLength = romData[4];
+    let prgLength = romData[4];
     const chrLength = romData[5];
 
     if (romData[0] !== 'N'.charCodeAt(0) || romData[1] !== 'E'.charCodeAt(0) || romData[2] !== 'S'.charCodeAt(0) || romData[3] !== 0x1a) {
@@ -24,7 +26,14 @@ async function run() {
         process.exit(1);
     }
 
-    if (romData.length !== (16/* header*/) + (prgLength * 16384) + (chrLength * 8192)) {
+    let prgBankSize = 16384;
+    if (mapper.prgBankSize === '8kb') {
+        prgLength *= 2;
+        prgBankSize = 8192;
+    }
+    const chrBankSize = 8192;
+
+    if (romData.length !== (16/* header*/) + (prgLength * prgBankSize) + (chrLength * chrBankSize)) {
         logger.warn('Rom file size appears to be wrong! Behavior past this point may be unexpected!');
     }
 
@@ -36,8 +45,8 @@ async function run() {
     for (let prgBankId = 0; prgBankId < prgLength; ++prgBankId) {
         currentByteRun = 0;
         thisBankFreeBytes = 0;
-        for (let i = 0; i < 16384; ++i) {
-            if (romData[16 + (prgBankId * 16384) + i] === 0) {
+        for (let i = 0; i < prgBankSize; ++i) {
+            if (romData[16 + (prgBankId * prgBankSize) + i] === 0) {
                 ++currentByteRun;
             } else {
                 if (currentByteRun > 8) {
@@ -55,11 +64,11 @@ async function run() {
     }
 
     logger.info('Stats for: ' + game.name + '.nes');
-    logger.info('Mapper: ' + game.mapper + ' | Rom Size: ' + romData.length + ' bytes. (16b header, ' + (prgLength * 16384) + 'b prg, ' + (chrLength * 8192) + 'b chr)');
-    logger.info(freeBytes + '/' + (prgLength * 16384) + ' bytes free');
+    logger.info('Mapper: ' + game.mapper + ' | Rom Size: ' + romData.length + ' bytes. (16b header, ' + (prgLength * prgBankSize) + 'b prg, ' + (chrLength * chrBankSize) + 'b chr)');
+    logger.info(freeBytes + '/' + (prgLength * prgBankSize) + ' bytes free');
     logger.info('Bank Breakdown: ');
     for (let i = 0; i < bankFreeBytes.length; ++i) {
-        logger.info('Bank ' + ((i + 1).toString().padStart(2, '0')) + ': ' + bankFreeBytes[i] + '/16384 bytes free');
+        logger.info('Bank ' + ((i + 1).toString().padStart(2, '0')) + ': ' + bankFreeBytes[i] + '/' + prgBankSize + ' bytes free');
     }
     
 }

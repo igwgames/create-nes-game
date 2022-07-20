@@ -8,6 +8,7 @@ const Mappers = {
         minChrBanks: 1,
         maxChrBanks: 1,
         prgBankOptions: [1, 2],
+        prgBankSize: '16kb',
         chrBankOptions: [1],
         
         features: {
@@ -35,6 +36,7 @@ const Mappers = {
         minChrBanks: 1,
         maxChrBanks: 16,
         prgBankOptions: [2, 4, 8, 16],
+        prgBankSize: '16kb',
         chrBankOptions: [2, 4, 8, 16],
         
         features: {
@@ -63,6 +65,7 @@ const Mappers = {
         minChrBanks: 0,
         maxChrBanks: 0,
         prgBankOptions: [2, 4, 8, 16],
+        prgBankSize: '16kb',
         chrBankOptions: [],
         
         features: {
@@ -84,13 +87,14 @@ const Mappers = {
     },
     'mmc3 (tkrom)': {
         mapperNumber: 4,
-        minPrgBanks: 2, 
-        maxPrgBanks: 32,
+        minPrgBanks: 4, 
+        maxPrgBanks: 64,
         softwareMirroring: false,
         allowBankswitch: true,
         minChrBanks: 2,
         maxChrBanks: 32,
-        prgBankOptions: [2, 4, 8, 16, 32],
+        prgBankOptions: [4, 8, 16, 32, 64],
+        prgBankSize: '8kb',
         chrBankOptions: [2, 4, 8, 16, 32],
         
         features: {

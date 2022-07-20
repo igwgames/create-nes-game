@@ -50,7 +50,7 @@ async function run() {
             let res = await inquirer.prompt([{
                 type: 'list', 
                 name: 'v', 
-                message: question.question, 
+                message: typeof question.question === 'function' ? question.question(currentGame) : question.question, 
                 choices: typeof question.possibleValues === 'function' ? question.possibleValues(currentGame) : question.possibleValues, 
                 default: typeof question.defaultValue === 'function' ? question.defaultValue(currentGame) : question.defaultValue
             }]);

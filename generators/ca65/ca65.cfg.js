@@ -7,7 +7,11 @@ const fs = require('fs'),
 
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
-    fs.writeFileSync(path.join(directory, 'config', 'ca65.cfg'), eta.render(fs.readFileSync(path.join(__dirname, 'ca65.template.cfg')).toString(), {game, mapper}, {autoTrim: false}));
+    if (game.mapper === 'mmc3 (tkrom)') {
+        fs.writeFileSync(path.join(directory, 'config', 'ca65.cfg'), eta.render(fs.readFileSync(path.join(__dirname, 'ca65-mmc3.template.cfg')).toString(), {game, mapper}, {autoTrim: false}));
+    } else {
+        fs.writeFileSync(path.join(directory, 'config', 'ca65.cfg'), eta.render(fs.readFileSync(path.join(__dirname, 'ca65.template.cfg')).toString(), {game, mapper}, {autoTrim: false}));
+    }
 }
 
 createConfig.stepName = 'ca65.cfg';

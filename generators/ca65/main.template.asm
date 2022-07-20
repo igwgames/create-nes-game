@@ -27,7 +27,7 @@
     INES_SRAM   = <%= it.game.useSram ? 1 : 0 %> ; 1 = battery backed SRAM at $6000-7FFF
 
     .byte 'N', 'E', 'S', $1A ; ID
-    .byte <%= it.game.prgBanks %> ; 16k PRG chunk count
+    .byte <%= (it.game.prgBanks / (it.mapper.prgBankSize === '8kb' ? 2 : 1)) %> ; 16k PRG chunk count
     .byte <%= it.game.useChrRam ? 0 : it.game.chrBanks %> ; 8k CHR chunk count
     .byte INES_MIRROR | (INES_SRAM << 1) | ((INES_MAPPER & $f) << 4)
     .byte (INES_MAPPER & %11110000)
@@ -116,6 +116,14 @@ testSramVariable: .res 1
     ; can play consistently. Don't change this unless you know what you're doing!
     ; Note: It should be the first thing written to the CODE segment, so it's always the first thing the console runs!
     ;
+<% if (it.game.mapper === 'mmc3 (tkrom)') { %>
+; The reset code MUST live in the last bank, because of how mmc3 works. Don't move this unless you know what
+; you're doing!
+;
+.segment "CODE_2"
+<% } else { %>
+.segment "CODE"
+<% } %>
 
     reset:
         sei       ; mask interrupts
