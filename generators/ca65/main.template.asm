@@ -292,9 +292,15 @@ testSramVariable: .res 1
             cpx #$04                ; needs to happen $04 times, to copy 1KB data
             bne @outsideLoop         
 
-        <% if (it.game.useSram) { %>
+<% if (it.game.useSram) { %>
         ; Increment testSramVariable, which won't be reset when the game is turned off.
         inc testSramVariable
+		lda testSramVariable
+		cmp #10
+		bcc @no_clear_sram_value
+		lda #0
+		sta testSramVariable
+		@no_clear_sram_value:
 
         ; Draw a tile to the screen based on the value of testSramVariable
         lda PPU_STATUS
@@ -304,8 +310,11 @@ testSramVariable: .res 1
         sta PPU_ADDR
 
         lda testSramVariable
+		; Add b0 to match the ascii table at the bottom of our chr data
+		clc
+		adc #$b0
         sta PPU_DATA
-        <% } %>
+<% } %>
 
         ; Reset ppu scrolling by writing 0 to both the X and Y positions.
         lda #0
@@ -319,11 +328,11 @@ testSramVariable: .res 1
         lda #%00011110  ; background and sprites enable, no left clipping
         sta PPU_MASK
 
-        <% if (it.game.testProvider !== 'none') { %>
+<% if (it.game.testProvider !== 'none') { %>
         ; Set testVariable to 1 for unit tests
         lda #1
         sta testVariable
-        <% } %>
+<% } %>
 
         ; After getting through the drawing, just run an infinite loop. Effectively crashes the game on the new screen.
         @forever:

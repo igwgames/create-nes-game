@@ -2,6 +2,10 @@ const appConfiguration = require('../config/app-configuration'),
     axios = require('axios');
 
 async function run() {
+    if (appConfiguration.skipVersionCheck) {
+        logger.debug('Skipped version check');
+        return;
+    }
     logger.debug('Running version update check');
 
     try { 

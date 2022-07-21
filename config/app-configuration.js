@@ -18,6 +18,7 @@ class AppConfiguration {
     allowColors = true;
     assumeYes = false;
     presetAnswers = {};
+    skipVersionCheck = false;
     nonDirectoryCommands = ["help", "create", "install", "check-update", "update"]
     // FIXME: Aim at gh pages
     updateUrl = 'http://localhost:8080/latest-version.json'
@@ -72,6 +73,10 @@ class AppConfiguration {
 
         if (args.indexOf ('--assume-yes') !== -1 || args.indexOf('-y') !== -1) {
             this.assumeYes = true;
+        }
+
+        if (args.indexOf('--skip-version-check') !== -1) {
+            this.skipVersionCheck = true
         }
 
         while (args.indexOf('--answer') !== -1) {

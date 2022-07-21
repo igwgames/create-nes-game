@@ -16,7 +16,7 @@ async function runRom(cmd) {
     const romFile = path.join(romDir, cmd.name, 'rom', cmd.name + '.nes'),
         rom = new NesRomFile(romFile),
         ctx = cmd.name;
-    expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
+    expect(rom.hasValidHeader()).withContext(`${ctx} - header`).toEqual(true);
 
     let emu = new NesEmulator(romFile);
     await emu.ensureEmulatorAvailable();
@@ -35,14 +35,14 @@ async function runRom(cmd) {
     if (cmd['prg-ram'] !== 'none') {
         const oldValue = await emu.getByteValue('testSramVariable');
         let expectedNewValue = oldValue + 1;
-        if (expectedNewValue > 9) {
+        if (expectedNewValue >= 9) {
             expectedNewValue = 0;
         }
         await emu.stop()
         emu = new NesEmulator(romFile);
         await emu.start();
         await emu.runCpuFrames(12);
-        expect(await emu.getByteValue('testSramVariable')).withContext(`${ctx} - sramTestVariable`).toEqual(expectedNewValue);
+        expect(await emu.getByteValue('testSramVariable')).withContext(`${ctx} - testSramVariable`).toEqual(expectedNewValue);
     }
 
     await emu.stop();

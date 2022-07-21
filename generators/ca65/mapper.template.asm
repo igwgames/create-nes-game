@@ -213,6 +213,11 @@
         jsr mmc3_set_prg_bank_1
         rts
 
+.segment "RODATA_2"
+    ; This section isn't defined in all roms, so put something there to quiet a warning
+    ; You can safely delete this if you're using RODATA_2 (or delete it)
+    .byte 00
+
 <% if (it.game.prgBanks > 2) { /* 2 banks get merged into one large prg bank for ease of use, so only do for 3+ */ %>
 ; Every bank needs a reset method at the start to get the mapper to start in the right state. So, do that.
 <% for (let i = 0; i < (it.game.prgBanks - 2) / 2; i++) { %>

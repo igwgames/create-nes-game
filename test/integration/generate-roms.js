@@ -7,11 +7,10 @@ const fs = require('fs'),
     romDir = path.join(__dirname, 'test-roms'),
     RomCommands = require('./rom-commands'),
     spawnAndWait = require('../../util/spawn-and-wait'),
-    // FIXME: Be smart about os, use proper one
     bin = "../../../dist/create-nes-game" + (os.platform() === 'linux' ? '-linux' : '');
 
 async function createCmd(cmd) {
-    const args = ['--assume-yes'];
+    const args = ['--assume-yes', '--skip-version-check'];
     Object.keys(cmd).forEach(key => {
         args.push('--answer');
         args.push(key + '=' + cmd[key]);
@@ -20,7 +19,7 @@ async function createCmd(cmd) {
     try { fs.mkdirSync(romDir, {recursive: true}); } catch (e) { logger.debug('Failed creating test folder, probably nothing.', e); }
     try {
         await spawnAndWait('CNG (' + cmd.name + ')', bin, null, args, {outputLevel: 'info', cwd: romDir});
-        await spawnAndWait('CNG (' + cmd.name + ')', path.join('..', bin), null, ['build'], {cwd: path.join(romDir, cmd.name)});
+        await spawnAndWait('CNG (' + cmd.name + ')', path.join('..', bin), null, ['build', '--skip-version-check'], {cwd: path.join(romDir, cmd.name)});
     } catch (e) {
         logger.error('Generating a rom failed! Dumping everything I know and bailing out.', {e, args, cmd});
         logger.error('REMINDER: This uses the binary, make sure you built one recently!');
