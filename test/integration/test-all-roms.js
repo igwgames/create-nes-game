@@ -18,19 +18,33 @@ async function runRom(cmd) {
         ctx = cmd.name;
     expect(rom.hasValidHeader()).withContext(ctx).toEqual(true);
 
-    const emu = new NesEmulator(romFile);
+    let emu = new NesEmulator(romFile);
     await emu.ensureEmulatorAvailable();
     await emu.start();
     await emu.runCpuFrames(12);
     expect(await emu.getByteValue('testVariable')).withContext(`${ctx} - testVariable`).toEqual(1);
     const beforeCount = await emu.getByteValue('nmiFrameCount');
     expect(await emu.getByteValue('nmiFrameCount')).withContext(`${ctx} - nmiFrameCount`).toEqual(beforeCount + 1);
+    const compareCmdName = cmd['prg-ram'] !== 'none' ? 'toBeSimilarToImage' : 'toBeIdenticalToImage';
     const screenshot = await emu.takeScreenshot(cmd.name + '.png');
     if (cmd['use-c'] === 'yes') {
-        expect(screenshot).withContext(`${ctx} - screenshot`).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-c_000.png');
+        expect(screenshot).withContext(`${ctx} - screenshot`)[compareCmdName]('./test-screenshots/simple-nrom-128-c_000.png');
     } else {
-        expect(screenshot).withContext(`${ctx} - screenshot`).toBeIdenticalToImage('./test-screenshots/simple-nrom-128-asm_000.png');
+        expect(screenshot).withContext(`${ctx} - screenshot`)[compareCmdName]('./test-screenshots/simple-nrom-128-asm_000.png');
     }
+    if (cmd['prg-ram'] !== 'none') {
+        const oldValue = await emu.getByteValue('testSramVariable');
+        let expectedNewValue = oldValue + 1;
+        if (expectedNewValue > 9) {
+            expectedNewValue = 0;
+        }
+        await emu.stop()
+        emu = new NesEmulator(romFile);
+        await emu.start();
+        await emu.runCpuFrames(12);
+        expect(await emu.getByteValue('testSramVariable')).withContext(`${ctx} - sramTestVariable`).toEqual(expectedNewValue);
+    }
+
     await emu.stop();
 }
 

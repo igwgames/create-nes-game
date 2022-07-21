@@ -104,12 +104,15 @@ void main(void) {
         ++i;
     }
 
-    <% if (it.game.useSram) { %>
+<% if (it.game.useSram) { %>
     // Increment the test sram variable, which will be saved to the cart/disk
     ++testSramVariable;
+    if (testSramVariable > 9) {
+        testSramVariable = 0;
+    }
     // Draw this value as a tile on the screen, right after our welcome message
-    write_register(PPU_DATA, testSramVariable);
-    <% } %>
+    write_register(PPU_DATA, testSramVariable + 0xb0);
+<% } %>
 
     // Set the scroll to 0,0
     write_register(PPU_SCROLL, 0);
@@ -119,10 +122,10 @@ void main(void) {
     // Turn the screen back on
     write_register(PPU_MASK, 0x1e);
 
-    <% if (it.game.testProvider !== 'none') { %>
+<% if (it.game.testProvider !== 'none') { %>
     // Update variable used in unit tests
     testVariable = 1;
-    <% } %>
+<% } %>
 
     // Infinite loop to end things
     while (1) {}

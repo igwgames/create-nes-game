@@ -202,6 +202,11 @@
         lda #MMC3_REG_SEL_CHR_MODE_A
         sta mmc3ChrInversionSetting
 
+<% if (it.game.useSram) { %>
+        lda #%10000000
+        sta MMC3_REG_PRG_RAM_PROTECT
+<% } %>
+
         lda #0
         jsr mmc3_set_prg_bank_0
         lda #1

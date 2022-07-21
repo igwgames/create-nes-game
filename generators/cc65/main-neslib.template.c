@@ -92,12 +92,15 @@ void main(void) {
         ++i;
     }
 
-    <% if (it.game.useSram) { %>
+<% if (it.game.useSram) { %>
     // Increment the test sram variable, which will be saved to the cart/disk
     ++testSramVariable;
+    if (testSramVariable > 9) {
+        testSramVariable = 0;
+    }
     // Draw this value as a tile on the screen, right after our welcome message
-    vram_put(testSramVariable);
-    <% } %>
+    vram_put(testSramVariable + 0xb0);
+<% } %>
 
     // Set the scroll to 0,0
     scroll(0, 0);
@@ -106,10 +109,10 @@ void main(void) {
     // Turn the screen back on
     ppu_on_all();
 
-    <% if (it.game.testProvider !== 'none') { %>
+<% if (it.game.testProvider !== 'none') { %>
     // Update variable used in unit tests
     testVariable = 1;
-    <% } %>
+<% } %>
 
     // Play the first song built into the rom. By default it is the title song from Shiru's game, Lan Master
     music_play(0);

@@ -250,10 +250,50 @@ let RomCommands = [{
     mirroring: "vertical",
     useC: "yes",
     cLibrary: "neslib with famitracker"
+}, {
+    name: "simple-mmc3-c-prg-ram",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 64,
+    chrBanks: 32,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "none",
+    prgRam: "8kb"
+}, {
+    name: "simple-mmc3-c-neslib-prg-ram",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 64,
+    chrBanks: 32,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitone2",
+    prgRam: "8kb"
+}, {
+    name: "simple-mmc3-c-neslib-ft-prg-ram",
+    mapper: "mmc3 (tkrom)",
+    chrRam: "no",
+    prgBanks: 16,
+    chrBanks: 16,
+    mirroring: "vertical",
+    useC: "yes",
+    cLibrary: "neslib with famitracker",
+    prgRam: "8kb"
+}, {
+    name: "simple-mmc1-asm-prg-ram",
+    mapper: "mmc1 (skrom)",
+    chrRam: "no",
+    prgBanks: 8,
+    chrBanks: 4,
+    mirroring: "vertical",
+    useC: "no",
+    cLibrary: "none",
+    prgRam: "8kb"
 
 }];
 
-RomCommands = RomCommands.map(elem => {
+function convertJson(elem) {
     // Camel to dashcase
     Object.keys(elem).forEach(key => {
         elem[key.replace(/[A-Z]/g, m => "-" + m.toLowerCase())] = elem[key];
@@ -263,6 +303,8 @@ RomCommands = RomCommands.map(elem => {
         ...defaults,
         ...elem
     };
-});
+}
+
+RomCommands = RomCommands.map(convertJson);
 
 module.exports = RomCommands;
