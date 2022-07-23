@@ -1,8 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <conio.h>
 #include <memory.h>
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+	#define string_comp _stricmp
+#else
+	#define string_comp strcasecmp
+#endif
+
 
 
 #define OUT_NESASM	0
@@ -2185,14 +2191,14 @@ int main(int argc,char *argv[])
 
 	for(i=1;i<argc;++i)
 	{
-		if(!_stricmp(argv[i],"-ca65")) outtype=OUT_CA65;
-		if(!_stricmp(argv[i],"-asm6")) outtype=OUT_ASM6;
-		if(!_stricmp(argv[i],"-ch5"))  channels=5;
-		if(!_stricmp(argv[i],"-ch4"))  channels=4;
-		if(!_stricmp(argv[i],"-ch3"))  channels=3;
-		if(!_stricmp(argv[i],"-ch2"))  channels=2;
-		if(!_stricmp(argv[i],"-ch1"))  channels=1;
-		if(!_stricmp(argv[i],"-s"))    separate=true;
+		if(!string_comp(argv[i],"-ca65")) outtype=OUT_CA65;
+		if(!string_comp(argv[i],"-asm6")) outtype=OUT_ASM6;
+		if(!string_comp(argv[i],"-ch5"))  channels=5;
+		if(!string_comp(argv[i],"-ch4"))  channels=4;
+		if(!string_comp(argv[i],"-ch3"))  channels=3;
+		if(!string_comp(argv[i],"-ch2"))  channels=2;
+		if(!string_comp(argv[i],"-ch1"))  channels=1;
+		if(!string_comp(argv[i],"-s"))    separate=true;
 
 		if(argv[i][0]!='-') strcpy(inname,argv[i]);
 	}
