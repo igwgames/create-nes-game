@@ -18,9 +18,11 @@ function createConfig(game, directory) {
             fs.writeFileSync(path.join(directory, 'source', 'assembly', 'neslib.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'neslib.template.asm')).toString(), {game, mapper}));
             fs.writeFileSync(path.join(directory, 'source', 'assembly', 'neslib-system.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'neslib-system.template.asm')).toString(), {game, mapper}));
             fs.writeFileSync(path.join(directory, 'source', 'assembly', 'famitone2.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'famitone2.template.asm')).toString(), {game, mapper}));
-            fs.writeFileSync(path.join(directory, 'sound', 'music.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'music.template.asm')).toString(), {game, mapper}));
-            fs.writeFileSync(path.join(directory, 'sound', 'sfx.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'sfx.template.asm')).toString(), {game, mapper}));
-
+            fs.writeFileSync(path.join(directory, 'sound', 'music.txt'), eta.render(fs.readFileSync(path.join(__dirname, 'music.template.txt')).toString(), {game, mapper}));
+            copyFileSync(path.join(__dirname, 'sfx.template.nsf'), path.join(directory, 'sound', 'sfx.nsf'));
+            copyFileSync(path.join(__dirname, 'example-music.template.ftm'), path.join(directory, 'sound', 'example-music.ftm'));
+            copyFileSync(path.join(__dirname, 'example-sfx.template.ftm'), path.join(directory, 'sound', 'example-sfx.ftm'));
+            copyFileSync(path.join(__dirname, 'example-music.template.ftm'), path.join(directory, 'sound', 'example-music.ftm'));
             break;
 
         case 'neslib with famitracker':
@@ -40,9 +42,10 @@ function createConfig(game, directory) {
                 copyFileSync(path.join(path.join(__dirname, 'famitracker_driver', file)), path.join(directory, 'source', 'assembly', 'famitracker_driver', file));
             });
             copyFileSync(path.join(__dirname, 'music-famitracker.bin'), path.join(directory, 'sound', 'music.bin'));
-            fs.writeFileSync(path.join(directory, 'sound', 'sfx.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'sfx.template.asm')).toString(), {game, mapper}));
+            copyFileSync(path.join(__dirname, 'sfx.template.nsf'), path.join(directory, 'sound', 'sfx.nsf'));
             copyFileSync(path.join(__dirname, 'samples-famitracker.bin'), path.join(directory, 'sound', 'samples.bin'));
-
+            copyFileSync(path.join(__dirname, 'example-sfx.template.ftm'), path.join(directory, 'sound', 'example-sfx.ftm'));
+            copyFileSync(path.join(__dirname, 'example-music.template.ftm'), path.join(directory, 'sound', 'example-music.ftm'));
 
             break;
         default:

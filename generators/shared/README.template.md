@@ -81,15 +81,31 @@ This rom includes unit tests that can be used to verify that the game works. Run
 # NESLib 
 
 This rom uses multiple tools from [Shiru](https://shiru.untergrund.net/) - namely neslib and famitone2. You can find the 
-details on [Shiru's website](https://shiru.untergrund.net/). 
+details on [Shiru's website](https://shiru.untergrund.net/). The readme files are probably the best reference.
+
+It was also bundled with music and sound effects from Shiru's game 
+[LAN Master](https://shiru.untergrund.net) - which have likely been replaced with the game's own assets.
+
 
 <% if (it.game.includeCLibrary === 'neslib with famitracker') { %>
 It also includes the famitracker driver, provided with [famitracker](http://famitracker.com/). (Version 0.4.6)
 
 <% } %>
+## Sound Effects
+
+Sound effects should be created using [famitracker](http://famitracker.com) (Version 0.4.6). They should be exported
+as an NSF file, and stored in `sound/sfx.nsf`. The tool will automatically convert them using famitone2's tools. 
+
+How to do this, from famitracker:
+1. In the `File` menu, select `Create NSF`.
+2. Toward the middle of the dialog, there is a `Type of file` dropdown - choose `NSF - Nintendo Sound File`
+3. Save the generated file into the `sound/` folder as `sfx.nsf`.
+
+Next time you run `create-nes-game build` your new sound effects will be added to the game.
+
 <% } %>
 <% if (it.game.includeCLibrary === 'neslib with famitracker') { %>
-# Music
+## Music
 
 Music is created using [Famitracker 0.4.6](http://famitracker.com/). Once you have music you like, you'll need to
 export it for use with this engine. Follow these steps to do so: 
@@ -97,7 +113,18 @@ export it for use with this engine. Follow these steps to do so:
 1. In the `File` menu, select `Create NSF`.
 2. Toward the middle of the dialog, there is a `Type of file` dropdown - choose `BIN - Raw music data`
 3. Save the generated file into the `sound/` folder as `music.bin`.
-4. If it offers to save samples after the main save, save the second file in `sound/` as `samples.bin`.
+4. If it offers to save samples after the main save, save the second file in `sound/` as `samples.bin`. (If not, leave the existing file there)
+
+Next time you run `create-nes-game build` your new music will be added to the game.
+
+<% } else { %>
+## Music
+
+Music is created using [Famitracker 0.4.6](http://famitracker.com/). Once you have music you like, you'll need to
+export it for use with this engine. Follow these steps to do so: 
+
+1. In the `File` menu, select `Export Text`
+2. Save the generated file into the `sound/` folder as `music.txt`
 
 Next time you run `create-nes-game build` your new music will be added to the game.
 

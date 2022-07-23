@@ -13,6 +13,9 @@ async function run() {
     try { fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'temp')) } catch (e) {}
     try { fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'rom')) } catch (e) {}
 
+    try { fs.rmSync(path.join(appConfiguration.workingDirectory, 'sound', 'sfx.asm')); } catch (e) {}
+    try { fs.rmSync(path.join(appConfiguration.workingDirectory, 'sound', 'music.asm')); } catch (e) {}
+
 }
 
 module.exports = {run};

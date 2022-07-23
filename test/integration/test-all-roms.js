@@ -35,7 +35,7 @@ async function runRom(cmd) {
     if (cmd['prg-ram'] !== 'none') {
         const oldValue = await emu.getByteValue('testSramVariable');
         let expectedNewValue = oldValue + 1;
-        if (expectedNewValue >= 9) {
+        if (expectedNewValue > 9) {
             expectedNewValue = 0;
         }
         await emu.stop()

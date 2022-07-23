@@ -2,3 +2,4 @@ node_modules
 dist
 test/integration/test-roms
 .vscode
+tools/neslib/unused

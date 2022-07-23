@@ -70,21 +70,15 @@ const BaseGameConfigurationFields = {
         default: 'mesen',
         possibleValues: ['system default', 'mesen', 'fceux']
     },
-    includeBankingLibrary: {
-        type: 'boolean',
-        default: false,
-        possibleValues: [false, true]
-    },
     includeCLibrary: {
         type: 'boolean',
         default: 'none',
         possibleValues: ['none', 'neslib with famitone2', 'neslib with famitracker']
     },
-
-    _useMapperPicker: {
-        type: 'boolean',
-        default: false,
-        possibleValues: [true, false]
+    neslibNtscPal: {
+        type: 'string',
+        default: 'both',
+        possibleValues: ['both', 'ntsc', 'pal']
     },
 
     console: {
@@ -180,7 +174,10 @@ class BaseGameConfiguration {
             try {
                 game[key] = obj[key];
             } catch (e) {
-                logger.debug('Skipping field', key, 'assuming getter only.', e.toString());
+                // We know about this one and it's spammy. Shush.
+                if (key !== 'configVersionString') {
+                    logger.debug('Skipping field', key, 'assuming getter only.', e.toString());
+                }
             }
         });
         return game;

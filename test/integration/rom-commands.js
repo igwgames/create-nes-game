@@ -14,7 +14,8 @@ const defaults = {
     // Alwys use nes-test! Testing relies on it!
     "test-provider": "nes-test",
     "emulator": "system default",
-    "c-library": "none"
+    "c-library": "none",
+    "neslib-ntsc-or-pal": "both"
 };
 
 let RomCommands = [{
@@ -179,7 +180,8 @@ let RomCommands = [{
     chrBanks: 0,
     mirroring: "vertical",
     useC: "yes",
-    cLibrary: "neslib with famitone2"
+    cLibrary: "neslib with famitone2",
+    neslibNtscOrPal: "ntsc"
 }, {
     name: "simple-mmc1-64-c-neslib-chrrom",
     mapper: "mmc1 (skrom)",
@@ -188,7 +190,8 @@ let RomCommands = [{
     chrBanks: 2,
     mirroring: "vertical",
     useC: "yes",
-    cLibrary: "neslib with famitone2"
+    cLibrary: "neslib with famitone2",
+    neslibNtscOrPal: "pal"
 }, {
     name: "simple-mmc1-32-c-neslib-ft-chrram",
     mapper: "mmc1 (skrom)",

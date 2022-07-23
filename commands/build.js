@@ -17,6 +17,7 @@ async function run() {
 
     const steps = [
         require('./rle'),
+        require('./neslib-sound-convert'),
         require('./compile'),
         require('./assemble'),
         require('./link'),

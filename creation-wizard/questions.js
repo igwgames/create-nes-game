@@ -138,6 +138,18 @@ const allQuestions = [
         }
     },
     {
+        id: "neslib-ntsc-or-pal",
+        question: "Which format would you like to use for sound effects?",
+        type: 'choice',
+        possibleValues: ['both', 'ntsc', 'pal'],
+        defaultValue: 'both',
+        showIf: (game) => game.includeCLibrary === 'neslib with famitone2' || game.includeCLibrary === 'neslib with famitracker',
+        onSubmit: (game, userValue) => {
+            game.neslibNtscPal = userValue;
+            return true;
+        }
+    },
+    {
         id: "ci-provider",
         question: 'What CI provider would you like configuration for?',
         type: 'choice',
