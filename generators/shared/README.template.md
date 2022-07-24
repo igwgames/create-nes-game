@@ -13,6 +13,7 @@ of that to start.
 1. Download [create-nes-game](https://cppchriscpp.github.io/create-nes-game/), if you haven't already.
 2. (Optional) Run `./create-nes-game install` to install the tool globally
 3. Run `create-nes-game download-dependencies` to download dependencies of this game into this folder
+4. Proceed to the next section to build the rom.
 
 ## Building the game
 
@@ -26,6 +27,8 @@ You can run the game using the selected emulator (if available on your operating
 
 This rom includes unit tests that can be used to verify that the game works. Run them using the 
 `create-nes-game test` command. 
+
+The tests are located in the `test/` folder.
 
 <% } %>
 # Directory layout
