@@ -39,12 +39,13 @@ Finally, it will trigger a build the same way it will, creating a nes rom in the
 From there, you can run `create-nes-game run` to test your rom. You can also edit the source, then do 
 `create-nes-game build` to build any updates.
 
-## What tools does it use behind the scenes?
+## What tools and resources does it use behind the scenes?
 
 * [cc65 and ca65](https://cc65.github.io/) for assembling and compiling games
 * [nes-test](https://cppchriscpp.github.io/nes-test) For unit testing
 * [Mesen](https://mesen.ca) For emulation by default, and as the game runner behind nes-test
 * [neslib](https://shiru.untergrund.net/) - Optionally installed with C-based projects
+* [LAN Master](https://shiru.untergrund.net) - For example music and sound effects 
 
 # Getting Started
 
