@@ -3,7 +3,6 @@ on: [push]
 jobs:
   build_rom:
     runs-on: ubuntu-latest
-    # FIXME: use a real version, when we start to publish
     container: cppchriscpp/create-nes-game:<%= it.version %>
     name: Compile rom
     steps:
