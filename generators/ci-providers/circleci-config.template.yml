@@ -3,7 +3,8 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: cppchriscpp/create-nes-game:<%= it.version %> 
+      - image: cppchriscpp/create-nes-game:<%= it.version %>
+
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference

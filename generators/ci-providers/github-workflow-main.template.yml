@@ -4,6 +4,7 @@ jobs:
   build_rom:
     runs-on: ubuntu-latest
     container: cppchriscpp/create-nes-game:<%= it.version %>
+
     name: Compile rom
     steps:
       - name: Checkout
