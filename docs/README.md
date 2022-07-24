@@ -113,3 +113,6 @@ Releases are largely automated, but there are two manual steps needed:
 2. Wait for the automation to create the new release...
 3. Update the release with real release notes. This will trigger updates to what we show in the 
    app ui when it offers to update.
+
+Once in a rare while, a bug with mesen may cause it to crash when running the tests. Start the process
+over from the top right of the github ui and hope for the best. 
