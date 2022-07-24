@@ -12,7 +12,8 @@ compile and run. (and even unit test, if you want!)
 ## Features
 
 * Start your game with a working example and all configuration; no config files to change!
-* No installing separate software and adding it to path
+* No installing separate software and adding it to path. Just one exe
+* Windows and Linux support
 * Write code in assembly or C
 * Interactive walkthrough to choose everything, including mapper and size
 * Build your rom with one command: `create-nes-game build`
@@ -34,10 +35,9 @@ Once you have all of your options chosen, it will create a directory for your ga
 pre-populate the folder with all of the configuration ca65/cc65 need to run. It will also
 create a "hello world" source file that you can use to start building your game. 
 
-Finally, it will trigger a build the same way it will, creating a nes rom in the `rom/` folder.
+From there, you can build your game using `create-nes-game build`. 
 
-From there, you can run `create-nes-game run` to test your rom. You can also edit the source, then do 
-`create-nes-game build` to build any updates.
+Finally, you can use `create-nes-game run` to launch your chosen emulator with the new rom.
 
 ## What tools and resources does it use behind the scenes?
 
