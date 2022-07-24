@@ -4,7 +4,7 @@ jobs:
     resource_class: small
     docker:
       # FIXME: use a real version, when we start to publish
-      - image: cppchriscpp/create-nes-game:latest 
+      - image: cppchriscpp/create-nes-game:<%= it.version %> 
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference

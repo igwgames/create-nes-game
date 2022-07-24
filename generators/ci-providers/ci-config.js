@@ -7,6 +7,7 @@ const fs = require('fs'),
 
 function createConfig(game, directory) {
     const mapper = mappers[game.mapper];
+    const version = 'v' + require('../../package.json').version
 
     switch (game.ciProvider) {
         case 'none':
@@ -15,13 +16,13 @@ function createConfig(game, directory) {
         case 'github':
             // If you don't have permission to create directories by now, we probably know.
             try { fs.mkdirSync(path.join(directory, '.github', 'workflows'), {recursive: true}) } catch (e) {}
-            fs.writeFileSync(path.join(directory, '.github', 'workflows', 'main.yml'), eta.render(fs.readFileSync(path.join(__dirname, 'github-workflow-main.template.yml')).toString(), {game, mapper}));
+            fs.writeFileSync(path.join(directory, '.github', 'workflows', 'main.yml'), eta.render(fs.readFileSync(path.join(__dirname, 'github-workflow-main.template.yml')).toString(), {game, mapper, version}));
             break;
 
         case 'circleci':
             // If you don't have permission to create directories by now, we probably know.
             try { fs.mkdirSync(path.join(directory, '.circleci')) } catch (e) {}
-            fs.writeFileSync(path.join(directory, '.circleci', 'config.yml'), eta.render(fs.readFileSync(path.join(__dirname, 'circleci-config.template.yml')).toString(), {game, mapper}));
+            fs.writeFileSync(path.join(directory, '.circleci', 'config.yml'), eta.render(fs.readFileSync(path.join(__dirname, 'circleci-config.template.yml')).toString(), {game, mapper, version}));
             break;
         default:
             throw new Error('Unknown CI Provider: ' + game.ciProvider);
