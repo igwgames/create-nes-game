@@ -8,6 +8,7 @@ function createConfig(game, directory) {
 tools/cc65
 tools/emulators
 tools/nes-test
+tools/famitone2
 temp
 # If you have this tool in the folder, don't commit it!
 ./create-nes-game.exe

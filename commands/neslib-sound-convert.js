@@ -87,13 +87,6 @@ async function run() {
     fs.renameSync(path.join(appConfiguration.workingDirectory, 'sound', 'music.s'), path.join(appConfiguration.workingDirectory, 'sound', 'music.asm'));
     logger.debug('Finished converting sfx.nsf');
     
-
-    const dpcmFile = path.join(appConfiguration.workingDirectory, 'sound', 'music-dcpm.bin');
-    if (!fs.existsSync(dpcmFile)) {
-        // Create an empty dpcm file for us to load, so the thing doesn't have an anneurism
-        logger.debug('Writing empty dpcm file, since none was generated');
-        fs.writeFileSync(dpcmFile, new Uint8Array([0]));
-    }
 }
 
 module.exports = {run};

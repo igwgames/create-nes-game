@@ -353,6 +353,10 @@ sounds_data:
 .segment "DMC"
 
 .if(FT_DPCM_ENABLE)
+<% if (it.game.includeCLibrary === 'neslib with famitone2') { %>
+	.incbin "../../sound/music.dmc"
+<% } else { %>
     .incbin "../../sound/samples.bin"
+<% } %>
 .endif
 <% } %>
