@@ -10,6 +10,7 @@ function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
     return new Promise((resolve, reject) => {
         const proc = childProcess.spawn(cmd, args, {cwd: options.cwd ? options.cwd : appConfiguration.workingDirectory});
         const outputLogLevel = options.outputLevel ? options.outputLevel : 'debug';
+        const errLogLevel = options.errOutputLevel ? options.errOutputLevel : 'warn';
 
 
         proc.stdout.on('data', data => {
@@ -18,7 +19,7 @@ function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
         });
         proc.stderr.on('data', data => {
             const strs = data.toString().split('\n').filter(l => l.length > 0);
-            strs.forEach(str => logger.warn(`[${logCmd}]`, str));
+            strs.forEach(str => logger[errLogLevel](`[${logCmd}]`, str));
         });
         proc.on('error', error => {
             logger.error('Failed compiling ', file, '!', error);

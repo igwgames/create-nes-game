@@ -58,9 +58,11 @@
       "generators/**/*.s",
       "generators/**/*.md",
       "tools/neslib/nsf2data/nsf2data-linux",
-      "tools/neslib/nsf2data/nsf2data.exe",
+      "tools/neslib/nsf2data/*.cpp",
+      "tools/neslib/nsf2data/*.h",
       "tools/neslib/text2data/text2data-linux",
-      "tools/neslib/text2data/text2data.exe"
+      "tools/neslib/text2data/*.cpp",
+      "tools/neslib/text2data/*.h"
     ],
     "scripts": [
       "generators/**/*.js",
