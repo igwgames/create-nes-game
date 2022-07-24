@@ -153,43 +153,43 @@
 
     mmc3_set_prg_bank_1:
     _mmc3_set_prg_bank_1:
-        ldx MMC3_REG_SEL_PRG_BANK_1
+        ldx #MMC3_REG_SEL_PRG_BANK_1
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_2kb_chr_bank_0:
     _mmc3_set_2kb_chr_bank_0:
-        ldx MMC3_REG_SEL_2KB_CHR_0
+        ldx #MMC3_REG_SEL_2KB_CHR_0
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_2kb_chr_bank_1:
     _mmc3_set_2kb_chr_bank_1:
-        ldx MMC3_REG_SEL_2KB_CHR_1
+        ldx #MMC3_REG_SEL_2KB_CHR_1
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_1kb_chr_bank_0:
     _mmc3_set_1kb_chr_bank_0:
-        ldx MMC3_REG_SEL_1KB_CHR_0
+        ldx #MMC3_REG_SEL_1KB_CHR_0
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_1kb_chr_bank_1:
     _mmc3_set_1kb_chr_bank_1:
-        ldx MMC3_REG_SEL_1KB_CHR_1
+        ldx #MMC3_REG_SEL_1KB_CHR_1
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_1kb_chr_bank_2:
     _mmc3_set_1kb_chr_bank_2:
-        ldx MMC3_REG_SEL_1KB_CHR_2
+        ldx #MMC3_REG_SEL_1KB_CHR_2
         jsr mmc3_internal_set_bank
         rts
 
     mmc3_set_1kb_chr_bank_3:
     _mmc3_set_1kb_chr_bank_3:
-        ldx MMC3_REG_SEL_1KB_CHR_3
+        ldx #MMC3_REG_SEL_1KB_CHR_3
         jsr mmc3_internal_set_bank
         rts
 
