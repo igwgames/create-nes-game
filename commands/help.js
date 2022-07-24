@@ -27,6 +27,7 @@ Miscellaneous commands:
 
   install - install create-nes-game globally, so you can use it anywhere
   check-update - Check for a newer version of create-nes-game manually.
+  update - Replace the current binary with the latest version from github
 
 Advanced commands:
 

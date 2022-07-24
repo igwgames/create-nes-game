@@ -41,7 +41,8 @@
     "axios": "^0.25.0",
     "eta": "^1.12.3",
     "inquirer": "^8.2.0",
-    "node-stream-zip": "^1.15.0"
+    "node-stream-zip": "^1.15.0",
+    "semver": "^7.3.7"
   },
   "pkg": {
     "targets": [

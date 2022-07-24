@@ -22,6 +22,7 @@ async function downloadFile(url, dest) {
             }
         });
     });
+    return dest;
 }
 
 module.exports = downloadFile;

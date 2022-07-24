@@ -79,8 +79,8 @@ also work.
 
 ## Where can I put my code?
 
-The general answer is to use the "source" directory. There are subfolders for assembly (assembly) and
-optionally for C, if you've enabled that. You can create as many subfolders as you'd like beneath
+The general answer is to use the "source" directory. There are subfolders for assembly, and
+optionally for C if you've enabled that. You can create as many subfolders as you'd like beneath
 these.
 
 Assembly code must be included from `source/assembly/main.asm`, using the `.include` feature of ca65.

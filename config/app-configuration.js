@@ -11,6 +11,8 @@ class AppConfiguration {
     workingDirectory = null;
     isControlledFolder = false;
     cacheDirectory = path.join(os.tmpdir(), 'create-nes-game', 'cache');
+    updateDirectory = path.join(os.tmpdir(), 'create-nes-game', 'update');
+    arguments = [];
     arguments = [];
     isUsingScratchpad = false;
     command = 'help';
@@ -19,9 +21,10 @@ class AppConfiguration {
     assumeYes = false;
     presetAnswers = {};
     skipVersionCheck = false;
-    nonDirectoryCommands = ["help", "create", "install", "check-update", "update"]
+    nonDirectoryCommands = ["help", "create", "install", "check-update", "update"];
     // FIXME: Aim at gh pages
-    updateUrl = 'http://localhost:8080/latest-version.json'
+    updateUrl = 'https://cppchriscpp.github.io/create-nes-game/';
+    binaryUrl = 'https://github.com/cppchriscpp/create-nes-game/releases/download/v';
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
