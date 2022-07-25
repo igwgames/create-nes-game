@@ -58,7 +58,7 @@ describe('Test all roms', () => {
         // NOTE: This is mainly for github actions; it doesn't like me starting up 32+ processes for rom builds+tests at once
         console.info('First test completed, running the rest in chunks.');
 
-        const chunkSize = 8;
+        const chunkSize = 5;
         const romCommandChunks = [];
         for (let i = 0; i < RomCommands.length; i += chunkSize) {
             romCommandChunks.push(RomCommands.slice(i, i + chunkSize))
