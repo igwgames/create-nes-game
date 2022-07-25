@@ -61,7 +61,7 @@ async function run() {
                 await zip.close();
                 newBin = path.join(landingFolder, clientBinaryExt);
             } catch (e) {
-                logger.warn('Unable to unzip downloaded binary. Something is probably wrong on GitHub! Bailing out', e);
+                logger.warn('Unable to unzip downloaded binary. Something is probably wrong on GitHub! Bailing out', e.toString());
                 throw new Error('Unable to unzip new zip for update');
             }
         } else {
@@ -74,14 +74,18 @@ async function run() {
             fs.renameSync(binFile, binFile + '.bak');
         } catch (e) {
             logger.error('Unable to write binary file. Cannot continue!');
-            logger.warn('If you installed this binary using sudo, make sure to use it here too.');
+            if (e.code === 'EACCES') {
+                logger.warn('Permissions Error! If you installed this binary using sudo, make sure to use it here too.');
+            }
+            logger.debug('Failed to create backup file', e);
         }
         try {
             copyFileSync(newBin, binFile);
             fs.chmodSync(binFile, 0o755);
             logger.info('Successfully updated process. Cleaning up and exiting');
         } catch (e) {
-            logger.warn('Failed updating! Attempting to roll back to old version', e);
+            logger.warn('Failed updating! Attempting to roll back to old version', e.toString());
+            logger.debug('Exception', e);
             fs.renameSync(binFile + '.bak', binFile);
             logger.warn('Successful rollback. Bailing out.');
             return;
