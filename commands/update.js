@@ -78,6 +78,7 @@ async function run() {
         }
         try {
             copyFileSync(newBin, binFile);
+            fs.chmodSync(binFile, 0o755);
             logger.info('Successfully updated process. Cleaning up and exiting');
         } catch (e) {
             logger.warn('Failed updating! Attempting to roll back to old version', e);
