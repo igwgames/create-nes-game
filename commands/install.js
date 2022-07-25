@@ -94,6 +94,7 @@ $oldPath = [Environment]::GetEnvironmentVariable('PATH', 'User');
     }
 
     logger.info('Successfully installed! You can now run `create-nes-game` from any folder!');
+    logger.info('(You may need to open a new terminal window if the command is not found.)');
 }
 
 
