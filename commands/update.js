@@ -77,7 +77,7 @@ async function run() {
             logger.warn('If you installed this binary using sudo, make sure to use it here too.');
         }
         try {
-            fs.renameSync(newBin, binFile);
+            copyFileSync(newBin, binFile);
             logger.info('Successfully updated process. Cleaning up and exiting');
         } catch (e) {
             logger.warn('Failed updating! Attempting to roll back to old version', e);
