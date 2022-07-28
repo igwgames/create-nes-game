@@ -9,6 +9,8 @@ language you want, a mapper, and optional features like libraries.
 The tool will give you a git-ready folder full of code, which it can be used to 
 compile and run. (and even unit test, if you want!)
 
+![image](https://user-images.githubusercontent.com/750475/181421798-7fbbde84-17f4-41d4-bf2c-275dc5071582.png)
+
 ## Features
 
 * Start your game with a working example and all configuration; no config files to change!
