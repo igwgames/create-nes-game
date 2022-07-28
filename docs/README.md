@@ -1,6 +1,6 @@
 # create-nes-game
 
-![image](https://user-images.githubusercontent.com/750475/181422426-246a7625-298b-4a0e-82de-023cbbb036f7.png)
+[![image](https://user-images.githubusercontent.com/750475/181422426-246a7625-298b-4a0e-82de-023cbbb036f7.png)](https://github.com/cppchriscpp/create-nes-game/releases)
 
 create-nes-game is a command line tool that creates a simple hello world game for the NES, 
 alongside all build tools you need, and a ready-to-go emulator. 
@@ -10,6 +10,8 @@ language you want, a mapper, and optional features like libraries.
 
 The tool will give you a git-ready folder full of code, which it can be used to 
 compile and run. (and even unit test, if you want!)
+
+[Download](https://github.com/cppchriscpp/create-nes-game/releases)
 
 ## Features
 
