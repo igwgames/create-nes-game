@@ -1,6 +1,6 @@
 {
   "name": "create-nes-game",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Create and build NES games using ca65/cc65",
   "main": "index.js",
   "bin": {
