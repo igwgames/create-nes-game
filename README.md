@@ -1,6 +1,6 @@
 # create-nes-game
 
-![image](https://user-images.githubusercontent.com/750475/181422294-d24a4f9b-7012-4bda-b8d5-8835c29d5505.png)
+![image](https://user-images.githubusercontent.com/750475/181422426-246a7625-298b-4a0e-82de-023cbbb036f7.png)
 
 create-nes-game is a command line tool that creates a simple hello world game for the NES, 
 alongside all build tools you need, and a ready-to-go emulator. 
