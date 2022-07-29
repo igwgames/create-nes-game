@@ -70,8 +70,13 @@ Do you wish to continue?`,
         logger.debug('Creating install directory, since it did not exist');
         fs.mkdirSync(installLocation, {recursive: true});
     }
-    
-    logger.debug(`Installing binary ${appConfiguration.binaryName} to ${installLocation}.`);
+
+    let thisBinary = process.argv0;
+    if (isWindows && !thisBinary.endsWith('.exe')) {
+        thisBinary += '.exe';
+    }
+
+    logger.debug(`Installing binary ${appConfiguration.binaryName} at ${thisBinary} to ${installLocation}. (isWindows: ${isWindows})`);
     copyFileSync(process.argv0, path.join(installLocation, appConfiguration.binaryName + (isWindows ? '.exe' : '')));
 
     if (powershell !== null) {
