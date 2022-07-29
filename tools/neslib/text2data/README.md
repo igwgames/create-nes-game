@@ -8,16 +8,14 @@ It has been lightly updated to be compatible with linux systems.
 Feel free to steal this binary to use as needed, code in this folder is available under cc0, same as 
 Shiru's original release.
 
-The binaries are intentionally committed, to make distribution easier. (And since cross-compiling isn't
-really an option.)
+Feel free to steal this code as needed, code in this folder is available under cc0, same as 
+Shiru's original release.
+
+They should compile under linux with little to no modification. (And still work on Windows)
 
 ## How do I compile? 
 
 `gcc text2data.cpp -o text2data`
-
-You'll need the following 2 libraries
-
-`sudo apt-get install libncurses5-dev libncursesw5-dev`
 
 ## The output is different between windows and linux!
 
