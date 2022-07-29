@@ -77,7 +77,7 @@ Do you wish to continue?`,
     }
 
     logger.debug(`Installing binary ${appConfiguration.binaryName} at ${thisBinary} to ${installLocation}. (isWindows: ${isWindows})`);
-    copyFileSync(process.argv0, path.join(installLocation, appConfiguration.binaryName + (isWindows ? '.exe' : '')));
+    copyFileSync(thisBinary, path.join(installLocation, appConfiguration.binaryName + (isWindows ? '.exe' : '')));
 
     if (powershell !== null) {
         logger.debug('On windows, trying to modify path using powershell');
