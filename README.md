@@ -22,6 +22,7 @@ compile and run. (and even unit test, if you want!)
 * Interactive walkthrough to choose everything, including mapper and size
 * Build your rom with one command: `create-nes-game build`
 * Out-of-the-box support for debugging C and assembly in mesen, with full source code
+* Automatically create source for tutorials like Nerdy Nights
 * Optional rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
 * Optional continuous integration support with either github or circleci
 
