@@ -33,8 +33,10 @@ async function run() {
     }
     const chrBankSize = 8192;
 
-    if (romData.length !== (16/* header*/) + (prgLength * prgBankSize) + (chrLength * chrBankSize)) {
-        logger.warn('Rom file size appears to be wrong! Behavior past this point may be unexpected!');
+    const expectedSize = (16/* header*/) + (prgLength * prgBankSize) + (chrLength * chrBankSize);
+    if (romData.length !== expectedSize) {
+        logger.warn('Rom file size appears to be wrong! Behavior past this point may be unexpected!', {expectedSize, actualSize: romData.length});
+        logger.debug('Rest of the variables', {prgLength, prgBankSize, chrLength, chrBankSize})
     }
 
     let freeBytes = 0,

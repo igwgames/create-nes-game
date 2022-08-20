@@ -3,6 +3,10 @@
 
 Enter a description of your game here. And maybe more documentation too, if you like.
 
+<% if (it.game.useTutorial) { %>
+This was generated using the <%= it.tutorialGroup.name + " " + it.tutorial.name %> tutorial.
+
+<% } %>
 # How to compile
 
 This rom uses [create-nes-game](https://cppchriscpp.github.io/create-nes-game/) to build. Download a copy
@@ -31,6 +35,7 @@ This rom includes unit tests that can be used to verify that the game works. Run
 The tests are located in the `test/` folder.
 
 <% } %>
+<% if (!it.game.useTutorial) { %>
 # Directory layout
 
 ```
@@ -80,6 +85,7 @@ The tests are located in the `test/` folder.
 └─ tools/                   - Compile and emulation tools required by the game, downloaded by nes-test
 ```
 
+<% } %>
 <% if (it.game.includeCLibrary === 'neslib with famitracker' || it.game.includeCLibrary === 'neslib with famitone2') { %>
 # NESLib 
 

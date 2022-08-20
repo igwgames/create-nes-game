@@ -10,6 +10,10 @@ async function run() {
         files = appConfiguration.arguments;
         logger.debug('RLE-encoding provided files:', files);
     } else {
+        if (!fs.existsSync(path.join(appConfiguration.workingDirectory, 'graphics'))) {
+            logger.debug('Skipping rle due to missing graphics folder.');
+            return;
+        }
         logger.debug('Running rle on all .chr files in graphics/');
         files = fs.readdirSync(path.join(appConfiguration.workingDirectory, 'graphics'))
             .filter(f => (f.endsWith('.chr') || f.endsWith('.nam') || f.endsWith('.bin')))

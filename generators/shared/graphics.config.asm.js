@@ -6,6 +6,11 @@ const fs = require('fs'),
     mappers = require('../../data/mappers');
 
 function createConfig(game, directory) {
+    if (game.useTutorial) {
+        logger.debug('Tutorial detected, skipping graphics config files');
+        return;
+    }
+
     const mapper = mappers[game.mapper];
     fs.writeFileSync(path.join(directory, 'graphics', 'graphics.config.asm'), eta.render(fs.readFileSync(path.join(__dirname, 'graphics.config.template.asm')).toString(), {game, mapper}));
 

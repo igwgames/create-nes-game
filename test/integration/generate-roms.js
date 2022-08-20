@@ -19,7 +19,7 @@ async function createCmd(cmd) {
     try { fs.mkdirSync(romDir, {recursive: true}); } catch (e) { logger.debug('Failed creating test folder, probably nothing.', e); }
     try {
         await spawnAndWait('CNG (' + cmd.name + ')', bin, null, args, {outputLevel: 'info', cwd: romDir});
-        await spawnAndWait('CNG (' + cmd.name + ')', path.join('..', bin), null, ['build', '--skip-version-check'], {cwd: path.join(romDir, cmd.name)});
+        await spawnAndWait('CNG (' + cmd.name + ')', path.join('..', bin), null, ['build', '--skip-version-check', '--unattended'], {cwd: path.join(romDir, cmd.name)});
     } catch (e) {
         logger.error('Generating a rom failed! Dumping everything I know and bailing out.', {e, args, cmd});
         logger.error('REMINDER: This uses the binary, make sure you built one recently!');

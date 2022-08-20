@@ -44,6 +44,9 @@ async function run() {
             logger.debug('Using preset field value', question.id, appConfiguration.presetAnswers[question.id]);
             question.onSubmit(currentGame, appConfiguration.presetAnswers[question.id]);
             continue;
+        } else if (appConfiguration.unattended) {
+            logger.error('No answer provided for question', question.id, 'Cannot continue!', appConfiguration.presetAnswers);
+            throw new Error('No answer provided for question ' + question.id + '! Cannot continue!');
         }
         
         if (question.type === 'choice') {

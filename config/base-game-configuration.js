@@ -1,4 +1,6 @@
 const mappers = require("../data/mappers"),
+    tutorialGroups = require('../creation-wizard/tutorials').tutorialGroups,
+    tutorials = require('../creation-wizard/tutorials').tutorials,
     slugify = require('../util/slugify'),
     fs = require('fs'),
     path = require('path');
@@ -79,6 +81,22 @@ const BaseGameConfigurationFields = {
         type: 'string',
         default: 'both',
         possibleValues: ['both', 'ntsc', 'pal']
+    },
+    useTutorial: {
+        type: 'boolean',
+        default: false,
+        possibleValues: [true, false]
+    },
+    tutorialGroup: {
+        type: 'string',
+        default: null,
+        possibleValues: tutorialGroups.map(a => a.id)
+    },
+
+    tutorialId: {
+        type: 'string',
+        default: null,
+        possibleValues: tutorials.map(a => a.id)
     },
 
     console: {

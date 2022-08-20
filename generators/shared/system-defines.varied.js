@@ -118,6 +118,11 @@ extern volatile unsigned char junk;
 }
 
 function createConfig(game, directory) {
+    if (game.useTutorial) {
+        logger.debug('Tutorial detected, skipping system defines');
+        return;
+    }
+
     fs.writeFileSync(path.join(directory, 'source', 'assembly', 'system-defines.asm'), getAsmString());
 
     if (game.includeC) {

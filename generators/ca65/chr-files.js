@@ -4,6 +4,10 @@ const copyFileSync = require('../../util/copy-file-sync'),
     path = require('path');
 
 function createConfig(game, directory) {
+    if (game.useTutorial) {
+        logger.debug('Tutorial detected, skipping chr');
+        return;
+    }
     copyFileSync(path.join(__dirname, './background.template.chr'), path.join(directory, 'graphics', 'background.chr'));
     copyFileSync(path.join(__dirname, './sprite.template.chr'), path.join(directory, 'graphics', 'sprite.chr'));
 }

@@ -14,7 +14,10 @@ function createConfig(game, directory) {
     }
 
     // Now let's make a few more...
-    const neededDirs = ['config', 'source', 'source/assembly', 'graphics', 'rom', 'tools', 'tools/emulators', 'temp'];
+    let neededDirs = ['config', 'source', 'source/assembly', 'graphics', 'rom', 'tools', 'tools/emulators', 'temp'];
+    if (game.useTutorial) {
+        neededDirs = ['config', 'source', 'source/assembly', 'rom', 'tools', 'tools/emulators', 'temp'];
+    }
     if (game.includeC) { neededDirs.push('source/c'); }
     if (game.includeCLibrary === 'neslib with famitracker' || game.includeCLibrary === 'neslib with famitone2') {
         neededDirs.push('sound');

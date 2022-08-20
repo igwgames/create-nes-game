@@ -15,7 +15,10 @@ const defaults = {
     "test-provider": "nes-test",
     "emulator": "system default",
     "c-library": "none",
-    "neslib-ntsc-or-pal": "both"
+    "neslib-ntsc-or-pal": "both",
+    "use-tutorial": "no",
+    "tutorial-group": "Nerdy Nights",
+    "tutorial-id": "Week 3: Background"
 };
 
 let RomCommands = [{
@@ -293,7 +296,43 @@ let RomCommands = [{
     useC: "no",
     cLibrary: "none",
     prgRam: "8kb"
-
+}, /*{
+    // START OF NERDY NIGHTS
+    // First tutorial actually doesn't enable nmis, so we can't wait frames. 
+    name: "nerdy-nights-3",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 3: background"
+}, */{
+    name: "nerdy-nights-4",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 4: sprites"
+}, {
+    name: "nerdy-nights-5",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 5: controller"
+}, {
+    name: "nerdy-nights-6",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 6: background2"
+}, {
+    name: "nerdy-nights-7",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 7: pong1"
+}, {
+    name: "nerdy-nights-8",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 8: background3"
+}, {
+    name: "nerdy-nights-9",
+    useTutorial: "yes",
+    tutorialGroup: "Nerdy Nights",
+    tutorialId: "Week 9: pong2"
 }];
 
 function convertJson(elem) {
