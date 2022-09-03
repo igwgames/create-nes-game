@@ -23,6 +23,7 @@ async function run() {
     let installLocation = '/tmp';
     let powershell = null;
     let isWindows = false;
+    let installDirExists = true;
     switch (os.platform()) {
         case 'win32':
         case 'win64':
@@ -69,6 +70,7 @@ Do you wish to continue?`,
     if (!fs.existsSync(installLocation)) {
         logger.debug('Creating install directory, since it did not exist');
         fs.mkdirSync(installLocation, {recursive: true});
+        installDirExists = false;
     }
 
     let thisBinary = process.argv0;
@@ -80,18 +82,22 @@ Do you wish to continue?`,
     copyFileSync(thisBinary, path.join(installLocation, appConfiguration.binaryName + (isWindows ? '.exe' : '')));
 
     if (powershell !== null) {
-        logger.debug('On windows, trying to modify path using powershell');
-        logger.info('Updating path with new directory - this can be slow!');
-        const psScript = `
-$oldPath = [Environment]::GetEnvironmentVariable('PATH', 'User');
-[Environment]::SetEnvironmentVariable('PATH', "$oldPath;${installLocation}", 'User')`;
-        const ps1File = path.join(os.tmpdir(), 'install-create-nes-game.ps1');
-        fs.writeFileSync(ps1File, psScript);
-        await spawnAndWait('powershell', 'powershell', ps1File, ['-ExecutionPolicy', 'Bypass', `-File`,  `${ps1File}`]);
-        try { 
-            fs.rmSync(ps1File);
-        } catch (e) {
-            logger.debug('Failed removing temp powershell file. Ignoring and moving on', e);
+        if (!installDirExists) {
+            logger.debug('On windows, trying to modify path using powershell');
+            logger.info('Updating path with new directory - this can be slow!');
+            const psScript = `
+    $oldPath = [Environment]::GetEnvironmentVariable('PATH', 'User');
+    [Environment]::SetEnvironmentVariable('PATH', "$oldPath;${installLocation}", 'User')`;
+            const ps1File = path.join(os.tmpdir(), 'install-create-nes-game.ps1');
+            fs.writeFileSync(ps1File, psScript);
+            await spawnAndWait('powershell', 'powershell', ps1File, ['-ExecutionPolicy', 'Bypass', `-File`,  `${ps1File}`]);
+            try { 
+                fs.rmSync(ps1File);
+            } catch (e) {
+                logger.debug('Failed removing temp powershell file. Ignoring and moving on', e);
+            }
+        } else {
+            logger.debug('On windows, install dir exists, not re-adding to path!');
         }
     } else {
         logger.debug('Linux system detected, no path modifications should be needed. Chmodding');
