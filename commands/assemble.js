@@ -2,7 +2,7 @@ const appConfiguration = require('../config/app-configuration'),
     BaseGameConfiguration = require('../config/base-game-configuration'),
     spawnAndWait = require('../util/spawn-and-wait'),
     path = require('path'),
-    fs = require('fs');
+    recursiveReaddirSync = require('../util/recursive-readdir-sync');
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
@@ -20,7 +20,8 @@ async function assembleCc65(game) {
         // Application entrypoint
         path.join(wd, 'source', 'assembly', 'system-runtime.asm'),
         // All generated assembly files from c
-        ...fs.readdirSync(path.join(wd, 'temp')).filter(w => w.endsWith('.asm')).map(f => path.join(wd, 'temp', f))
+        ...recursiveReaddirSync(path.join(wd, 'temp')).filter(w => w.endsWith('.asm')).map(s => path.relative(wd, s))
+
     ];
     return assembleFiles(game, filesToCompile);
 }

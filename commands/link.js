@@ -2,7 +2,8 @@ const appConfiguration = require('../config/app-configuration'),
     BaseGameConfiguration = require('../config/base-game-configuration'),
     spawnAndWait = require('../util/spawn-and-wait'),
     path = require('path'),
-    fs = require('fs');
+    fs = require('fs'), 
+    recursiveReaddirSync = require('../util/recursive-readdir-sync');
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
@@ -34,7 +35,7 @@ async function doLink(game, additionalOFiles = []) {
 
     // Let's make a rom!
     const oFiles = [
-        ...fs.readdirSync(path.join(wd, 'temp')).filter(s => s.endsWith('.o')).map(f => path.join(wd, 'temp', f)),
+        ...recursiveReaddirSync(path.join(wd, 'temp')).filter(s => s.endsWith('.o')).map(s => path.relative(wd, s)),
         ...additionalOFiles,
     ];
 

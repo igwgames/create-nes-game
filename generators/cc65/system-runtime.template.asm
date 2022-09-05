@@ -40,6 +40,7 @@
 
 .export _init, _exit,__STARTUP__:absolute=1
 .export _junk
+.export _reset
 .import initlib,push0,popa,popax,_main,zerobss,copydata
 .import __RAM_START__   ,__RAM_SIZE__
 .import __ROM0_START__  ,__ROM0_SIZE__
@@ -129,6 +130,7 @@
     start:
     _init:
     _exit:
+    _reset:
     reset:
         sei       ; mask interrupts
         lda #0

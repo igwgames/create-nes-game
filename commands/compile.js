@@ -67,7 +67,7 @@ async function compileCc65(game) {
 
 function outputFilePath(file) {
     const newFile = file.replace(path.join('source', 'c'), 'temp');
-    return newFile.substr(0, newFile.lastIndexOf('.') || newFile.length) + '.asm';
+    return newFile + '.asm';
 }
 
 module.exports = {run};
