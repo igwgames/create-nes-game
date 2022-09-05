@@ -50,7 +50,8 @@ Finally, you can use `create-nes-game run` to launch your chosen emulator with t
 * [nes-test](https://cppchriscpp.github.io/nes-test) For unit testing
 * [Mesen](https://mesen.ca) For emulation by default, and as the game runner behind nes-test
 * [neslib](https://shiru.untergrund.net/) - Optionally installed with C-based projects
-* [LAN Master](https://shiru.untergrund.net) - For example music and sound effects 
+* [LAN Master](https://shiru.untergrund.net) - For example music and sound effects
+* [JamesSheppardd's Nerdy Nights Port](https://github.com/JamesSheppardd/Nerdy-Nights-ca65-Translation) - For Nerdy Nights support
 
 # Getting Started
 
