@@ -84,6 +84,8 @@
         lda #1
         jsr mmc1_set_chr_bank_1
         rts
+
+    .export _mmc1_set_mirroring, _mmc1_set_chr_bank_0, _mmc1_set_chr_bank_1, _mmc1_set_prg_bank
 <% if (it.game.prgBanks > 2) { /* 2 banks get merged into one large prg bank for ease of use, so only do for 3+ */ %>
 ; Every bank needs a reset method at the start to get the mapper to start in the right state. So, do that.
 <% for (let i = 0; i < it.game.prgBanks - 1; i++) { %>
@@ -150,53 +152,62 @@
         ldx MMC3_REG_SEL_PRG_BANK_0
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_prg_bank_0
 
     mmc3_set_prg_bank_1:
     _mmc3_set_prg_bank_1:
         ldx #MMC3_REG_SEL_PRG_BANK_1
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_prg_bank_1
 
     mmc3_set_2kb_chr_bank_0:
     _mmc3_set_2kb_chr_bank_0:
         ldx #MMC3_REG_SEL_2KB_CHR_0
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_2kb_chr_bank_0
 
     mmc3_set_2kb_chr_bank_1:
     _mmc3_set_2kb_chr_bank_1:
         ldx #MMC3_REG_SEL_2KB_CHR_1
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_2kb_chr_bank_1
 
     mmc3_set_1kb_chr_bank_0:
     _mmc3_set_1kb_chr_bank_0:
         ldx #MMC3_REG_SEL_1KB_CHR_0
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_1kb_chr_bank_0
 
     mmc3_set_1kb_chr_bank_1:
     _mmc3_set_1kb_chr_bank_1:
         ldx #MMC3_REG_SEL_1KB_CHR_1
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_1kb_chr_bank_1
 
     mmc3_set_1kb_chr_bank_2:
     _mmc3_set_1kb_chr_bank_2:
         ldx #MMC3_REG_SEL_1KB_CHR_2
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_1kb_chr_bank_2
 
     mmc3_set_1kb_chr_bank_3:
     _mmc3_set_1kb_chr_bank_3:
         ldx #MMC3_REG_SEL_1KB_CHR_3
         jsr mmc3_internal_set_bank
         rts
+    .export _mmc3_set_1kb_chr_bank_3
 
     mmc3_set_mirroring:
     _mmc3_set_mirroring:
         sta MMC3_REG_MIRRORING
         rts
+    .export _mmc3_set_mirroring
 
     initialize_mapper:
         lda #MMC3_REG_SEL_CHR_MODE_A
@@ -248,6 +259,7 @@
         tax
         sta unrom_banktable, x
         rts
+    .export _unrom_set_prg_bank
 
     initialize_mapper:
         ; Start in bank 0
