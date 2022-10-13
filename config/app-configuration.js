@@ -24,6 +24,7 @@ class AppConfiguration {
     nonDirectoryCommands = ["help", "create", "install", "check-update", "update"];
     updateUrl = 'https://cppchriscpp.github.io/create-nes-game/';
     binaryUrl = 'https://github.com/cppchriscpp/create-nes-game/releases/download/v';
+    linkerConfigFile = null;
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
@@ -45,7 +46,7 @@ class AppConfiguration {
         }
         logger.setAllowColors(this.allowColors);
         logger.setBinaryName(this.binaryName);
-        logger.debug('[' + this.binaryName + '] [debug] Debug mode enabled');
+        logger.debug('Debug mode enabled');
 
 
         // Determine if we are in a project directory, and update working dir as needed
@@ -65,10 +66,19 @@ class AppConfiguration {
                 logger.error('Cannot write cache directory, cannot continue', e);
                 throw new Error('Cache directory does not exist or is not writeable! Cannot continue. You can set it manually with the CACHE_DIRECTORY environment variable');
             }
+        
+        }
+
+        const cfgFilePos = args.indexOf('--linker-config-file');
+        if (cfgFilePos !== -1) {
+            const file = args[cfgFilePos+1];
+            args.splice(cfgFilePos+1, 1);
+            this.linkerConfigFile = file;
+            logger.debug('Using custom config file', file)
         }
 
         if (args.indexOf('--scratchpad') !== -1) {
-            logger.warn('[' + this.binaryName + '] [warn] Using scratchpad mode for testing, hope you know what you\'re doing ;)');
+            logger.warn('Using scratchpad mode for testing, hope you know what you\'re doing ;)');
             this.isUsingScratchpad = true;
             this.workingDirectory = path.join(this.workingDirectory, 'scratchpad');
         }
@@ -112,7 +122,7 @@ class AppConfiguration {
             } else {
                 if (this.arguments[0]) {
                     if (this.nonDirectoryCommands.indexOf(this.arguments[0].toLowerCase()) === -1) {
-                        logger.warn('[' + this.binaryName + '] [warn] Command ' + this.arguments[0] + ' ignored, not in a game directory.');
+                        logger.warn('Command ' + this.arguments[0] + ' ignored, not in a game directory.');
                         this.command = 'create';
                     } else {
                         this.command = this.arguments[0];
@@ -139,7 +149,7 @@ class AppConfiguration {
                 wd = this._determineWorkingDirectory(path.resolve(path.join(wd, '..')), wd);
             } catch (e) {
                 if (this.debugMode) {
-                    logger.debug('[' + this.binaryName + '] [debug] Hit the end of the line trying to find parent directory.', e.toString());
+                    logger.debug('Hit the end of the line trying to find parent directory.', e.toString());
                 }
                 return process.cwd();
             }
