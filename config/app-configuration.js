@@ -25,9 +25,13 @@ class AppConfiguration {
     updateUrl = 'https://cppchriscpp.github.io/create-nes-game/';
     binaryUrl = 'https://github.com/cppchriscpp/create-nes-game/releases/download/v';
     linkerConfigFile = null;
+    outputFile = null;
+    assemblerOptions = null;
+    linkerOptions = null;
+    compilerOptions = null;
 
     constructor() {
-        const args = process.argv.filter((_, i) => i > 1).map(a => a.toLowerCase().trim());
+        const args = process.argv.filter((_, i) => i > 1).map(a => a.trim());
 
         // Since we parse all other args here, look for help and dump it out.
         if (args.indexOf('--help') !== -1 || args.indexOf('-h') !== -1) {
@@ -69,13 +73,11 @@ class AppConfiguration {
         
         }
 
-        const cfgFilePos = args.indexOf('--linker-config-file');
-        if (cfgFilePos !== -1) {
-            const file = args[cfgFilePos+1];
-            args.splice(cfgFilePos+1, 1);
-            this.linkerConfigFile = file;
-            logger.debug('Using custom config file', file)
-        }
+        this.linkerConfigFile = this._pullArgument(args, '--linker-config-file');
+        this.outputFile = this._pullArgument(args, '--output-file');
+        this.assemblerOptions = this._separateArgs(this._pullArgument(args, '--assembler-options'));
+        this.linkerOptions = this._separateArgs(this._pullArgument(args, '--linker-options'));
+        this.compilerOptions = this._separateArgs(this._pullArgument(args, '--compiler-options'));
 
         if (args.indexOf('--scratchpad') !== -1) {
             logger.warn('Using scratchpad mode for testing, hope you know what you\'re doing ;)');
@@ -155,6 +157,33 @@ class AppConfiguration {
             }
         }
         return wd;
+    }
+
+    _pullArgument(args, name) {
+        const valPos = args.indexOf(name);
+        if (valPos !== -1) {
+            const value = args[valPos+1];
+            args.splice(valPos+1, 1);
+            logger.debug(`Applied setting ${name} with value ${value}`);
+            return value;
+        }
+        return null;
+    }
+
+    _separateArgs(str) {
+        if (str !== null) {
+            return str.match(/\\?.|^$/g).reduce((p, c) => {
+                if (c === '"') {
+                    p.quote ^= 1;
+                } else if (!p.quote && c === ' ') {
+                    p.a.push('');
+                } else {
+                    p.a[p.a.length-1] += c.replace(/\\(.)/,"$1");
+                }
+                return  p;
+            }, {a: ['']}).a
+        }
+        return null;
     }
 
     get binaryName() {

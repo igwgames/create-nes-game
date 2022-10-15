@@ -39,11 +39,13 @@ async function doLink(game, additionalOFiles = []) {
         ...additionalOFiles,
     ];
 
+    const outputFile = appConfiguration.outputFile ?? path.join(wd, 'rom', game.romName);
     await spawnAndWait('ld65', ld65, 'temp/*.o', [
-        '-o', path.join(wd, 'rom', game.romName),
+        '-o', outputFile,
         '-C', (appConfiguration.linkerConfigFile ?? path.join(wd, 'config', 'ca65.cfg')),
         ...oFiles,
-        '--dbgfile', path.join(wd, 'rom', game.romName.replace('.nes', '.dbg'))
+        '--dbgfile', outputFile.replace('.nes', '.dbg'),
+        ...(appConfiguration.linkerOptions ?? [])
     ]);
 
     logger.info('Game built successfully:', path.join('rom', game.romName));

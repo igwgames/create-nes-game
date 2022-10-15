@@ -46,7 +46,8 @@ async function assembleFiles(game, filesToCompile) {
             '-I', '.',
             '-o', outputFilePath(file),
             file,
-            '--debug-info'
+            '--debug-info',
+            ...(appConfiguration.assemblerOptions ?? [])
         ]);
     }));
 }

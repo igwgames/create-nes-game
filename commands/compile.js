@@ -60,7 +60,8 @@ async function compileCc65(game) {
             '--add-source',
             '--include-dir', './tools/cc65/include',
             '-o', outFile,
-            '--debug-info'
+            '--debug-info',
+            ...(appConfiguration.compilerOptions ?? [])
         ])
     }))
 }
