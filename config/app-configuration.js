@@ -163,8 +163,8 @@ class AppConfiguration {
         const valPos = args.indexOf(name);
         if (valPos !== -1) {
             const value = args[valPos+1];
-            args.splice(valPos+1, 1);
-            logger.debug(`Applied setting ${name} with value ${value}`);
+            args.splice(valPos, 2);
+            logger.debug(`Applied setting ${name} with value "${value}"`);
             return value;
         }
         return null;
