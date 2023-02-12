@@ -97,6 +97,128 @@ anywhere.
 
 If you prefer run the downloaded binary directly to build your games, that will work just fine.
 
+## Can I run my own tools or other build steps outside create-nes-game?
+
+Yes! This is advanced behavior, and requires modifying the generated `.create-nes-game.config.json` file directly.
+The file will be in the root of your repository. You should have keys named `beforeStepActions` and 
+`afterStepActions` in your file (you can create them if you don't). These can be used to run any commands
+or scripts you would like before or after a command is run. 
+
+### Available actions: 
+| Name                 | Description                                            | Before Timing               | after Timing |
+|----------------------|--------------------------------------------------------|-----------------------------|-----------------------------------------------------------------------|
+| build                | The full build, including steps below                  | before any build steps      | After all build steps completed, nes file available                   |
+| neslib-sound-convert | For neslib projects, compiles sfx and music into code  | Before conversion           | After all converted files created                                     |
+| compile              | The C Compilation step                                 | Before c code is compiled   | After C code is compiled, before assembling                           |
+| assemble             | The assembly build step                                | Before asm code is compiled | After asm code is compiled, before link                               |
+| link                 | Links all C/assembly objects into a nes file           | Before link started         | after .nes file is available                                          |
+|**Non-build commands**| _n/a_                                                  | _n/a_                       | _n/a_                                                                 |
+| download-dependencies| Downloading dependencies: emulator, tools, etc         | Before download             | After tools are set up                                                |
+| run                  | Runs built rom with given emulator                     | Before emulator is started  | After emulator exits, or returns control to terminal (emulators vary) |
+| clean                | Removes temporary files from create-nes-game           | Before clean is run         | After files are deleted                                               |
+|----------------------|--------------------------------------------------------|-----------------------------|-----------------------------------------------------------------------|
+
+### What does it look like?
+
+Let's say we want to show how long it takes to run the `build` command. We'll add a before action that will write
+the current time to a json file, then an after action shows the current time, as well as the previously read time.
+
+Here is the code we would add to `.create-nes-game.json`
+
+```json
+{
+   // ... rest of configuration file...
+    "console": "nes",
+    "beforeStepActions": {
+      "build": [
+         "node -e \"fs.writeFileSync('test_file.txt', Date.now().toString())\""
+      ]
+    },
+    "afterStepActions": {
+      "build": [
+         "node -e \"const oldTime = parseInt(fs.readFileSync('test_file.txt')); console.info('Build took ' + (Date.now() - oldTime).toString() + 'ms.')\"",
+         "rm test_file.txt"
+      ]
+    }
+}
+```
+
+And if we now run it, here's what it looks like:
+
+```
+$ node ../../index.js build
+[create-nes-game] [info] Building game "test" in C:\create-nes-game\test
+[create-nes-game] [info] Assembling .asm files for "honkin" in C:\create-nes-game\test
+[create-nes-game] [info] Linking together rom "honkin" in C:\create-nes-game\test
+[create-nes-game] [info] Game built successfully: rom\test.nes 
+[create-nes-game] [info] ====================
+[create-nes-game] [info] Stats for: test.nes
+[create-nes-game] [info] Mapper: nrom | Rom Size: 24592 bytes. (16b header, 16384b prg, 8192b chr)
+[create-nes-game] [info] 15993/16384 bytes free
+[create-nes-game] [info] Bank Breakdown:
+[create-nes-game] [info] Bank 01: 15993/16384 bytes free
+[create-nes-game] [info] [afterStepActions build] Build took 109ms. 
+```
+
+## Can I make extra tools download when the user runs `create-nes-game download-dependencies`?
+
+Yes! This is advanced behavior, and requires editing the generated `.create-nes-game.config.json` file. 
+There should be a key named `extraDependencies`. This should be an array of file descriptions. 
+Each file will be downloaded, and copied to the `tools` folder. 
+
+At minimum, there should be a `name` and a `default` path.
+
+The extension at the end of the url will determine what happens after the file is downloaded. If the
+file ends with `.zip` or `.tar.gz` it will be automatically extracted to a subfolder of `tools` with
+the same name as the zip file. Otherwise, it will be directly copied into that folder.
+
+Example: 
+```json
+{
+   // .. Rest of configuration file
+   "extraDependencies": [
+      {"name": "myzip", "default": "https://www.website.com/myzipfile.zip"},
+      {"name": "myexe", "default": "https://www.website.com/myexefile.exe"}
+   ]
+}
+```
+
+This would create the following structure in the tools folder
+
+```
+myzip/myzipfile.zip
+myzip/file1.txt
+myzip/file2.exe
+...
+myexe/myexefile.exe
+... Other existing tools
+```
+
+If you want to change anything after the file is downloaded/unzipped, you can add a `afterStepAction` for
+`download-dependencies` to do what you need it to.
+
+### Different files per operating system/architecture
+
+If your files need to be different depending on architecture, include keys that are a
+combination of the operating system and architecture. These will be used on the given os/arch combination.
+
+To see what os/architecture combination you are on, you can run `create-nes-game download-dependencies --verbose`. Look for a line like this: 
+```[create-nes-game] [debug] Current architecture/os combo: win32-x64```
+
+Example: 
+```json
+{
+   // ...Rest of configuration file
+   "extraDependencies": [{
+      "name": "my-tool",
+      "win32-x64": "https://website.com/windows-x64.zip",
+      "linux-x64": "https://website.com/linux-x64.tar.gz",
+      "linux-arm64": "https://website.com/linux-arm64.tar.gz",
+      "default": "https://website.com/something-else.zip"
+   }]
+}
+```
+
 # Useful software 
 
 This is a list of software that's typically very helpful in NES development - either because it directly
