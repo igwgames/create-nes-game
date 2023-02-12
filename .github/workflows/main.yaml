@@ -32,10 +32,6 @@ jobs:
       # Update the documentation, we'll use it later.
       - name: Copy README.md into docs directory to update docs
         run: cp -f README.md docs/README.md
-      - name: Update version for site
-        run: |
-          echo "{\"version\": \"${{ env.RELEASE_VERSION }}\"}" > docs/latest-version.json
-
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
       - name: Run integration tests
@@ -68,6 +64,9 @@ jobs:
       # Publish to the docs dir on main, after we're done. Yeah, this bit is a little weird.
       - name: Check out main branch again for docs
         run: git fetch && git reset --hard HEAD && git checkout main
+      - name: Update version for site
+        run: |
+          echo "{\"version\": \"${{ env.RELEASE_VERSION }}\"}" > docs/latest-version.json
       - name: "Update github docs in main branch"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
