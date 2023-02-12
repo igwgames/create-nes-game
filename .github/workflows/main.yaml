@@ -67,7 +67,7 @@ jobs:
 
       # Publish to the docs dir on main, after we're done. Yeah, this bit is a little weird.
       - name: Check out main branch again for docs
-        run: git fetch && git checkout main
+        run: git fetch && git reset --hard HEAD && git checkout main
       - name: "Update github docs in main branch"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
