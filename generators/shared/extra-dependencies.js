@@ -52,7 +52,7 @@ async function doDownloadFile(game, directory, file, folderName) {
     } else if (theFile.endsWith('.tar.gz')) {
         await spawnAndWait('tar xvzf', 'tar', theFile, ['xvzf', theFile], {cwd: landingSpot})
     } else {
-        logger.verbose('Unrecognized extension, leaving file as-is.');
+        logger.debug('Unrecognized extension, leaving file as-is.');
     }
 }
 
