@@ -8,6 +8,8 @@ const appConfiguration = require('../config/app-configuration'),
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
 
+    await game.doRunBefore('compile');
+
     // Make sure all required directories exist, if they didn't already
     try {
         fs.mkdirSync(path.join(appConfiguration.workingDirectory, 'temp')); 
@@ -33,6 +35,8 @@ async function run() {
     }
 
     await compileCc65(game);
+
+    await game.doRunAfter('compile');
 }
 
 async function compileCc65(game) {
@@ -63,7 +67,7 @@ async function compileCc65(game) {
             '--debug-info',
             ...(appConfiguration.compilerOptions ?? [])
         ])
-    }))
+    }));
 }
 
 function outputFilePath(file) {

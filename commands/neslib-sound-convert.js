@@ -13,6 +13,9 @@ async function run() {
         return;
     }
 
+    await game.doRunBefore('neslib-sound-convert');
+
+
     const nsfFile = path.join(appConfiguration.workingDirectory, 'sound', 'sfx.nsf');
     const txtFile = path.join(appConfiguration.workingDirectory, 'sound', 'music.txt');
     
@@ -86,6 +89,8 @@ async function run() {
     // Yeah, I know, I'm picky.
     fs.renameSync(path.join(appConfiguration.workingDirectory, 'sound', 'music.s'), path.join(appConfiguration.workingDirectory, 'sound', 'music.asm'));
     logger.debug('Finished converting sfx.nsf');
+
+    await game.doRunAfter('neslib-sound-convert');
     
 }
 

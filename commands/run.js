@@ -9,6 +9,8 @@ const process = require('process'),
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
 
+    await game.doRunBefore('run');
+
     const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
 
     if (!fs.existsSync(romPath)) {
@@ -68,6 +70,8 @@ async function run() {
         stdio: 'ignore', // piping all stdio to /dev/null
         detached: true
     }).unref();
+
+    await game.doRunAfter('run');
     
 }
 

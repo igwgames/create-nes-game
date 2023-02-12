@@ -6,11 +6,15 @@ const appConfiguration = require('../config/app-configuration'),
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
+    await game.doRunBefore('assemble');
+
     logger.info(`Assembling .asm files for "${game.name}" in ${appConfiguration.workingDirectory}`);
 
     // the cc65 and ca65 methods are different enough it makes sense to just separate em
 
-    return game.includeC ? await assembleCc65(game) : await assembleCa65(game);
+    const result = game.includeC ? await assembleCc65(game) : await assembleCa65(game);
+    await game.doRunAfter('assemble');
+    return result;
 }
 
 async function assembleCc65(game) {

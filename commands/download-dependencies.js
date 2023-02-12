@@ -6,6 +6,8 @@ const appConfiguration = require('../config/app-configuration'),
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
 
+    await game.doRunBefore('download-dependencies');
+
     logger.info('Downloading and configuring tools to compile and play:', game.name);
 
     // Make sure the tools folder exists at all. It could not, ya know.
@@ -24,7 +26,8 @@ async function run() {
     const generators = [
         require('../generators/ca65/ca65-binaries'),
         require('../generators/neslib/neslib-binaries'),
-        require('../generators/shared/emulator')
+        require('../generators/shared/emulator'),
+        require('../generators/shared/extra-dependencies')
     ];
     if (game.testProvider === 'nes-test') {
         generators.push(require('../generators/nes-test/nes-test-binary'));
@@ -35,6 +38,8 @@ async function run() {
         logger.debug('Starting step:', generators[i].stepName);
         await generators[i](game, appConfiguration.workingDirectory);
     }
+
+    await game.doRunAfter('download-dependencies');
 }
 
 module.exports = {run};

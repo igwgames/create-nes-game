@@ -10,8 +10,12 @@ const appConfiguration = require('../config/app-configuration'),
 
 async function run() {
     if (appConfiguration.isInstalled) {
-        logger.error(`${appConfiguration.binaryName} is already installed on your system! Did you mean \`create-nes-game download-dependencies\`?`);
-        process.exit(1);
+        if (appConfiguration.forced) {
+            logger.warn('create-nes-game detected on system, but --force was used. Proceeding anyway...');
+        } else {
+            logger.error(`${appConfiguration.binaryName} is already installed on your system! Did you mean \`create-nes-game download-dependencies\`?`);
+            process.exit(1);
+        }
     }
 
     if (!process.pkg) {

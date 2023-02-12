@@ -7,6 +7,8 @@ const appConfiguration = require('../config/app-configuration'),
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
+    await game.doRunBefore('link');
+
     logger.info(`Linking together rom "${game.name}" in ${appConfiguration.workingDirectory}`);
 
     // the cc65 and ca65 methods are different enough it makes sense to just separate em
@@ -49,6 +51,8 @@ async function doLink(game, additionalOFiles = []) {
     ]);
 
     logger.info('Game built successfully:', path.join('rom', game.romName));
+
+    await game.doRunAfter('link');
 }
 
 module.exports = {run};

@@ -3,6 +3,8 @@ const appConfiguration = require('../config/app-configuration'),
     fs = require('fs');
 
 async function run() {
+    await game.doRunBefore('clean');
+
     logger.debug('Running rm on all generated files');
 
     fs.rmSync(path.join(appConfiguration.workingDirectory, 'temp'), {recursive: true});
@@ -16,6 +18,7 @@ async function run() {
     try { fs.rmSync(path.join(appConfiguration.workingDirectory, 'sound', 'sfx.asm')); } catch (e) {}
     try { fs.rmSync(path.join(appConfiguration.workingDirectory, 'sound', 'music.asm')); } catch (e) {}
 
+    await game.doRunAfter('clean');
 }
 
 module.exports = {run};

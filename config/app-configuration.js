@@ -29,16 +29,10 @@ class AppConfiguration {
     assemblerOptions = null;
     linkerOptions = null;
     compilerOptions = null;
+    forced = false;
 
     constructor() {
         const args = process.argv.filter((_, i) => i > 1).map(a => a.trim());
-
-        // Since we parse all other args here, look for help and dump it out.
-        if (args.indexOf('--help') !== -1 || args.indexOf('-h') !== -1) {
-            this.command = 'help';
-            this.arguments = [];
-            return;
-        }
 
         // Mark debug mode early, so we can see other warnings we might hit
         this.debugMode = (process.env.DEBUG === 'true') || (args.indexOf('--debug') !== -1 || args.indexOf('-v') !== -1 || args.indexOf('--verbose') !== -1);
@@ -52,6 +46,18 @@ class AppConfiguration {
         logger.setBinaryName(this.binaryName);
         logger.debug('Debug mode enabled');
 
+        // Since we parse all other args here, look for help and dump it out.
+        if (args.indexOf('--help') !== -1 || args.indexOf('-h') !== -1) {
+            this.command = 'help';
+            this.arguments = [];
+            return;
+        }
+
+        if (args.indexOf('--version') !== -1) {
+            this.command = 'version';
+            this.arguments = [];
+            return;
+        }
 
         // Determine if we are in a project directory, and update working dir as needed
         this.workingDirectory = this._determineWorkingDirectory();
@@ -87,6 +93,10 @@ class AppConfiguration {
 
         if (args.indexOf ('--assume-yes') !== -1 || args.indexOf('-y') !== -1) {
             this.assumeYes = true;
+        }
+
+        if (args.indexOf('--force') !== -1) {
+            this.forced = true;
         }
 
         if (args.indexOf('--unattended') !== -1) {

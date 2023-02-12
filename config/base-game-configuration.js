@@ -3,7 +3,8 @@ const mappers = require("../data/mappers"),
     tutorials = require('../creation-wizard/tutorials').tutorials,
     slugify = require('../util/slugify'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    childProcess = require('child_process');
 
 const CONFIG_VERSION = 10000;
 
@@ -104,6 +105,29 @@ const BaseGameConfigurationFields = {
         default: 'nes',
         possibleValues: ['nes']
     },
+
+    beforeStepActions: {
+        type: 'object',
+        default: {},
+        possibleValues: null,
+        validates: () => true
+    },
+
+    afterStepActions: {
+        type: 'object',
+        default: {},
+        possibleValues: null,
+        validates: () => true
+    },
+
+    extraDependencies: {
+        type: 'array',
+        default: [],
+        possibleValues: null,
+        validates: (val) => (val.filter(v => typeof v === 'object' && v.name).length === val.length),
+        validationWarning: 'extra dependencies not in a valid format, must all be objects, and have a name at miniumum.'
+    },
+
     configVersion: {
         type: 'number',
         default: CONFIG_VERSION,
@@ -183,6 +207,59 @@ class BaseGameConfiguration {
 
     toString() {
         return JSON.stringify(this.toObject(), null, 4);
+    }
+
+    doRunBefore(command) {
+        return this.doRunAct('beforeStepActions', command);
+    }
+
+    doRunAfter(command) {
+        return this.doRunAct('afterStepActions', command);
+    }
+
+    async doRunAct(actType, command) {
+        for (let i = 0; i < (this[actType][command] ?? []).length; i++) {
+            const baseCmd = this[actType][command][i];
+            let modifiedCmd
+            if (process.platform === 'win32') {
+                // Windows doesn't recognize / in commands like linux, but people tend to put slashes in.
+                // Let's try to hack it in, to make things more likely to be cross-platform-friendly. (I hope)
+                const firstWord = baseCmd.split(' ')[0].replace(/\//g, '\\');
+                modifiedCmd = firstWord + baseCmd.substring(baseCmd.indexOf(' '));
+                logger.debug('Updated command to work with windows. original:', baseCmd, 'updated:', modifiedCmd);
+            } else {
+                modifiedCmd = baseCmd;
+            }
+            // This is some stupid messiness - pkg overrides `node` if it sees it at the start of a command.
+            // So... If that's the case, we'll make it not
+            if (modifiedCmd.startsWith('node')) {
+                modifiedCmd = " " + modifiedCmd;
+            }
+
+            await new Promise((resolve, reject) => childProcess.exec(modifiedCmd, (error, stdout, stderr) => {
+                if (stdout) {
+                    stdout.split('\n').forEach(t => {
+                        if (t.length > 0) {
+                            logger.info(`[${actType} ${command}]`, t);
+                        }
+                    });
+                } 
+                if (stderr) {
+                    stderr.split('\n').forEach(t => {
+                        if (t.length > 0) {
+                            logger.warn(`[${actType} ${command}]`, t);
+                        }
+                    });
+                }
+
+                if (error) { 
+                    reject(error) 
+                } else {
+                    resolve();
+                }
+            }));
+        }
+
     }
 
     static fromString(str) {

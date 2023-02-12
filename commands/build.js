@@ -7,6 +7,8 @@ async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
     logger.info(`Building game "${game.name}" in ${appConfiguration.workingDirectory}`);
 
+    await game.doRunBefore('build');
+
     const ca65Bin = process.platform === 'win32' ? 'ca65.exe' : 'ca65';
 
     if (!fs.existsSync(path.join(appConfiguration.workingDirectory, 'tools', 'cc65', 'bin', ca65Bin))) {
@@ -28,6 +30,8 @@ async function run() {
     for (let i = 0; i < steps.length; i++) {
         await steps[i].run();
     }
+
+    await game.doRunAfter('build');
 }
 
 
