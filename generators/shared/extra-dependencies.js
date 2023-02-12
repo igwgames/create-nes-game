@@ -32,7 +32,8 @@ downloadDependencies.stepName = 'Download user dependencies'
 
 async function doDownloadFile(game, directory, file, folderName) {
     const theFileOriginal = path.basename(url.parse(file).pathname),
-        theFile = folderName + path.parse(theFileOriginal).ext
+        extensions = theFileOriginal.substring(theFileOriginal.indexOf('.')),
+        theFile = folderName + extensions,
         landingSpot = path.join(directory, 'tools', folderName);
     logger.debug('Starting download of', file, 'to', landingSpot);
 
