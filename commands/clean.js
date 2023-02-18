@@ -3,6 +3,7 @@ const appConfiguration = require('../config/app-configuration'),
     fs = require('fs');
 
 async function run() {
+    const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
     await game.doRunBefore('clean');
 
     logger.debug('Running rm on all generated files');
