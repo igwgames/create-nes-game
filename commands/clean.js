@@ -1,6 +1,7 @@
 const appConfiguration = require('../config/app-configuration'),
     path = require('path'),
-    fs = require('fs');
+    fs = require('fs'),
+    BaseGameConfiguration = require('../config/base-game-configuration');;
 
 async function run() {
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
