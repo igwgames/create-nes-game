@@ -50,7 +50,7 @@ async function compileCc65(game) {
         // Could be quite a recursive directory path, make sure to create it.
         const outFile = outputFilePath(file);
         try {
-            fs.mkdirSync(path.dirname(outFile));
+            fs.mkdirSync(path.dirname(outFile), {recursive: true});
         } catch (e) {
             if (e.code !== 'EEXIST') {
                 logger.error('Failed creating a directory while compiling! Do you have write permissions to the folder?', e);
