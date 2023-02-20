@@ -51,8 +51,7 @@ async function createConfig(game, directory) {
     });
 
     const configContent = fs.readFileSync(path.join(directory, '.create-nes-game.config.json')).toString(),
-        updatedContent = configContent.replace(/"name": "[\w\-]+",/, `"name": "${game.name}",`)
-            .replace(/"name": "[\w\-]+",/, `"name": "${game.name}",`)
+        updatedContent = configContent.replace(/"name": "[\w\-]+",/, `"name": "${game.name}",`);
 
     fs.writeFileSync(path.join(directory, '.create-nes-game.config.json'), updatedContent);
 
