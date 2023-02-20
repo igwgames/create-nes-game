@@ -38,9 +38,15 @@ try {
 createCmd(RomCommands.shift()).then(async () => {
     // const promises = RomCommands.map(createCmd);
 
-    const chunkSize = 8;
+    const chunkSize = 16;
+    const romCommandChunks = [];
     for (let i = 0; i < RomCommands.length; i += chunkSize) {
-        await Promise.all(RomCommands.slice(i, i + chunkSize))
+        romCommandChunks.push(RomCommands.slice(i, i + chunkSize));
+    }
+
+    for (let i = 0; i < romCommandChunks.length; i++) {
+        console.info(`Running chunk ${i+1} of ${romCommandChunks.length}`);
+        await Promise.all(romCommandChunks[i].map(createCmd));
     }
     console.info('Done!')
 

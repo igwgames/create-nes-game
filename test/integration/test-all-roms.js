@@ -98,7 +98,6 @@ describe('Test all roms', () => {
         await runRomSimple(firstOne);
         console.info('First tutorial test completed, running the rest in chunks.');
         
-        // FIXME: This is losing some...
         const chunkSize = 5;
         const romCommandChunks = [];
         for (let i = 0; i < ourRomCommands.length; i += chunkSize) {
