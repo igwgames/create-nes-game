@@ -47,6 +47,8 @@ createCmd(RomCommands.shift()).then(async () => {
     for (let i = 0; i < romCommandChunks.length; i++) {
         console.info(`Running chunk ${i+1} of ${romCommandChunks.length}`);
         await Promise.all(romCommandChunks[i].map(createCmd));
+        console.info('Done! Sleeping for 500ms');
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
     console.info('Done!')
 
