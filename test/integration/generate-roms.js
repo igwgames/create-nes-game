@@ -35,10 +35,14 @@ try {
 }
 
 // Do one first just to make sure installs work/don't run 8 times in ci
-createCmd(RomCommands.shift()).then(() => {
-    const promises = RomCommands.map(createCmd);
+createCmd(RomCommands.shift()).then(async () => {
+    // const promises = RomCommands.map(createCmd);
 
-    promises[0].then(() => {
-        Promise.all(promises).then(() => console.info('Done!'));
-    });
+    const chunkSize = 8;
+    for (let i = 0; i < RomCommands.length; i += chunkSize) {
+        await Promise.all(RomCommands.slice(i, i + chunkSize))
+    }
+    console.info('Done!')
+
+
 });
