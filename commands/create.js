@@ -90,6 +90,8 @@ async function run() {
 
         if (currentGame.includeCLibrary) {
             generators.push(require('../generators/neslib/neslib'));
+            generators.push(require('../generators/nes-starter-kit/nes-starter-kit'));
+            generators.push(require('../generators/shared/extra-dependencies'));
         }
     } else {
         generators.push(require('../generators/ca65/main.asm'));

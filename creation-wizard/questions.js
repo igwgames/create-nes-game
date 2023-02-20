@@ -51,7 +51,6 @@ const allQuestions = [
         type: 'choice', 
         possibleValues: ['yes', 'no'],
         defaultValue: 'no',
-        showIf: (game) => !game.useTutorial,
         runDefault: (game) => {
             if (game.getMapperDefinition().features['chr rom']) {
                 game.useChrRam = false;
@@ -59,7 +58,7 @@ const allQuestions = [
                 game.useChrRam = true;
             }
         },
-        showIf: (game) => game.getMapperDefinition().features['chr ram'] && game.getMapperDefinition().features['chr rom'],
+        showIf: (game) => !game.useTutorial && game.getMapperDefinition().features['chr ram'] && game.getMapperDefinition().features['chr rom'],
         onSubmit: (game, userValue) => {
             game.useChrRam = userValue === 'yes';
             if (game.useChrRam) {
@@ -157,7 +156,7 @@ const allQuestions = [
         type: 'choice',
         possibleValues: ['both', 'ntsc', 'pal'],
         defaultValue: 'both',
-        showIf: (game) => game.includeCLibrary === 'neslib with famitone2' || game.includeCLibrary === 'neslib with famitracker',
+        showIf: (game) => !game.useTutorial && (game.includeCLibrary === 'neslib with famitone2' || game.includeCLibrary === 'neslib with famitracker'),
         onSubmit: (game, userValue) => {
             game.neslibNtscPal = userValue;
             return true;
@@ -169,7 +168,7 @@ const allQuestions = [
         type: 'choice',
         possibleValues: ['none', 'circleci', 'github'],
         defaultValue: 'none',
-        showIf: (game) => true,
+        showIf: (game) => game.tutorialGroup !== 'nes-starter-kit',
         onSubmit: (game, userValue) => {
             game.ciProvider = userValue;
             return true;
@@ -192,7 +191,7 @@ const allQuestions = [
         question: 'Which emulator would you like to install?',
         type: 'choice',
         possibleValues: ['system default', 'mesen', 'fceux'],
-        showIf: (game) => true,
+        showIf: (game) => game.tutorialGroup !== 'nes-starter-kit',
         defaultValue: 'mesen',
         onSubmit: (game, userValue) => {
             game.installEmulator = userValue;

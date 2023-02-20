@@ -29,6 +29,11 @@ async function downloadTutorial(game, directory) {
         logger.error('Unknown tutorial group, cannot continue!', game)
         throw new Error ('Unknown tutorial group');
     }
+
+    if (tutorialGroup.custom) {
+        logger.debug('Tutorial group uses custom setup, assuming another generator will get it, exiting!');
+        return;
+    }
     const tutorialInfo = tutorialGroup.availableTutorials.find(t => t.id === game.tutorialId);
     const tutorialUrl = tutorialGroup.buildZipUrl(tutorialInfo.id)
 

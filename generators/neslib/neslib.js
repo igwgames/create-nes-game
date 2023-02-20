@@ -11,6 +11,7 @@ function createConfig(game, directory) {
 
     switch (game.includeCLibrary) {
         case 'none':
+        case 'nes-starter-kit':
             logger.debug('No neslib lib required, doing nothing.');
             return;
         case 'neslib with famitone2':
@@ -54,6 +55,6 @@ function createConfig(game, directory) {
 
 }
 
-createConfig.stepName = 'ci-config';
+createConfig.stepName = 'neslib-setup';
 
 module.exports = createConfig;

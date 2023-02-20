@@ -48,6 +48,47 @@ const tutorialGroups = [
                 supportingFiles: ['mario.chr']
             }
         ].map(a => { a.tutorialGroup = "nerdy-nights"; return a; })
+    }, {
+        name: "nes-starter-kit",
+        id: "nes-starter-kit",
+        custom: true,
+        availableTutorials: [
+            {
+                id: "main",
+                name: "Main branch (default)",
+            }, {
+                name: "Section 3: Giving your main character a sword",
+                id: "section3_add_sword",
+            }, {
+                name: "Section 3: Adding features to the pause menu",
+                id: "section3_pause_improvements",
+            }, {
+                name: "Section 3: Adding a second map",
+                id: "section3_second_map",
+            }, {
+                name: "Section 3: Adding objects that attract or repel the player",
+                id: "section3_attract_repel",
+            }, {
+                name: "Section 3: Adding an enemy that mimics player behavior",
+                id: "section3_mimic_enemy",
+            }, {
+                name: "Section 3: Adding a new sprite size",
+                id: "section3_sprite_size",
+            }, {
+                name: "Section 4: Making a full title screen",
+                id: "section4_custom_title"
+            }, {
+                name: "Section 4: Animating tiles",
+                id: "section4_animated_tiles"
+            }, {
+                name: "Section 5: Getting finer control over graphics with chr ram",
+                id: "section5_chr_ram"
+            }, {
+                name: "Section 5; Switching to unrom 512 for advanced features",
+                id: "section5_mapper_30"
+            }
+        ].map(a => { a.tutorialGroup = "nes-starter-kit"; return a; })
+
     }
 ]
 

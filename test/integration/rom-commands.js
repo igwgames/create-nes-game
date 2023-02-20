@@ -296,14 +296,16 @@ let RomCommands = [{
     useC: "no",
     cLibrary: "none",
     prgRam: "8kb"
-}, /*{
+},
+// {
     // START OF NERDY NIGHTS
     // First tutorial actually doesn't enable nmis, so we can't wait frames. 
-    name: "nerdy-nights-3",
-    useTutorial: "yes",
-    tutorialGroup: "Nerdy Nights",
-    tutorialId: "Week 3: background"
-}, */{
+    // name: "nerdy-nights-3",
+    // useTutorial: "yes",
+    // tutorialGroup: "Nerdy Nights",
+    // tutorialId: "Week 3: background"
+//}, 
+{
     name: "nerdy-nights-4",
     useTutorial: "yes",
     tutorialGroup: "Nerdy Nights",
@@ -333,6 +335,62 @@ let RomCommands = [{
     useTutorial: "yes",
     tutorialGroup: "Nerdy Nights",
     tutorialId: "Week 9: pong2"
+}, { 
+    // START OF NES-STARTER-KIT
+    name: "nes-starter-kit-main",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Main branch (default)"
+}, {
+    name: "nes-starter-kit-sword",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Giving your main character a sword"
+}, {
+    name: "nes-starter-kit-pause",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Adding features to the pause menu"
+}, {
+    name: "nes-starter-kit-map",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Adding a second map"
+}, {
+    name: "nes-starter-kit-attract",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Adding objects that attract or repel the player"
+}, {
+    name: "nes-starter-kit-mimic",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Adding an enemy that mimics player behavior"
+}, {
+    name: "nes-starter-kit-spritesz",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 3: Adding a new sprite size"
+}, {
+    name: "nes-starter-kit-title",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 4: Making a full title screen"
+}, {
+    name: "nes-starter-kit-animating",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 4: Animating tiles"
+}, {
+    name: "nes-starter-kit-chrram",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 5: Getting finer control over graphics with chr ram"
+}, {
+    name: "nes-starter-kit-mapper30",
+    useTutorial: "yes",
+    tutorialGroup: "nes-starter-kit",
+    nesStarterKitTutorialBranch: "Section 5; Switching to unrom 512 for advanced features"
 }];
 
 function convertJson(elem) {
