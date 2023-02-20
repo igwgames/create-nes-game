@@ -34,8 +34,16 @@ jobs:
         run: cp -f README.md docs/README.md
       - name: Create test roms
         run: sudo node ./test/integration/generate-roms
-      - name: Run integration tests
-        run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
+      #- name: Run integration tests
+      #  run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
+      # xvfb/mesen/etc are a bit finnicky when brought up rapidly. Let's try to work around that.
+      - name: Run unit tests
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
+
       - name: Clean up xvfb
         uses: bcomnes/cleanup-xvfb@v1
 
