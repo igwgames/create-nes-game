@@ -47,6 +47,9 @@ createCmd(RomCommands.shift()).then(async () => {
     for (let i = 0; i < romCommandChunks.length; i++) {
         console.info(`Running chunk ${i+1} of ${romCommandChunks.length}`);
         await Promise.all(romCommandChunks[i].map(createCmd));
+
+        // This works around some limitation with streamzip and/or gh actions where it'll crash if I try to run too fast.
+        // Error that comes out is "Bad Archive"
         console.info('Done! Sleeping for 500ms');
         await new Promise(resolve => setTimeout(resolve, 500));
     }
