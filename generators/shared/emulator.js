@@ -39,6 +39,7 @@ async function downloadMesen(game, directory) {
     // First download the zip to a known location on disk.
     const mesenInfo = {name: 'Mesen.0.9.9.zip', url: 'https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip'};
     const zipFile = path.join(appConfiguration.cacheDirectory, mesenInfo.name);
+    let wasCached = false;
     if (!fs.existsSync(zipFile)) {
         logger.debug('Downloading mesen from', mesenInfo);
         try {
@@ -49,6 +50,7 @@ async function downloadMesen(game, directory) {
         }
     } else {
         logger.debug('Using cached mesen zip');
+        wasCached = true;
     }
     
     // Now extract it to the tools directory, shifting it around as needed
@@ -68,7 +70,8 @@ async function downloadMesen(game, directory) {
         await zip.extract(null, path.join(directory, 'tools', 'emulators', 'mesen'));
         await zip.close();
     } catch (e) {
-        logger.error('Failed unzipping mesen to project tools directory', e);
+        logger.error('Failed unzipping mesen to project tools directory', e, wasCached ? 'Cached version used' : 'Fresh download');
+        logger.info('Extra test info', path.resolve(zipFile), fs.readFileSync(zipFile).toString().substring(0, 100));
         throw new Error('Failed unzipping mesen to project tools directory');
     }
     logger.debug('mesen extraction complete.');
