@@ -135,14 +135,16 @@
 .define MMC3_REG_CONTROL_DEFAULT #%11100
 
 .segment "ZEROPAGE"
-    ; Used to track whether a register write was interrupted, so we can try again if needed.
+    ; Keeps track of setting for which chr banks are 2kb vs 1 (and the same for prg rom banks)
     mmc3ChrInversionSetting: .res 1
 
 .segment "CODE_2"
     mmc3_internal_set_bank:
+        tay
+        txa
         ora mmc3ChrInversionSetting
-        stx MMC3_REG_BANK_SELECT
-        sta MMC3_REG_BANK_DATA
+        sta MMC3_REG_BANK_SELECT
+        sty MMC3_REG_BANK_DATA
         rts
 
 
