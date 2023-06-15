@@ -13,7 +13,7 @@ async function createCmd(cmd) {
     const args = ['--assume-yes', '--skip-version-check'];
     Object.keys(cmd).forEach(key => {
         args.push('--answer');
-        args.push(key + '=' + cmd[key]);
+        args.push(key + '="' + cmd[key] + '"');
     })
 
     try { fs.mkdirSync(romDir, {recursive: true}); } catch (e) { logger.debug('Failed creating test folder, probably nothing.', e); }
