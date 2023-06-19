@@ -7,7 +7,7 @@ const fs = require('fs'),
     romDir = path.join(__dirname, 'test-roms'),
     RomCommands = require('./rom-commands'),
     spawnAndWait = require('../../util/spawn-and-wait'),
-    bin = "../../../dist/create-nes-game" + (os.platform() === 'linux' ? '-linux' : '');
+    bin = (os.platform() === "win32" ? "..\\..\\..\\dist\\create-nes-game" : "../../../dist/create-nes-game") + (os.platform() === 'linux' ? '-linux' : '');
 
 async function createCmd(cmd) {
     const args = ['--assume-yes', '--skip-version-check'];
