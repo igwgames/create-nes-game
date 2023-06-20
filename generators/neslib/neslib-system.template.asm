@@ -90,17 +90,6 @@ RLE_BYTE            =TEMP+3
 initialize_library:
     txa
 @1:
-    sta $000,x
-    sta $100,x
-    sta $200,x
-    sta $300,x
-    sta $400,x
-    sta $500,x
-    sta $600,x
-    sta $700,x
-    inx
-    bne @1
-
     lda #4
     jsr _pal_bright
     jsr _pal_clear
