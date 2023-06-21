@@ -88,6 +88,9 @@ RLE_BYTE            =TEMP+3
 .segment "CODE"
 
 initialize_library:
+    lda #4
+    jsr _pal_bright
+    jsr _pal_clear
     jsr _oam_clear
 
     jsr zerobss
