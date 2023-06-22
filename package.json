@@ -16,8 +16,9 @@
     "build-all": "npm run pkg && npm run package-win && npm run package-linux",
     "build-docker": "npm run build-all && npm run build-docker-only",
     "build-docker-only": "docker build -t cppchriscpp/create-nes-game:latest -t cppchriscpp/create-nes-game:$npm_package_version .",
-    "package-win": "mv ./dist/create-nes-game-win.exe ./dist/create-nes-game.exe && cd dist && zip create-nes-game.zip create-nes-game.exe",
+    "package-win": "npm run rename-win && cd dist && zip create-nes-game.zip create-nes-game.exe",
     "package-linux": "cd dist && tar --transform=\"flags=r;s|create-nes-game-linux|create-nes-game|\" --file=\"create-nes-game.tar.gz\" --mode=\"a+rwx\" -cvz ./create-nes-game-linux",
+    "rename-win": "node -e \"require('fs').renameSync('./dist/create-nes-game-win.exe', './dist/create-nes-game.exe')\"",
     "rewrite-site-version": "node -e \"require('fs').writeFileSync('docs/latest-version.json', '{\\\"version\\\": \\\"' + require('./package.json').version + '\\\"}')\""
   },
   "repository": {
