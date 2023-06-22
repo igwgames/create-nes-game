@@ -74,13 +74,8 @@ void main(void) {
 
 <% } %>
 
-    // Set the address of the ppu to $3f00 to set the background palette
-    vram_adr(0x3f00);
-
-    // Write the background palette, byte-by-byte.
-    for (i = 0; i != 16; ++i) {
-        vram_put(palette[i]);
-    }
+    // Load the background palette
+    pal_bg(palette);
 
     // Write the address $2064 to the ppu, where we can start drawing text on the screen
     vram_adr(0x2064);
