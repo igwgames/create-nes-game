@@ -32,11 +32,16 @@ jobs:
       # Update the documentation, we'll use it later.
       - name: Copy README.md into docs directory to update docs
         run: cp -f README.md docs/README.md
-      - name: Create test roms
-        run: sudo node ./test/integration/generate-roms
-      #- name: Run integration tests
-      #  run: sudo Xvfb :99 -screen 0 1280x1024x24 & DISPLAY=:99 npx jasmine --config=test/integration/jasmine.json
-      # xvfb/mesen/etc are a bit finnicky when brought up rapidly. Let's try to work around that.
+
+        # Build the roms, with retries since sometimes jszip corrupts things
+      - name: Build roms
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: sudo node ./test/integration/generate-roms
+
+      # Run unit tests, with retries since sometimes xvfb causes issues.
       - name: Run unit tests
         uses: nick-fields/retry@v2
         with:
