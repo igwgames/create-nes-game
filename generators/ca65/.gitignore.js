@@ -16,6 +16,7 @@ temp
 ./create-nes-game
 ./create-nes-game-*
 *.nes
+*.dbg
 # Run-length encoded files
 graphics/*.rle.nam
 graphics/*.rle.bin
