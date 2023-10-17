@@ -31,7 +31,7 @@ async function run() {
     files.forEach((file, fileNum) => {
         const data = fs.readFileSync(path.join(appConfiguration.workingDirectory, file));
         let newData = [],
-            stat = []
+            stat = [],
             min = 256,
             pp = 0,
             len = 0,
