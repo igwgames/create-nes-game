@@ -4,6 +4,9 @@ on:
 
 jobs:
   build_notes:
+    permissions:
+      packages: write
+      contents: write
     runs-on: ubuntu-latest
     name: Release new version
     steps:
