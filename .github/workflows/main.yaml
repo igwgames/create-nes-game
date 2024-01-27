@@ -5,6 +5,9 @@ on:
 
 jobs:
   build_tool:
+    permissions:
+      packages: write
+      contents: write
     runs-on: ubuntu-latest
     name: Release new version
     # What this does, in human form: 
