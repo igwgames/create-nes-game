@@ -1,6 +1,6 @@
 # create-nes-game
 
-[![image](https://user-images.githubusercontent.com/750475/181422426-246a7625-298b-4a0e-82de-023cbbb036f7.png)](https://github.com/cppchriscpp/create-nes-game/releases)
+[![image](https://user-images.githubusercontent.com/750475/181422426-246a7625-298b-4a0e-82de-023cbbb036f7.png)](https://gh.nes.science/create-nes-game/releases)
 
 create-nes-game is a command line tool that creates a simple hello world game for the NES, 
 alongside all build tools you need, and a ready-to-go emulator. 
@@ -11,7 +11,7 @@ language you want, a mapper, and optional features like libraries.
 The tool will give you a git-ready folder full of code, which it can be used to 
 compile and run. (and even unit test, if you want!)
 
-[Download](https://github.com/cppchriscpp/create-nes-game/releases)
+[Download](https://gh.nes.science/create-nes-game/releases)
 
 ## Features
 
@@ -23,7 +23,7 @@ compile and run. (and even unit test, if you want!)
 * Build your rom with one command: `create-nes-game build`
 * Out-of-the-box support for debugging C and assembly in mesen, with full source code
 * Automatically create source for tutorials like Nerdy Nights
-* Optional rom testing support via [nes-test](https://github.com/cppchriscpp/nes-test)
+* Optional rom testing support via [nes-test](https://nes-test.nes.science)
 * Optional continuous integration support with either github or circleci
 
 ## Supported operating systems
@@ -47,7 +47,7 @@ Finally, you can use `create-nes-game run` to launch your chosen emulator with t
 ## What tools and resources does it use behind the scenes?
 
 * [cc65 and ca65](https://cc65.github.io/) for assembling and compiling games
-* [nes-test](https://cppchriscpp.github.io/nes-test) For unit testing
+* [nes-test](https://nes-test.nes.science) For unit testing
 * [Mesen](https://mesen.ca) For emulation by default, and as the game runner behind nes-test
 * [neslib](https://shiru.untergrund.net/) - Optionally installed with C-based projects
 * [LAN Master](https://shiru.untergrund.net) - For example music and sound effects
@@ -57,7 +57,7 @@ Finally, you can use `create-nes-game run` to launch your chosen emulator with t
 
 This tool intends to be pretty self-explanatory, so most of getting started is just running the program.
 
-1. Head over to [the releases page](https://github.com/cppchriscpp/create-nes-game/releases) and download the latest version for your operating system
+1. Head over to [the releases page](https://gh.nes.science/create-nes-game/releases) and download the latest version for your operating system
 2. Unzip the file using the tools of your choosing
 3. Run the binary from where you downloaded it, and install it using `./create-nes-game install` (or `create-nes-game.exe install` on windows)
 4. Switch to a folder where you want to store the games you make

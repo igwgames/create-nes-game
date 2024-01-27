@@ -30,10 +30,10 @@ async function createConfig(game, directory) {
     let binInfo = {};
     switch (process.platform) {
         case 'win32': 
-            binInfo = {name: 'nes-test-win.exe', url: 'https://github.com/cppchriscpp/nes-test/releases/download/v0.3.1/nes-test-win.exe'};
+            binInfo = {name: 'nes-test-win.exe', url: 'https://gh.nes.science/nes-test/releases/download/v0.3.2/nes-test-win.exe'};
             break;
         case 'linux':
-            binInfo = {name: 'nes-test-linux', url: 'https://github.com/cppchriscpp/nes-test/releases/download/v0.3.1/nes-test-linux'};
+            binInfo = {name: 'nes-test-linux', url: 'https://gh.nes.science/nes-test/releases/download/v0.3.2/nes-test-linux'};
             break;
         default:
             logger.warn('nes-test not available on this platform! Unit testing will not be available');

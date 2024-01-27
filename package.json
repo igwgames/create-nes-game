@@ -15,16 +15,13 @@
     "pkg": "pkg --public . ",
     "build-all": "npm run pkg && npm run package-win && npm run package-linux",
     "build-docker": "npm run build-all && npm run build-docker-only",
-    "build-docker-only": "docker build -t cppchriscpp/create-nes-game:latest -t cppchriscpp/create-nes-game:$npm_package_version .",
+    "build-docker-only": "docker build -t igwgames/create-nes-game:latest -t igwgames/create-nes-game:$npm_package_version .",
     "package-win": "npm run rename-win && cd dist && zip create-nes-game.zip create-nes-game.exe",
     "package-linux": "cd dist && tar --transform=\"flags=r;s|create-nes-game-linux|create-nes-game|\" --file=\"create-nes-game.tar.gz\" --mode=\"a+rwx\" -cvz ./create-nes-game-linux",
     "rename-win": "node -e \"require('fs').renameSync('./dist/create-nes-game-win.exe', './dist/create-nes-game.exe')\"",
     "rewrite-site-version": "node -e \"require('fs').writeFileSync('docs/latest-version.json', '{\\\"version\\\": \\\"' + require('./package.json').version + '\\\"}')\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cppchriscpp/create-nes-game.git"
-  },
+
   "keywords": [
     "cc65",
     "ca65",
@@ -32,12 +29,7 @@
     "compiler",
     "assembler"
   ],
-  "author": "cppchriscpp",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cppchriscpp/create-nes-game/issues"
-  },
-  "homepage": "https://github.com/cppchriscpp/create-nes-game#readme",
   "dependencies": {
     "axios": "^0.25.0",
     "eta": "^1.12.3",
@@ -76,7 +68,7 @@
   },
   "devDependencies": {
     "jasmine": "^4.1.0",
-    "nes-test": "github:cppchriscpp/nes-test",
+    "nes-test": "github:igwgames/nes-test",
     "pkg": "^5.5.2"
   }
 }

@@ -1,6 +1,6 @@
 ; startup code for cc65 and neslib
 ; based on code by Groepaz/Hitmen <groepaz@gmx.net>, Ullrich von Bassewitz <uz@cc65.org>
-; Updated for create-nes-game by cppchriscpp
+; Updated for create-nes-game
 
 ;v050517
 

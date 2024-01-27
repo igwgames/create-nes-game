@@ -55,7 +55,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
-          username: cppchriscpp
+          username: igwgames
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       - name: Build and push Docker image
@@ -63,7 +63,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: cppchriscpp/create-nes-game:latest,cppchriscpp/create-nes-game:${{ env.RELEASE_VERSION }}
+          tags: igwgames/create-nes-game:latest,igwgames/create-nes-game:${{ env.RELEASE_VERSION }}
 
       - name: Release to github
         uses: "marvinpinto/action-automatic-releases@latest"

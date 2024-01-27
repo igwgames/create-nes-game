@@ -17,7 +17,7 @@ async function run() {
             if (semver.lt(ourVersion, latestVersion)) {
                 logger.info(`${logger.colors.green}A new version of create-nes-game is available! New Version: ${logger.colors.blue}${latestVersion}${logger.colors.green} (You are on ${ourVersion}) ${logger.colors.reset}`);
                 logger.info(`${logger.colors.green}Automatically download and install it by typing: ${logger.colors.blue}create-nes-game update${logger.colors.reset}`);
-                logger.info(`${logger.colors.green}Learn more and see the changelog here: https://cppchriscpp.github.io/create-nes-game${logger.colors.reset}`)
+                logger.info(`${logger.colors.green}Learn more and see the changelog here: https://create-nes-game.nes.science${logger.colors.reset}`)
             } else {
                 if (appConfiguration.command === 'check-update') {
                     logger.info('You are on the latest version of create-nes-game!');
@@ -27,7 +27,7 @@ async function run() {
             }
 
     } catch (e) {
-        logger.warn('Checking for latest version failed - you can check online at https://cppchriscpp.github.io/create-nes-game');
+        logger.warn('Checking for latest version failed - you can check online at https://create-nes-game.nes.science');
         logger.debug('Version check error', e.toString());
     }
 }

@@ -1,6 +1,6 @@
 ; Startup code for cc65 and Shiru's NES library
 ; based on code by Groepaz/Hitmen <groepaz@gmx.net>, Ullrich von Bassewitz <uz@cc65.org>
-; Updated for create-nes-game by cppchriscpp
+; Updated for create-nes-game
 
 
     .import initlib,push0,popa,popax,_main,zerobss,copydata

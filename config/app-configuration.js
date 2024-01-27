@@ -22,8 +22,8 @@ class AppConfiguration {
     unattended = false;
     skipVersionCheck = false;
     nonDirectoryCommands = ["help", "create", "install", "check-update", "update"];
-    updateUrl = 'https://cppchriscpp.github.io/create-nes-game/';
-    binaryUrl = 'https://github.com/cppchriscpp/create-nes-game/releases/download/v';
+    updateUrl = 'https://create-nes-game.nes.science/';
+    binaryUrl = 'https://gh.nes.science/create-nes-game/releases/download/v';
     linkerConfigFile = null;
     outputFile = null;
     assemblerOptions = null;

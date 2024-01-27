@@ -3,7 +3,7 @@ jobs:
   build:
     resource_class: small
     docker:
-      - image: cppchriscpp/create-nes-game:<%= it.version %>
+      - image: igwgames/create-nes-game:<%= it.version %>
 
         auth:
           username: mydockerhub-user

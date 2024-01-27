@@ -100,7 +100,7 @@ async function run() {
         }
 
     } catch (e) {
-        logger.warn('Updating create-nes-game failed! Get the latest version online at https://cppchriscpp.github.io/create-nes-game');
+        logger.warn('Updating create-nes-game failed! Get the latest version online at https://create-nes-game.nes.science');
         logger.debug('Version update error', e);
         throw new Error('Process updating failed');
     }

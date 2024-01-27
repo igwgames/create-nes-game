@@ -20,8 +20,8 @@ jobs:
         uses: octokit/request-action@v2.x
         id: release_api_data
         with:
-          route: GET /repos/cppchriscpp/create-nes-game/releases
-          owner: cppchriscpp
+          route: GET /repos/igwgames/create-nes-game/releases
+          owner: igwgames
           repo: create-nes-game
           per_page: 100
         env:

@@ -9,12 +9,12 @@ This was generated using the <%= it.tutorialGroup.name + " " + it.tutorial.name 
 <% } %>
 # How to compile
 
-This rom uses [create-nes-game](https://cppchriscpp.github.io/create-nes-game/) to build. Download a copy
+This rom uses [create-nes-game](https://create-nes-game.nes.science/) to build. Download a copy
 of that to start.
 
 ## First time setup
 
-1. Download [create-nes-game](https://cppchriscpp.github.io/create-nes-game/), if you haven't already.
+1. Download [create-nes-game](https://create-nes-game.nes.science/), if you haven't already.
 2. (Optional) Run `./create-nes-game install` to install the tool globally
 3. Run `create-nes-game download-dependencies` to download dependencies of this game into this folder
 4. Proceed to the next section to build the rom.
@@ -140,4 +140,4 @@ Next time you run `create-nes-game build` your new music will be added to the ga
 <% } %>
 -----
 
-This rom uses [create-nes-game](https://cppchriscpp.github.io/create-nes-game/)!
+This rom uses [create-nes-game](https://create-nes-game.nes.science/)!

@@ -22,7 +22,7 @@ async function createConfig(game, directory) {
 
     if (!fs.existsSync(zipFile)) {
         try {
-            await downloadFile(`https://github.com/cppchriscpp/nes-starter-kit/archive/refs/heads/${branch}.zip`, zipFile)
+            await downloadFile(`https://gh.nes.science/nes-starter-kit/archive/refs/heads/${branch}.zip`, zipFile)
         } catch (e) {
             logger.error(`Could not download nes-starter-kit branch ${branch}. Cannot continue`, e);
             throw new Error('Failed downloading nes-starter-kit');
