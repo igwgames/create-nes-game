@@ -11,7 +11,7 @@ async function run() {
 
     await game.doRunBefore('run');
 
-    const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
+    const romPath = appConfiguration.outputFile ?? path.join(appConfiguration.workingDirectory, 'rom', game.romName);
 
     if (!fs.existsSync(romPath)) {
         logger.error('Rom not available! Try building it first with create-nes-game build!');

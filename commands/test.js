@@ -7,7 +7,7 @@ const spawnAndWait = require('../util/spawn-and-wait');
 async function run() {
     logger.debug('Running unit tests using nes-test!');
     const game = BaseGameConfiguration.fromDirectory(appConfiguration.workingDirectory);
-    const romPath = path.join(appConfiguration.workingDirectory, 'rom', game.romName);
+    const romPath = appConfiguration.outputFile ?? path.join(appConfiguration.workingDirectory, 'rom', game.romName);
     const nesTestBin = path.join(appConfiguration.workingDirectory, 'tools', 'nes-test', 'nes-test' + (process.platform === 'win32' ? '.exe' : ''));
 
     if (!fs.existsSync(romPath)) {
