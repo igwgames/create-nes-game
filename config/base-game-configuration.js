@@ -120,6 +120,13 @@ const BaseGameConfigurationFields = {
         validates: () => true
     },
 
+    emulatorParams: {
+        type: 'array',
+        default: [],
+        possibleValues: null,
+        validates: () => true
+    },
+
     extraDependencies: {
         type: 'array',
         default: [],

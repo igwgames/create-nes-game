@@ -13,7 +13,7 @@ async function run() {
         if (appConfiguration.forced) {
             logger.warn('create-nes-game detected on system, but --force was used. Proceeding anyway...');
         } else {
-            logger.error(`${appConfiguration.binaryName} is already installed on your system! Did you mean \`create-nes-game download-dependencies\`?`);
+            logger.error(`${appConfiguration.binaryName} is already installed on your system! Did you mean \`create-nes-game download-dependencies\`? (Use --force to reinstall anyway)`);
             process.exit(1);
         }
     }

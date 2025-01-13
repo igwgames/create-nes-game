@@ -26,12 +26,18 @@ async function run() {
         case 'mesen':
             // Yes, believe it or not this is cross-platform. Mono is weiiiird.
             execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'mesen', 'Mesen.exe');
+            if (game.emulatorParams) {
+                execArgs = [game.emulatorParams, romPath];
+            }        
             break;
         case 'fceux':
             switch (process.platform) {
                 case 'win32':
                 case 'win64':
                     execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'fceux', 'fceux.exe');
+                    if (game.emulatorParams) {
+                        execArgs = [...execArgs, ...game.emulatorParams];
+                    }                
                     break;
                 default:
                     execFile = findExecutable('fceux');
@@ -52,6 +58,9 @@ async function run() {
                     // Linux, maybe more
                     execFile = '/usr/bin/xdg-open';
             }
+            if (game.emulatorParams) {
+                execArgs = [...execArgs, ...game.emulatorParams];
+            }        
             break;
         default:
             logger.error('Do not know how to run emulator: ' + game.installEmulator);
@@ -63,7 +72,6 @@ async function run() {
         logger.debug('Emulator path: ' + execFile);
         throw new Error(`Emulator not found. You may need to run \`${appConfiguration.binaryName} download-dependencies\``);
     }
-
 
     logger.debug('Running', execFile, 'with args', execArgs);
     childProcess.spawn(execFile, execArgs, {
