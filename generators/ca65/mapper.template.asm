@@ -151,7 +151,7 @@
     ; Store mirroring value to mmc1 register
     mmc3_set_prg_bank_0:
     _mmc3_set_prg_bank_0:
-        ldx MMC3_REG_SEL_PRG_BANK_0
+        ldx #MMC3_REG_SEL_PRG_BANK_0
         jsr mmc3_internal_set_bank
         rts
     .export _mmc3_set_prg_bank_0
