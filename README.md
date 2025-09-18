@@ -218,7 +218,7 @@ Example:
 }
 ```
 
-### Can I run it in docker?
+## Can I run it in docker?
 
 Yep! Each release is published to dockerhub under the name `igwgames/create-nes-game`. The `latest` tag is updated with every stable release, 
 as well as a version tag, like `v1.0.16`. 
