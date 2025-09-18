@@ -116,7 +116,6 @@ or scripts you would like before or after a command is run.
 | download-dependencies| Downloading dependencies: emulator, tools, etc         | Before download             | After tools are set up                                                |
 | run                  | Runs built rom with given emulator                     | Before emulator is started  | After emulator exits, or returns control to terminal (emulators vary) |
 | clean                | Removes temporary files from create-nes-game           | Before clean is run         | After files are deleted                                               |
-|----------------------|--------------------------------------------------------|-----------------------------|-----------------------------------------------------------------------|
 
 ### What does it look like?
 
@@ -218,6 +217,15 @@ Example:
    }]
 }
 ```
+
+### Can I run it in docker?
+
+Yep! Each release is published to dockerhub under the name `igwgames/create-nes-game`. The `latest` tag is updated with every stable release, 
+as well as a version tag, like `v1.0.16`. 
+
+https://hub.docker.com/r/igwgames/create-nes-game
+
+create-nes-game will also allow give you an option to autogenerate configuration to use this for testing in github actions during project setup.
 
 # Useful software 
 
