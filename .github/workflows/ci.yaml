@@ -21,4 +21,17 @@ jobs:
           npm run package-mac
       - name: Test
         run: |
-          arch -x86_64 ./dist/create-nes-game-macos-x64 test --assume-yes --unattended
+          arch -x86_64 ./dist/create-nes-game-macos-x64 \
+            --unattended \
+            --skip-version-check \
+            --answer name=testgame \
+            --answer use-tutorial=no \
+            --answer mapper=nrom \
+            --answer chr-ram=no \
+            --answer prg-banks=1 \
+            --answer chr-banks=1 \
+            --answer mirroring=horizontal \
+            --answer include-c=no \
+            --answer ci-provider=none \
+            --answer test-provider=nes-test \
+            --answer emulator=mesen
