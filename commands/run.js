@@ -24,11 +24,15 @@ async function run() {
 
     switch (game.installEmulator) {
         case 'mesen':
-            // Yes, believe it or not this is cross-platform. Mono is weiiiird.
-            execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'mesen', 'Mesen.exe');
+            if (process.platform === 'win32') {
+                execFile = path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'mesen', 'Mesen.exe');
+            } else if (process.platform === 'darwin') {
+                execFile = '/usr/bin/open';
+                execArgs = ['-a', path.join(appConfiguration.workingDirectory, 'tools', 'emulators', 'mesen', 'Mesen.app'), romPath];
+            }
             if (game.emulatorParams) {
-                execArgs = [game.emulatorParams, romPath];
-            }        
+                execArgs = [...execArgs, ...game.emulatorParams];
+            }
             break;
         case 'fceux':
             switch (process.platform) {

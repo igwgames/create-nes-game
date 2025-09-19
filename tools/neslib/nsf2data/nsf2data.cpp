@@ -8,6 +8,11 @@
 	#define string_comp strcasecmp
 #endif
 
+#ifdef __APPLE__
+	// hack on apple since `wait` is a system function
+	#define wait wait_var
+#endif
+
 #define OUT_NESASM	0
 #define OUT_CA65	1
 #define OUT_ASM6	2

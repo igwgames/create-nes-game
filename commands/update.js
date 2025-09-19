@@ -64,6 +64,16 @@ async function run() {
                 logger.warn('Unable to unzip downloaded binary. Something is probably wrong on GitHub! Bailing out', e.toString());
                 throw new Error('Unable to unzip new zip for update');
             }
+        } else if (os.platform() == 'darwin') {
+            logger.debug('Attempting to use GNU tar to unzip file');
+            try {
+                // silicon
+                await spawnAndWait('gtar xvzf', '/opt/homebrew/bin/gtar', clientZipExt, ['xvzf', newBinCompressed], {cwd: landingFolder})
+            } catch (e) {
+                // intel
+                await spawnAndWait('gtar xvzf', '/usr/local/bin/gtar', clientZipExt, ['xvzf', newBinCompressed], {cwd: landingFolder})
+            }
+            newBin = path.join(landingFolder, clientBinaryExt);
         } else {
             logger.debug('Attempting to use system tar to unzip file');
             await spawnAndWait('tar xvzf', '/usr/bin/tar', clientZipExt, ['xvzf', newBinCompressed], {cwd: landingFolder})

@@ -3,3 +3,4 @@ dist
 test/integration/test-roms
 .vscode
 tools/neslib/unused
+*.DS_Store
