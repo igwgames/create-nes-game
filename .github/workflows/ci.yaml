@@ -21,4 +21,4 @@ jobs:
           npm run package-mac
       - name: Test
         run: |
-          printf "a\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" | arch -x86_64 ./dist/create-nes-game-macos-x64
+          arch -x86_64 ./dist/create-nes-game-macos-x64 test --assume-yes --unattended
