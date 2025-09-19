@@ -31,7 +31,7 @@ jobs:
             --answer prg-banks=1 \
             --answer chr-banks=1 \
             --answer mirroring=horizontal \
-            --answer include-c=no \
+            --answer use-c=no \
             --answer ci-provider=none \
             --answer test-provider=nes-test \
             --answer emulator=mesen
