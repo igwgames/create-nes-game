@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  macos_works:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Dependencies
+        run: brew install cc65 gnu-tar
+      - name: Build
+        run: |
+          npm run pkg
+          npm run package-macos
+      - name: Test
+        run: |
+          printf "a\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" | arch -x86_64 ./dist/create-nes-game-macos-x64
