@@ -71,7 +71,7 @@ async function createConfig(game, directory) {
             
             fs.mkdirSync(path.join(directory, 'tools', 'cc65', 'bin'), { recursive: true });
             
-            const cc65Tools = ['cc65'];
+            const cc65Tools = ['cc65', 'ca65', 'ld65', 'cl65'];
             for (const tool of cc65Tools) {
                 const wrapperPath = path.join(directory, 'tools', 'cc65', 'bin', tool);
                 const wrapperContent = `#!/bin/sh\n${tool} "$@"\n`;

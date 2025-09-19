@@ -36,13 +36,28 @@ async function createConfig(game, directory) {
 }
 
 async function downloadMesen(game, directory) {
+    let mesenInfo;
+    
+    if (process.platform === 'darwin') {
+        const isAppleSilicon = process.arch === 'arm64';
+        if (isAppleSilicon) {
+            mesenInfo = {
+                name: 'Mesen_2.1.1_macOS_ARM64_AppleSilicon.zip',
+                url: 'https://github.com/SourMesen/Mesen2/releases/download/2.1.1/Mesen_2.1.1_macOS_ARM64_AppleSilicon.zip'
+            };
+        } else {
+            mesenInfo = {
+                name: 'Mesen_2.1.1_macOS_x64_Intel.zip',
+                url: 'https://github.com/SourMesen/Mesen2/releases/download/2.1.1/Mesen_2.1.1_macOS_x64_Intel.zip'
+            };
+        }
+    } else {
+        mesenInfo = {name: 'Mesen.0.9.9.zip', url: 'https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip'};
+    }
 
-    // First download the zip to a known location on disk.
-    const mesenInfo = {name: 'Mesen.0.9.9.zip', url: 'https://github.com/SourMesen/Mesen/releases/download/0.9.9/Mesen.0.9.9.zip'};
     const zipFile = path.join(appConfiguration.cacheDirectory, mesenInfo.name);
-    const exeFile = path.join(appConfiguration.cacheDirectory, "Mesen.exe");
-    let wasCached = false;
-    if (!fs.existsSync(exeFile)) {
+    
+    if (!fs.existsSync(zipFile)) {
         logger.debug('Downloading mesen from', mesenInfo);
         try {
             await downloadFile(mesenInfo.url, zipFile);
@@ -50,45 +65,76 @@ async function downloadMesen(game, directory) {
             logger.error('Encountered an error downloading mesen binaries; cannot continue.', e);
             throw new Error('Encountered an error downloading mesen binaries; cannot continue.');
         }
-
-        logger.debug('Starting to unzip mesen to temp directory', zipFile);
-        const zip = new StreamZip.async({file: zipFile});
-        try {
-            await zip.extract(null, appConfiguration.cacheDirectory);
-            await zip.close();
-        } catch (e) {
-            logger.error('Failed unzipping mesen to project tools directory', e);
-            logger.info('Extra test info', path.resolve(zipFile), fs.readFileSync(zipFile).toString().substring(0, 100));
-            throw new Error('Failed unzipping mesen to temp directory');
-        }
-        logger.debug('mesen extraction complete.');
-    
     } else {
-        logger.debug('Using cached mesen exe');
-        wasCached = true;
+        logger.debug('Using cached mesen zip');
     }
-    logger.debug('Copying exe to tools directory', exeFile);
-    fs.mkdirSync(path.join(directory, 'tools', 'emulators', 'mesen'), {recursive: true});
-    copyFileSync(exeFile, path.join(directory, 'tools', 'emulators', 'mesen', 'Mesen.exe'));
-    
-    // Now extract it to the tools directory, shifting it around as needed
+
+    const mesenDir = path.join(directory, 'tools', 'emulators', 'mesen');
     try {
-        fs.mkdirSync(path.join(directory, 'tools', 'emulators', 'mesen'));
+        fs.mkdirSync(mesenDir, { recursive: true });
     } catch (e) {
-        // If it exists we don't care, otherwise if it might be permissions, we do!
         if (e.code !== 'EEXIST') {
             logger.error('Failed creating a directory while installing mesen', e);
             throw new Error('Failed creating a directory while installing mesen');
         }
     }
 
+    if (process.platform === 'win32') {
+        const exeFile = path.join(appConfiguration.cacheDirectory, "Mesen.exe");
+        if (!fs.existsSync(exeFile)) {
+            logger.debug('Starting to unzip mesen to temp directory', zipFile);
+            const zip = new StreamZip.async({file: zipFile});
+            try {
+                await zip.extract(null, appConfiguration.cacheDirectory);
+                await zip.close();
+            } catch (e) {
+                logger.error('Failed unzipping mesen to project tools directory', e);
+                logger.info('Extra test info', path.resolve(zipFile), fs.readFileSync(zipFile).toString().substring(0, 100));
+                throw new Error('Failed unzipping mesen to temp directory');
+            }
+            logger.debug('mesen extraction complete.');
+        } else {
+            logger.debug('Using cached mesen exe');
+        }
+        logger.debug('Copying exe to tools directory', exeFile);
+        copyFileSync(exeFile, path.join(mesenDir, 'Mesen.exe'));
+    } else if (process.platform === 'darwin') {
+        logger.debug('Starting to unzip mesen to project directory', zipFile);
+        const zip = new StreamZip.async({file: zipFile});
+        try {
+            await zip.extract(null, mesenDir);
+            await zip.close();
+        } catch (e) {
+            logger.error('Failed unzipping mesen to project tools directory', e);
+            throw new Error('Failed unzipping mesen to project tools directory');
+        }
+        logger.debug('mesen extraction complete.');
 
-    if (process.platform !== 'win32') {
-        logger.debug('Non-windows platform, need to chmod the binary');
-        fs.chmodSync(path.join(directory, 'tools', 'emulators', 'mesen', 'Mesen.exe'), 0o755);
+        const nestedZip = path.join(mesenDir, 'Mesen.app.zip');
+        if (fs.existsSync(nestedZip)) {
+            logger.debug('Extracting nested Mesen.app.zip');
+            const innerZip = new StreamZip.async({file: nestedZip});
+            try {
+                await innerZip.extract(null, mesenDir);
+                await innerZip.close();
+                fs.unlinkSync(nestedZip);
+            } catch (e) {
+                logger.error('Failed extracting Mesen.app from nested zip', e);
+                throw new Error('Failed extracting Mesen.app from nested zip');
+            }
+        }
+
+        const appPath = path.join(mesenDir, 'Mesen.app');
+        if (fs.existsSync(appPath)) {
+            logger.debug('Making Mesen.app executable');
+            fs.chmodSync(path.join(appPath, 'Contents', 'MacOS', 'Mesen'), 0o755);
+        }
     }
 
-    // Okay, we done.
+    if (process.platform !== 'win32' && fs.existsSync(path.join(mesenDir, 'Mesen.exe'))) {
+        logger.debug('Non-windows platform, need to chmod the binary');
+        fs.chmodSync(path.join(mesenDir, 'Mesen.exe'), 0o755);
+    }
 }
 
 async function installFceux(game, directory) {
