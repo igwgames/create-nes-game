@@ -48,7 +48,7 @@ function getBinaryZip() {
         case 'linux':
             return {name: 'V2.19.tar.gz', url: 'https://github.com/cc65/cc65/archive/refs/tags/V2.19.tar.gz'};
         case 'darwin':
-            throw new Error('Project initialization failed: cc65 binaries for mac os are not currently available. If you have a working build, please get in contact!');
+            return {useMacOSHackExceptionGreatCode: true};
         case 'win32':
             // This is a private mirror of the binary provided from sourceforge, so it can be automatically downloaded. It uses my bandwidth instead of theirs.
             return {name: 'cc65-2.19-win.zip', url: 'https://gde-files.nes.science/cc65-2.19-win.zip'};
@@ -60,9 +60,31 @@ function getBinaryZip() {
 }
 
 async function createConfig(game, directory) {
-    
     // First download the zip to a known location on disk.
     const zipInfo = getBinaryZip();
+
+    if (zipInfo.useMacOSHackExceptionGreatCode) {
+        logger.debug('Checking for system-installed cc65 on macOS...');
+        try {
+            await spawnAndWait('which cc65', 'which', null, ['cc65']);
+            logger.info('Using system-installed cc65');
+            
+            fs.mkdirSync(path.join(directory, 'tools', 'cc65', 'bin'), { recursive: true });
+            
+            const cc65Tools = ['cc65'];
+            for (const tool of cc65Tools) {
+                const wrapperPath = path.join(directory, 'tools', 'cc65', 'bin', tool);
+                const wrapperContent = `#!/bin/sh\n${tool} "$@"\n`;
+                fs.writeFileSync(wrapperPath, wrapperContent);
+                fs.chmodSync(wrapperPath, 0o755);
+            }
+            
+            return;
+        } catch (e) {
+            throw new Error('cc65 not found. Please install it via Homebrew: brew install cc65');
+        }
+    }
+    
     const zipFile = path.join(appConfiguration.cacheDirectory, zipInfo.name);
     if (!fs.existsSync(zipFile)) {
         logger.debug('Downloading cc65 from', zipInfo);
