@@ -64,7 +64,7 @@ async function buildNeslibBinary(name, directory) {
         [name + '.cpp', ...(name === 'nsf2data' ? ['cpu2a03.h'] : [])].forEach(file => {
             copyFileSync(path.join(__dirname, '..', '..', 'tools', 'neslib', name, file), path.join(appConfiguration.cacheDirectory, name, file));
         });
-        await spawnAndWait('gcc ' + name, '/usr/bin/gcc', existingBinary + '.cpp', [name + '.cpp', '-o', name], {cwd: path.dirname(existingBinary), outputLevel: 'debug', errOutputLevel: 'debug'});
+        await spawnAndWait('g++ ' + name, '/usr/bin/g++', name + '.cpp', [name + '.cpp', '-o', name, '-lstdc++'], {cwd: path.dirname(existingBinary), outputLevel: 'info', errOutputLevel: 'error'});
     } else {
         logger.debug('Using existing binary for', name);
     }

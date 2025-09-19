@@ -11,13 +11,16 @@ function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
         const proc = childProcess.spawn(cmd, args, {cwd: options.cwd ? options.cwd : appConfiguration.workingDirectory});
         const outputLogLevel = options.outputLevel ? options.outputLevel : 'debug';
         const errLogLevel = options.errOutputLevel ? options.errOutputLevel : 'warn';
-
+        let stdout = '';
+        let stderr = '';
 
         proc.stdout.on('data', data => {
+            stdout += data.toString();
             const strs = data.toString().split('\n').filter(l => l.length > 0);
             strs.forEach(str => logger[outputLogLevel](`[${logCmd}]`, str));
         });
         proc.stderr.on('data', data => {
+            stderr += data.toString();
             const strs = data.toString().split('\n').filter(l => l.length > 0);
             strs.forEach(str => logger[errLogLevel](`[${logCmd}]`, str));
         });
@@ -32,7 +35,7 @@ function spawnAndWait(logCmd, cmd, file, args = [], options = {}) {
             if (resultCode === 0) {
                 resolve();
             } else {
-                reject(`[${logCmd}] Failed execution, exit code was ${resultCode}. \n\nFailed command: ${cmd} ${file} ${args.join(' ')});`);
+                reject(`[${logCmd}] Failed execution, exit code was ${resultCode}. \n\nFailed command: ${cmd} ${file} ${args.join(' ')}\n\nSTDOUT:\n${stdout}\n\nSTDERR:\n${stderr}`);
             }
         });
     });
