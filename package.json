@@ -42,7 +42,7 @@
     "targets": [
       "node14-win",
       "node14-linux",
-      "node14-darwin"
+      "node14-darwin-x64"
     ],
     "assets": [
       "generators/**/*.asm",

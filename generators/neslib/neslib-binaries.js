@@ -12,8 +12,6 @@ let binaryExtension = "";
 
 if (os.platform() === 'win32') {
     binaryExtension = '.exe';
-} else if (os.platform() === 'darwin') {
-    throw new Error('No binaries available for mac yet');
 } else {
     binaryExtension = "";
 }
